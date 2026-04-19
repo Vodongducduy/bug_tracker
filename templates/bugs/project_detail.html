@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ project.name }} - Bug Tracker{% endblock %}
+
+{% block content %}
+<ul class="breadcrumb"
+    style="list-style: none; display: flex; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+    <li><a href="{% url 'dashboard' %}" style="color: inherit; text-decoration: none;">Dự án</a></li>
+    <li>/</li>
+    <li style="color: var(--text-main);">{{ project.name }}</li>
+</ul>
+
+<div class="header"
+    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+    <div>
+        <h1>{{ project.name }}</h1>
+        <p style="color: var(--text-muted);">{{ project.description }}</p>
+    </div>
+    <div style="display: flex; gap: 1rem;">
+        {% if request.logged_user.is_superuser %}
+        <a href="{% url 'manage_members' project.id %}" class="btn" style="background: rgba(255,255,255,0.1); color: var(--text-main); text-decoration: none; padding: 0.8rem 1.2rem; border-radius: 8px;">Quản lý thành viên</a>
+        {% endif %}
+        {% if user_role == 'tester' %}
+        <a href="{% url 'create_bug' project.id %}" class="btn btn-primary">Báo lỗi mới</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="glass-card">
+    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+        <input type="text" placeholder="Tìm kiếm bug..." class="form-input" style="width: 300px; margin-bottom: 0;">
+        <select class="form-input" style="width: 150px; margin-bottom: 0;">
+            <option>Tất cả trạng thái</option>
+            <option>Mới</option>
+            <option>Đang xử lý</option>
+            <option>Đã sửa</option>
+            <option>Đã đóng</option>
+        </select>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tiêu đề</th>
+                <th>Độ ưu tiên</th>
+                <th>Trạng thái</th>
+                <th>Người xử lý</th>
+                <th>Cập nhật</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bug in bugs %}
+            <tr onclick="window.location='{% url 'bug_detail' bug.id %}';" style="cursor: pointer; transition: 0.2s;"
+                onmouseover="this.style.background='rgba(255,255,255,0.03)';"
+                onmouseout="this.style.background='transparent';">
+                <td>#{{ bug.id }}</td>
+                <td style="font-weight: 600;">{{ bug.title }}</td>
+                <td>
+                    {% if bug.priority == 'S' %}
+                    <span style="color: var(--danger);">{{ bug.get_priority_display }}</span>
+                    {% elif bug.priority == 'A' %}
+                    <span style="color: #fbbf24;">{{ bug.get_priority_display }}</span>
+                    {% else %}
+                    <span style="color: var(--text-muted);">{{ bug.get_priority_display }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <span class="badge badge-{{ bug.status|lower }}">{{ bug.get_status_display }}</span>
+                </td>
+                <td>
+                    {% if bug.assign_to %}
+                    {{ bug.assign_to.get_full_name }}
+                    {% else %}
+                    <span style="color: var(--text-muted); font-style: italic;">Chưa gán</span>
+                    {% endif %}
+                </td>
+                <td style="color: var(--text-muted);">{{ bug.updated_at|date:"d/m/Y H:i" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align: center; padding: 4rem; color: var(--text-muted);">Không có lỗi nào
+                    được ghi nhận.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

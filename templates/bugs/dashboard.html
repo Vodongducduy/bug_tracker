@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Bug Tracker{% endblock %}
+
+{% block content %}
+<div class="header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1>Dự án của tôi</h1>
+    {% if request.logged_user.is_superuser %}
+    <a href="{% url 'create_project' %}" class="btn btn-primary">+ Dự án mới</a>
+    {% endif %}
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+    {% for project in projects %}
+    <a href="{% url 'project_detail' project.id %}" style="text-decoration: none; color: inherit;">
+        <div class="glass-card" style="transition: 0.3s; cursor: pointer;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <h3 style="margin-bottom: 0.5rem; color: var(--primary);">{{ project.name }}</h3>
+                <span class="badge" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">{{ project.get_status_display }}</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">{{ project.description|truncatewords:20 }}</p>
+        </div>
+    </a>
+    {% empty %}
+    <div class="glass-card" style="grid-column: 1/-1; text-align: center; padding: 4rem;">
+        <p>Bạn chưa tham gia dự án nào.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

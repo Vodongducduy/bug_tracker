@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}403 Forbidden - Bug Tracker{% endblock %}
+
+{% block content %}
+<div class="glass-card" style="text-align: center; padding: 5rem;">
+    <h1 style="font-size: 5rem; color: var(--danger); margin-bottom: 1rem;">403</h1>
+    <h2 style="margin-bottom: 2rem;">Truy cập bị từ chối</h2>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">Bạn không có quyền truy cập vào tài nguyên này hoặc không thuộc dự án này.</p>
+    <a href="{% url 'dashboard' %}" class="btn btn-primary">Quay lại Dashboard</a>
+</div>
+{% endblock %}

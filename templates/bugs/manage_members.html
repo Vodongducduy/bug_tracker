@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Quản lý thành viên - {{ project.name }}{% endblock %}
+
+{% block content %}
+<ul class="breadcrumb"
+    style="list-style: none; display: flex; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+    <li><a href="{% url 'dashboard' %}" style="color: inherit; text-decoration: none;">Dự án</a></li>
+    <li>/</li>
+    <li><a href="{% url 'project_detail' project.id %}" style="color: inherit; text-decoration: none;">{{ project.name }}</a></li>
+    <li>/</li>
+    <li style="color: var(--text-main);">Thành viên</li>
+</ul>
+
+<div class="header" style="margin-bottom: 2rem;">
+    <h1>Quản lý thành viên</h1>
+    <p style="color: var(--text-muted);">Dự án: {{ project.name }}</p>
+</div>
+
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: start;">
+    <!-- Members List -->
+    <div class="glass-card">
+        <h3 style="margin-bottom: 1.5rem;">Danh sách thành viên</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Họ tên</th>
+                    <th>Email</th>
+                    <th>Vai trò</th>
+                    <th>Ngày tham gia</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for member in members %}
+                <tr>
+                    <td>
+                        <div style="font-weight: 600;">{{ member.user.get_full_name }}</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">@{{ member.user.username }}</div>
+                    </td>
+                    <td>{{ member.user.email }}</td>
+                    <td>
+                        <span class="badge" style="background: rgba(99, 102, 241, 0.1); color: #818cf8;">{{ member.role.title }}</span>
+                    </td>
+                    <td style="color: var(--text-muted);">{{ member.assign_at|date:"d/m/Y" }}</td>
+                    <td>
+                        <a href="{% url 'remove_member' project.id member.user.id %}"
+                            onclick="return confirm('Bạn có chắc chắn muốn xóa người này khỏi dự án?');"
+                            style="color: var(--danger); text-decoration: none; font-size: 0.85rem; font-weight: 500;">
+                            Xóa
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Add Member Form -->
+    <div class="glass-card">
+        <h3 style="margin-bottom: 1.5rem;">Thêm thành viên</h3>
+        <form method="POST">
+            {% csrf_token %}
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--text);">Người dùng</label>
+                <select name="user_id" required class="form-input" style="width: 100%;">
+                    <option value="">-- Chọn người dùng --</option>
+                    {% for user in available_users %}
+                    <option value="{{ user.id }}">{{ user.get_full_name }} (@{{ user.username }})</option>
+                    {% endfor %}
+                </select>
+                {% if not available_users %}
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; font-style: italic;">Không
+                    còn người dùng nào để thêm.</p>
+                {% endif %}
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--text);">Vai trò dự án</label>
+                <select name="role_id" required class="form-input" style="width: 100%;">
+                    <option value="">-- Chọn vai trò --</option>
+                    {% for role in roles %}
+                    <option value="{{ role.id }}">{{ role.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary"
+                style="width: 100%; padding: 0.8rem; border: none; border-radius: 8px; cursor: pointer; background: var(--primary); color: white; font-weight: 500;"
+                {% if not available_users %}disabled{% endif %}>
+                Thêm vào dự án
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

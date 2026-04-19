@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Báo lỗi mới - {{ project.name }}{% endblock %}
+
+{% block content %}
+<ul class="breadcrumb" style="list-style: none; display: flex; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+    <li><a href="{% url 'dashboard' %}" style="color: inherit; text-decoration: none;">Dự án</a></li>
+    <li>/</li>
+    <li><a href="{% url 'project_detail' project.id %}" style="color: inherit; text-decoration: none;">{{ project.name }}</a></li>
+    <li>/</li>
+    <li style="color: var(--text-main);">Báo lỗi mới</li>
+</ul>
+
+<div class="glass-card" style="max-width: 800px; margin: 0 auto;">
+    <h1 style="margin-bottom: 2rem;">Báo cáo lỗi mới</h1>
+    
+    <form method="POST">
+        {% csrf_token %}
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-muted);">Tiêu đề lỗi</label>
+            <input type="text" name="title" class="form-input" placeholder="VD: Lỗi đăng nhập trên mobile" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+            <div>
+                <label style="display: block; font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-muted);">Loại lỗi</label>
+                <select name="type" class="form-input">
+                    <option value="Functional">Functional Bug</option>
+                    <option value="System">System Bug</option>
+                    <option value="UI">UI Bug</option>
+                    <option value="Performance">Performance Bug</option>
+                </select>
+            </div>
+            <div>
+                <label style="display: block; font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-muted);">Độ ưu tiên</label>
+                <select name="priority" class="form-input">
+                    <option value="S">Critical (S)</option>
+                    <option value="A">Medium (A)</option>
+                    <option value="B">Low (B)</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+            <label style="display: block; font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-muted);">Mô tả chi tiết các bước tái hiện</label>
+            <textarea name="description" class="form-input" style="height: 200px; resize: vertical;" placeholder="1. Mở app... 2. Click nút..." required></textarea>
+        </div>
+
+        <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+            <a href="{% url 'project_detail' project.id %}" class="btn" style="background: rgba(255,255,255,0.05);">Hủy bỏ</a>
+            <button type="submit" class="btn btn-primary">Gửi báo cáo</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

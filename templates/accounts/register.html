@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Đăng ký tài khoản - Bug Tracker{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="glass-card auth-card" style="width: 500px;">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <div class="logo" style="font-size: 2rem; margin-bottom: 0.5rem;">BugTracker</div>
+            <p style="color: var(--text-muted);">Đăng ký tài khoản mới</p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+                <div style="margin-bottom: 1rem; color: var(--danger); font-size: 0.9rem;">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+            
+            <div style="display: flex; gap: 1rem;">
+                <div style="flex: 1; margin-bottom: 1.5rem;">
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}
+                        <p style="color: var(--danger); font-size: 0.8rem; margin-top: 5px;">{{ form.first_name.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                <div style="flex: 1; margin-bottom: 1.5rem;">
+                    {{ form.last_name }}
+                    {% if form.last_name.errors %}
+                        <p style="color: var(--danger); font-size: 0.8rem; margin-top: 5px;">{{ form.last_name.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                {{ form.username }}
+                {% if form.username.errors %}<p style="color: var(--danger); font-size: 0.8rem; margin-top: 5px;">{{ form.username.errors.0 }}</p>{% endif %}
+            </div>
+            <div style="margin-bottom: 1rem;">
+                {{ form.email }}
+                {% if form.email.errors %}<p style="color: var(--danger); font-size: 0.8rem; margin-top: 5px;">{{ form.email.errors.0 }}</p>{% endif %}
+            </div>
+            <div style="margin-bottom: 1rem;">
+                {{ form.password }}
+                {% if form.password.errors %}<p style="color: var(--danger); font-size: 0.8rem; margin-top: 5px;">{{ form.password.errors.0 }}</p>{% endif %}
+            </div>
+            <div style="margin-bottom: 1rem;">
+                {{ form.password_confirm }}
+                {% if form.password_confirm.errors %}<p style="color: var(--danger); font-size: 0.8rem; margin-top: 5px;">{{ form.password_confirm.errors.0 }}</p>{% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.8rem; font-size: 1rem; margin-top: 1rem;">Tạo tài khoản</button>
+            
+            <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                Đã có tài khoản? <a href="{% url 'login' %}" style="color: var(--primary); text-decoration: none;">Đăng nhập</a>
+            </p>
+        </form>
+    </div>
+</div>
+{% endblock %}
