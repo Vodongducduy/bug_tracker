@@ -20,7 +20,7 @@ class ProjectService:
     def get_dashboard_projects(self, user):
         return self.project_repository.get_user_projects(user)
 
-    def get_project_detail(self, project_id, user):
+    def get_project_detail(self, project_id, user, filters=None):
         project = self.project_repository.get_by_id(project_id)
         if not project:
             return None, None, None
@@ -31,7 +31,17 @@ class ProjectService:
             return project, 'FORBIDDEN', None
 
         user_role = membership.role.title if membership else None
-        bugs = self.bug_repository.get_by_project(project)
+        
+        if filters:
+            bugs = self.bug_repository.filter_bugs(
+                project, 
+                search_query=filters.get('q'),
+                status=filters.get('status'),
+                priority=filters.get('priority'),
+                bug_type=filters.get('type')
+            )
+        else:
+            bugs = self.bug_repository.get_by_project(project)
         
         return project, user_role, bugs
 

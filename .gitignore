@@ -15,3 +15,9 @@ venv/
 # IDEs
 .vscode/
 .idea/
+
+# AI context
+CLAUDE.md
+
+# Testing
+test/

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Thêm tài khoản mới - Bug Tracker{% endblock %}
+
+{% block content %}
+<ul class="breadcrumb" style="list-style: none; display: flex; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+    <li><a href="{% url 'account_list' %}" style="color: inherit; text-decoration: none;">Quản lý tài khoản</a></li>
+    <li>/</li>
+    <li style="color: var(--text-main);">Thêm mới</li>
+</ul>
+
+<div class="header" style="margin-bottom: 2rem;">
+    <h1>Thêm tài khoản mới</h1>
+</div>
+
+<div class="glass-card" style="max-width: 600px;">
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div>
+                <label style="display: block; font-size: 0.8rem; margin-bottom: 0.5rem; color: var(--text-muted);">Username</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                <p style="color: var(--danger); font-size: 0.8rem; margin-top: 0.3rem;">{{ form.username.errors.0 }}</p>
+                {% endif %}
+            </div>
+            <div>
+                <label style="display: block; font-size: 0.8rem; margin-bottom: 0.5rem; color: var(--text-muted);">Email</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                <p style="color: var(--danger); font-size: 0.8rem; margin-top: 0.3rem;">{{ form.email.errors.0 }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div>
+                <label style="display: block; font-size: 0.8rem; margin-bottom: 0.5rem; color: var(--text-muted);">Họ</label>
+                {{ form.last_name }}
+            </div>
+            <div>
+                <label style="display: block; font-size: 0.8rem; margin-bottom: 0.5rem; color: var(--text-muted);">Tên</label>
+                {{ form.first_name }}
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+            <div>
+                <label style="display: block; font-size: 0.8rem; margin-bottom: 0.5rem; color: var(--text-muted);">Mật khẩu</label>
+                {{ form.password }}
+                {% if form.password.errors %}
+                <p style="color: var(--danger); font-size: 0.8rem; margin-top: 0.3rem;">{{ form.password.errors.0 }}</p>
+                {% endif %}
+            </div>
+            <div>
+                <label style="display: block; font-size: 0.8rem; margin-bottom: 0.5rem; color: var(--text-muted);">Xác nhận mật khẩu</label>
+                {{ form.password_confirm }}
+                {% if form.password_confirm.errors %}
+                <p style="color: var(--danger); font-size: 0.8rem; margin-top: 0.3rem;">{{ form.password_confirm.errors.0 }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div style="margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+            <input type="checkbox" name="is_superuser" id="is_superuser">
+            <label for="is_superuser" style="font-size: 0.9rem; color: var(--text-main);">Quyền quản trị viên (Superuser)</label>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary" style="flex: 1;">Tạo tài khoản</button>
+            <a href="{% url 'account_list' %}" class="btn" style="flex: 1; text-align: center; background: rgba(255,255,255,0.05); color: var(--text-main); text-decoration: none;">Hủy</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

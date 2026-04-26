@@ -4,11 +4,32 @@
 
 {% block content %}
 <div class="header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-    <h1>Dự án của tôi</h1>
+    <h1>Bảng điều khiển</h1>
     {% if request.logged_user.is_superuser %}
     <a href="{% url 'create_project' %}" class="btn btn-primary">+ Dự án mới</a>
     {% endif %}
 </div>
+
+<div class="summary-cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+    <div class="glass-card" style="text-align: center; border-left: 4px solid var(--primary);">
+        <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.5rem;">Tổng số Bug</h4>
+        <p style="font-size: 2rem; font-weight: 700;">{{ bug_summary.TOTAL }}</p>
+    </div>
+    <div class="glass-card" style="text-align: center; border-left: 4px solid var(--danger);">
+        <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.5rem;">Mới</h4>
+        <p style="font-size: 2rem; font-weight: 700; color: var(--danger);">{{ bug_summary.NEW }}</p>
+    </div>
+    <div class="glass-card" style="text-align: center; border-left: 4px solid #fbbf24;">
+        <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.5rem;">Đang xử lý</h4>
+        <p style="font-size: 2rem; font-weight: 700; color: #fbbf24;">{{ bug_summary.IN_PROGRESS }}</p>
+    </div>
+    <div class="glass-card" style="text-align: center; border-left: 4px solid var(--success);">
+        <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.5rem;">Đã sửa / Đóng</h4>
+        <p style="font-size: 2rem; font-weight: 700; color: var(--success);">{{ bug_summary.FIXED|add:bug_summary.CLOSED }}</p>
+    </div>
+</div>
+
+<h2 style="margin-bottom: 1.5rem;">Dự án của tôi</h2>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
     {% for project in projects %}

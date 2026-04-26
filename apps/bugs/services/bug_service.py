@@ -22,7 +22,7 @@ class BugService:
         if not bug:
             return None, 'NOT_FOUND', None
             
-        if not self.project_member_repository.exists(bug.project, user):
+        if not user.is_superuser and not self.project_member_repository.exists(bug.project, user):
             return bug, 'FORBIDDEN', None
             
         activity_logs = self.bug_activity_log_repository.get_by_bug(bug)
@@ -51,7 +51,7 @@ class BugService:
             return None, 'NOT_FOUND'
             
         membership = self.project_member_repository.get_membership(project, user)
-        if not membership or membership.role.title != 'tester':
+        if not user.is_superuser and (not membership or membership.role.title != 'tester'):
             return project, 'FORBIDDEN'
 
         with transaction.atomic():

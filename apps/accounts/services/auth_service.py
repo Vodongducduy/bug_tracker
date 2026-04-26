@@ -8,6 +8,8 @@ class AuthService:
     def authenticate(self, username, password):
         user = self.user_repository.get_by_username(username)
         if user and check_password(password, user.password):
+            if not user.is_active:
+                return 'INACTIVE'
             return user
         return None
 

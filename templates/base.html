@@ -17,8 +17,11 @@
         <div class="logo">BugTracker.hub</div>
         <nav>
             <a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dự án</a>
+            {% if request.logged_user.is_superuser %}
+            <a href="{% url 'account_list' %}" class="{% if request.resolver_match.url_name == 'account_list' %}active{% endif %}">Quản lý tài khoản</a>
+            {% endif %}
             <a href="#">Báo cáo</a>
-            <a href="#">Thanh viên</a>
+            <a href="#">Thành viên</a>
             <a href="{% url 'logout' %}" style="margin-top: auto;">Đăng xuất</a>
         </nav>
     </aside>

@@ -16,4 +16,9 @@ def dashboard(request):
     project_service = ProjectService(project_repo, project_member_repo, bug_repo, role_repo)
     
     user_projects = project_service.get_dashboard_projects(request.logged_user)
-    return render(request, 'bugs/dashboard.html', {'projects': user_projects})
+    bug_summary = bug_repo.get_user_bug_summary(request.logged_user)
+    
+    return render(request, 'bugs/dashboard.html', {
+        'projects': user_projects,
+        'bug_summary': bug_summary
+    })

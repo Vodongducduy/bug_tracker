@@ -44,7 +44,13 @@
                         <p style="font-size: 0.9rem; font-weight: 600;">
                             {{ log.performed_by.get_full_name }} 
                             <span style="font-weight: 400; color: var(--text-muted);">đã thực hiện</span> 
+                            {% if log.action == 'CREATE_BUG' %}
+                            tạo bug mới
+                            {% elif log.action == 'UPDATE_STATUS' %}
+                            cập nhật trạng thái
+                            {% else %}
                             {{ log.action }}
+                            {% endif %}
                         </p>
                         {% if log.old_value or log.new_value %}
                         <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">

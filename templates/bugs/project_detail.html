@@ -20,23 +20,58 @@
         {% if request.logged_user.is_superuser %}
         <a href="{% url 'manage_members' project.id %}" class="btn" style="background: rgba(255,255,255,0.1); color: var(--text-main); text-decoration: none; padding: 0.8rem 1.2rem; border-radius: 8px;">Quản lý thành viên</a>
         {% endif %}
-        {% if user_role == 'tester' %}
+        {% if user_role == 'tester' or request.logged_user.is_superuser %}
         <a href="{% url 'create_bug' project.id %}" class="btn btn-primary">Báo lỗi mới</a>
         {% endif %}
     </div>
 </div>
 
 <div class="glass-card">
-    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
-        <input type="text" placeholder="Tìm kiếm bug..." class="form-input" style="width: 300px; margin-bottom: 0;">
-        <select class="form-input" style="width: 150px; margin-bottom: 0;">
-            <option>Tất cả trạng thái</option>
-            <option>Mới</option>
-            <option>Đang xử lý</option>
-            <option>Đã sửa</option>
-            <option>Đã đóng</option>
-        </select>
-    </div>
+    <form method="GET" style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: flex-end;">
+        <div style="flex-grow: 1; min-width: 250px;">
+            <label style="display: block; font-size: 0.8rem; margin-bottom: 0.3rem; color: var(--text-muted);">Tìm kiếm</label>
+            <input type="text" name="q" value="{{ filters.q|default:'' }}" placeholder="ID hoặc tiêu đề..." class="form-input" style="margin-bottom: 0;">
+        </div>
+        
+        <div>
+            <label style="display: block; font-size: 0.8rem; margin-bottom: 0.3rem; color: var(--text-muted);">Trạng thái</label>
+            <select name="status" class="form-input" style="width: 150px; margin-bottom: 0;">
+                <option value="">Tất cả trạng thái</option>
+                <option value="NEW" {% if filters.status == 'NEW' %}selected{% endif %}>Mới</option>
+                <option value="ASSIGNED" {% if filters.status == 'ASSIGNED' %}selected{% endif %}>Đã gán</option>
+                <option value="IN_PROGRESS" {% if filters.status == 'IN_PROGRESS' %}selected{% endif %}>Đang xử lý</option>
+                <option value="FIXED" {% if filters.status == 'FIXED' %}selected{% endif %}>Đã sửa</option>
+                <option value="CLOSED" {% if filters.status == 'CLOSED' %}selected{% endif %}>Đã đóng</option>
+                <option value="RE_OPENED" {% if filters.status == 'RE_OPENED' %}selected{% endif %}>Mở lại</option>
+            </select>
+        </div>
+
+        <div>
+            <label style="display: block; font-size: 0.8rem; margin-bottom: 0.3rem; color: var(--text-muted);">Độ ưu tiên</label>
+            <select name="priority" class="form-input" style="width: 130px; margin-bottom: 0;">
+                <option value="">Tất cả</option>
+                <option value="S" {% if filters.priority == 'S' %}selected{% endif %}>Critical (S)</option>
+                <option value="A" {% if filters.priority == 'A' %}selected{% endif %}>High (A)</option>
+                <option value="B" {% if filters.priority == 'B' %}selected{% endif %}>Medium (B)</option>
+            </select>
+        </div>
+
+        <div>
+            <label style="display: block; font-size: 0.8rem; margin-bottom: 0.3rem; color: var(--text-muted);">Loại</label>
+            <select name="type" class="form-input" style="width: 130px; margin-bottom: 0;">
+                <option value="">Tất cả loại</option>
+                <option value="Functional" {% if filters.type == 'Functional' %}selected{% endif %}>Functional</option>
+                <option value="System" {% if filters.type == 'System' %}selected{% endif %}>System</option>
+                <option value="UI" {% if filters.type == 'UI' %}selected{% endif %}>UI</option>
+                <option value="Performance" {% if filters.type == 'Performance' %}selected{% endif %}>Performance</option>
+            </select>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem;">
+            <button type="submit" class="btn btn-primary" style="padding: 0.8rem 1.5rem;">Lọc</button>
+            <a href="{% url 'project_detail' project.id %}" class="btn" style="background: rgba(255,255,255,0.05); color: var(--text-main); text-decoration: none; padding: 0.8rem 1.5rem; border-radius: 8px;">Đặt lại</a>
+        </div>
+    </form>
 
     <table>
         <thead>

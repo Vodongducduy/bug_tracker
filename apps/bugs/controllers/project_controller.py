@@ -16,8 +16,15 @@ def _get_project_service():
 
 @custom_login_required
 def project_detail(request, project_id):
+    filters = {
+        'q': request.GET.get('q'),
+        'status': request.GET.get('status'),
+        'priority': request.GET.get('priority'),
+        'type': request.GET.get('type')
+    }
+    
     project_service = _get_project_service()
-    project, status, bugs = project_service.get_project_detail(project_id, request.logged_user)
+    project, status, bugs = project_service.get_project_detail(project_id, request.logged_user, filters)
     
     if not project:
         from django.http import Http404
@@ -33,7 +40,8 @@ def project_detail(request, project_id):
     return render(request, 'bugs/project_detail.html', {
         'project': project, 
         'bugs': bugs,
-        'user_role': user_role
+        'user_role': user_role,
+        'filters': filters
     })
 
 @custom_login_required

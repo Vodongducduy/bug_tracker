@@ -18,7 +18,9 @@ def login_view(request):
             auth_service = AuthService(user_repository)
             
             user = auth_service.authenticate(username, password)
-            if user:
+            if user == 'INACTIVE':
+                form.add_error(None, "Tài khoản đã bị vô hiệu hóa.")
+            elif user:
                 # Login successful: set signed cookie
                 response = redirect('dashboard')
                 response.set_signed_cookie(
