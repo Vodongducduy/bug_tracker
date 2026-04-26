@@ -29,6 +29,12 @@ class BugRepository:
         bug.save()
         return bug
 
+    def assign_to_user(self, bug, user, updated_by):
+        bug.assign_to = user
+        bug.updated_by = updated_by
+        bug.save()
+        return bug
+
     def get_user_bug_summary(self, user):
         from django.db.models import Count
         # Bugs in projects where user is a member

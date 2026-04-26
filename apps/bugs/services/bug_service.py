@@ -45,6 +45,32 @@ class BugService:
             )
         return True
 
+    def assign_bug(self, bug, user_id, performer):
+        from apps.accounts.models import User
+        if not user_id:
+            return False
+            
+        try:
+            assignee = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return False
+            
+        if not self.project_member_repository.exists(bug.project, assignee):
+            return False
+            
+        with transaction.atomic():
+            old_assignee_name = bug.assign_to.get_full_name() if bug.assign_to else "None"
+            bug = self.bug_repository.assign_to_user(bug, assignee, performer)
+            
+            self.bug_activity_log_repository.create(
+                bug=bug,
+                action='ASSIGN_BUG',
+                performed_by=performer,
+                old_value=old_assignee_name,
+                new_value=assignee.get_full_name()
+            )
+        return True
+
     def create_bug(self, project_id, title, description, bug_type, priority, user):
         project = self.project_repository.get_by_id(project_id)
         if not project:

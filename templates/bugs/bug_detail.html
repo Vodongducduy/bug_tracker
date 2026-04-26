@@ -48,6 +48,8 @@
                             tạo bug mới
                             {% elif log.action == 'UPDATE_STATUS' %}
                             cập nhật trạng thái
+                            {% elif log.action == 'ASSIGN_BUG' %}
+                            gán bug cho thành viên
                             {% else %}
                             {{ log.action }}
                             {% endif %}
@@ -78,6 +80,15 @@
                     <select name="status" class="form-input">
                         {% for code, label in bug.STATUS_CHOICES %}
                         <option value="{{ code }}" {% if bug.status == code %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.8rem; margin-bottom: 0.5rem; color: var(--text-muted);">Người xử lý</label>
+                    <select name="assign_to" class="form-input">
+                        <option value="">-- Chọn người xử lý --</option>
+                        {% for member in project_members %}
+                        <option value="{{ member.user.id }}" {% if bug.assign_to.id == member.user.id %}selected{% endif %}>{{ member.user.get_full_name }} ({{ member.role.title }})</option>
                         {% endfor %}
                     </select>
                 </div>

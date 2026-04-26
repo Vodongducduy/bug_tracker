@@ -29,13 +29,23 @@ def bug_detail(request, bug_id):
     if request.method == 'POST':
         new_status = request.POST.get('status')
         root_cause = request.POST.get('root_cause', '')
+        assignee_id = request.POST.get('assign_to')
         
-        bug_service.update_bug_status(bug, new_status, root_cause, request.logged_user)
+        if new_status:
+            bug_service.update_bug_status(bug, new_status, root_cause, request.logged_user)
+        
+        if assignee_id:
+            bug_service.assign_bug(bug, assignee_id, request.logged_user)
+            
         return redirect('bug_detail', bug_id=bug.id)
+
+    # Get project members for assignment dropdown
+    project_members = ProjectMemberRepository().get_all_by_project(bug.project)
 
     return render(request, 'bugs/bug_detail.html', {
         'bug': bug, 
-        'activity_logs': activity_logs
+        'activity_logs': activity_logs,
+        'project_members': project_members
     })
 
 @custom_login_required
