@@ -57,14 +57,16 @@ def register_view(request):
             user_repository = UserRepository()
             auth_service = AuthService(user_repository)
             
-            # Create the user directly using service
-            user = auth_service.register_user(
-                username=username,
-                email=email,
-                password=password,
-                first_name=first_name,
-                last_name=last_name
-            )
+            from django.db import transaction
+            with transaction.atomic():
+                # Create the user directly using service
+                user = auth_service.register_user(
+                    username=username,
+                    email=email,
+                    password=password,
+                    first_name=first_name,
+                    last_name=last_name
+                )
             
             # Auto-login after registration
             response = redirect('dashboard')

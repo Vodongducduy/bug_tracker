@@ -16,6 +16,7 @@ class AccountService:
             password=hashed_password,
             first_name=first_name,
             last_name=last_name,
+            is_active=True,
             is_superuser=is_superuser
         )
 

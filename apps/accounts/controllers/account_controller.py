@@ -25,14 +25,16 @@ def create_account(request):
     if request.method == 'POST':
         if form.is_valid():
             account_service = _get_account_service()
-            account_service.create_account(
-                username=form.cleaned_data.get('username'),
-                email=form.cleaned_data.get('email'),
-                password=form.cleaned_data.get('password'),
-                first_name=form.cleaned_data.get('first_name'),
-                last_name=form.cleaned_data.get('last_name'),
-                is_superuser=request.POST.get('is_superuser') == 'on'
-            )
+            from django.db import transaction
+            with transaction.atomic():
+                account_service.create_account(
+                    username=form.cleaned_data.get('username'),
+                    email=form.cleaned_data.get('email'),
+                    password=form.cleaned_data.get('password'),
+                    first_name=form.cleaned_data.get('first_name'),
+                    last_name=form.cleaned_data.get('last_name'),
+                    is_superuser=request.POST.get('is_superuser') == 'on'
+                )
             return redirect('account_list')
             
     return render(request, 'accounts/admin_create.html', {'form': form})
@@ -42,6 +44,10 @@ def toggle_status(request, user_id):
     if not request.logged_user.is_superuser:
         return render(request, '403.html', status=403)
         
+    print(f"DEBUG: Toggling status for user_id={user_id}")
     account_service = _get_account_service()
-    account_service.toggle_account_status(user_id)
+    from django.db import transaction
+    with transaction.atomic():
+        account_service.toggle_account_status(user_id)
+        
     return redirect('account_list')
