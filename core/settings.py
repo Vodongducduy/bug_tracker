@@ -52,20 +52,39 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-# Database settings for MySQL (Aiven)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
+# Database Selection
+DB_ENGINE_TYPE = os.environ.get('DB_ENGINE', 'mysql').lower()
+
+if DB_ENGINE_TYPE == 'mssql':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'core.mssql_backend',
+            'NAME': os.environ.get('MSSQL_NAME'),
+            'USER': os.environ.get('MSSQL_USER'),
+            'PASSWORD': os.environ.get('MSSQL_PASSWORD'),
+            'HOST': os.environ.get('MSSQL_HOST'),
+            'PORT': os.environ.get('MSSQL_PORT'),
+            'OPTIONS': {
+                'driver': 'SQL Server',
+                'host_is_server': True,
+            },
+        }
     }
-}
+else:
+    # Default MySQL
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ.get('DB_NAME'),
+            'USER': os.environ.get('DB_USER'),
+            'PASSWORD': os.environ.get('DB_PASSWORD'),
+            'HOST': os.environ.get('DB_HOST'),
+            'PORT': os.environ.get('DB_PORT'),
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            },
+        }
+    }
 
 # Use cookie-based message storage since session middleware is removed
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
@@ -93,5 +112,9 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Whitenoise storage for cache-busting
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# CSRF settings for Render
-CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
+# CSRF settings
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.onrender.com',
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+]
