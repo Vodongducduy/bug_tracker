@@ -20,8 +20,8 @@
             {% if request.logged_user.is_superuser %}
             <a href="{% url 'account_list' %}" class="{% if request.resolver_match.url_name == 'account_list' %}active{% endif %}">Quản lý tài khoản</a>
             {% endif %}
-            <a href="#">Báo cáo</a>
-            <a href="#">Thành viên</a>
+            <a href="{% url 'reports' %}" class="{% if request.resolver_match.url_name == 'reports' %}active{% endif %}">Báo cáo</a>
+            <a href="{% url 'member_list' %}" class="{% if request.resolver_match.url_name == 'member_list' %}active{% endif %}">Thành viên</a>
             <a href="{% url 'logout' %}" style="margin-top: auto;">Đăng xuất</a>
         </nav>
     </aside>

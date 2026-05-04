@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Thành viên theo dự án - Bug Tracker{% endblock %}
+
+{% block content %}
+<div class="header" style="margin-bottom: 2rem;">
+    <h1>Thành viên theo dự án</h1>
+    <p style="color: var(--text-muted);">Chọn dự án để xem danh sách nhân sự chi tiết</p>
+</div>
+
+<div class="project-list" style="display: flex; flex-direction: column; gap: 1.5rem;">
+    {% for project_name, members in grouped_members.items %}
+    <div class="glass-card" style="padding: 0; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+        <!-- Project Header (Clickable) -->
+        <div class="project-header" onclick="toggleMembers('project-{{ forloop.counter }}')" 
+             style="padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: rgba(255,255,255,0.02); transition: 0.3s;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <div style="width: 40px; height: 40px; background: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                    {{ forloop.counter }}
+                </div>
+                <div>
+                    <h3 style="margin: 0; color: var(--text-main);">{{ project_name }}</h3>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">{{ members|length }} thành viên</span>
+                </div>
+            </div>
+            <div class="chevron" id="chevron-project-{{ forloop.counter }}" style="transition: 0.3s; color: var(--text-muted);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+        </div>
+
+        <!-- Members Table (Hidden by default) -->
+        <div class="members-container" id="project-{{ forloop.counter }}" style="display: none; padding: 0 1.5rem 1.5rem 1.5rem; border-top: 1px solid rgba(255,255,255,0.05);">
+            <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                <thead>
+                    <tr style="text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <th style="padding: 1rem; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Thành viên</th>
+                        <th style="padding: 1rem; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Email</th>
+                        <th style="padding: 1rem; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Vai trò</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in members %}
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+                        <td style="padding: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: bold;">
+                                    {{ member.username|slice:":1"|upper }}
+                                </div>
+                                <span style="font-weight: 500;">{{ member.username }}</span>
+                            </div>
+                        </td>
+                        <td style="padding: 1rem; color: var(--text-muted); font-size: 0.9rem;">{{ member.email }}</td>
+                        <td style="padding: 1rem;">
+                            <span class="badge" style="background: rgba(var(--primary-rgb), 0.1); color: var(--primary); padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 600;">
+                                {{ member.role_title }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% empty %}
+    <div class="glass-card" style="text-align: center; padding: 4rem;">
+        <p style="color: var(--text-muted);">Không tìm thấy dữ liệu dự án hoặc thành viên.</p>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+function toggleMembers(id) {
+    var container = document.getElementById(id);
+    var chevron = document.getElementById('chevron-' + id);
+    
+    if (container.style.display === "none") {
+        container.style.display = "block";
+        chevron.style.transform = "rotate(180deg)";
+        chevron.style.color = "var(--primary)";
+    } else {
+        container.style.display = "none";
+        chevron.style.transform = "rotate(0deg)";
+        chevron.style.color = "var(--text-muted)";
+    }
+}
+</script>
+
+<style>
+    .project-header:hover {
+        background: rgba(255,255,255,0.05) !important;
+    }
+    .badge {
+        display: inline-block;
+        white-space: nowrap;
+    }
+</style>
+{% endblock %}
