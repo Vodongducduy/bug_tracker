@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bug #101 — Login button does not respond on Safari</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/bug_tracker/static/css/styles.css">
+  
+</head>
+<body>
+
+
+<div class="app-layout">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <a href="/bug_tracker/" class="sidebar-logo">
+      <svg class="sidebar-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 2l1.88 1.88"/><path d="M14.12 3.88L16 2"/>
+        <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+        <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/>
+        <path d="M12 20v-9"/>
+        <path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/>
+        <path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+        <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+        <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+      </svg>
+      <span class="sidebar-logo-text">bugiz</span>
+    </a>
+
+    <nav class="sidebar-nav">
+      <a href="/bug_tracker/"
+         class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+        </svg>
+        Overview
+      </a>
+
+      <a href="/bug_tracker/reports/"
+         class="nav-item ">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
+          <line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+        Reports
+      </a>
+
+      <a href="/bug_tracker/accounts/members/"
+         class="nav-item ">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        Members
+      </a>
+
+      
+      <a href="/bug_tracker/accounts/"
+         class="nav-item ">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        Settings
+      </a>
+      
+    </nav>
+
+    
+    <a href="/bug_tracker/bugs/project/create/" class="sidebar-add-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+      </svg>
+      Add Project
+    </a>
+    
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">D</div>
+        <span class="sidebar-username">duyadmin</span>
+      </div>
+      <a href="/bug_tracker/logout/" class="sidebar-logout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        logout
+      </a>
+    </div>
+  </aside>
+
+  <!-- ── Main ── -->
+  <main class="main-content">
+    <div class="page-body">
+      
+      
+<ul class="breadcrumb">
+  <li><a href="/bug_tracker/">Dự án</a></li>
+  <li>/</li>
+  <li><a href="/bug_tracker/bugs/project/1/">Bugiz Web Portal</a></li>
+  <li>/</li>
+  <li>#101</li>
+</ul>
+
+<div class="two-col">
+  <!-- LEFT -->
+  <div style="display:flex;flex-direction:column;gap:1.25rem;">
+    <div class="card">
+      <h1 style="font-size:1.25rem;margin-bottom:.6rem;">Login button does not respond on Safari</h1>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.4rem;">
+        <span class="badge badge-in_progress">In Progress</span>
+        <span class="badge badge-type">UI Bug</span>
+        <span class="badge badge-priority-a">High (A)</span>
+        
+      </div>
+
+      <p class="form-label" style="margin-bottom:.5rem;">Mô tả chi tiết</p>
+      <div style="white-space:pre-wrap;line-height:1.75;font-size:.9rem;">1. Open the sign-in form on Safari 17.
+2. Enter valid credentials.
+3. Press the Login button.
+4. Nothing happens and the loading state never appears.</div>
+
+      
+      <div class="solution-block">
+        <h4>Giải pháp (Root Cause)</h4>
+        <p style="white-space:pre-wrap;">The submit handler is blocked by a stale overlay layer on the auth card.</p>
+      </div>
+      
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:1.1rem;">Lịch sử thay đổi</h3>
+      <div class="timeline">
+        
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <div class="tl-action">
+              Linh Tran
+              <span>đã
+                tạo bug mới
+                
+              </span>
+            </div>
+            
+            <div class="tl-change">— → Bug created</div>
+            
+            <div class="tl-time">30/05/2026 14:20</div>
+          </div>
+        </div>
+        
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <div class="tl-action">
+              Duy Vo
+              <span>đã
+                gán bug cho thành viên
+                
+              </span>
+            </div>
+            
+            <div class="tl-change">Unassigned → Minh Nguyen</div>
+            
+            <div class="tl-time">30/05/2026 14:40</div>
+          </div>
+        </div>
+        
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <div class="tl-action">
+              Minh Nguyen
+              <span>đã
+                cập nhật trạng thái
+                
+              </span>
+            </div>
+            
+            <div class="tl-change">Assigned → In Progress</div>
+            
+            <div class="tl-time">31/05/2026 08:45</div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div style="display:flex;flex-direction:column;gap:1.25rem;">
+    <div class="card">
+      <h3 style="margin-bottom:1.1rem;">Cập nhật trạng thái</h3>
+      <form method="POST">
+        <input type="hidden" name="csrfmiddlewaretoken" value="IQX4s8pIEYVwDoXPoKSKLE41JLluXgyhYmr5QdS6UazuZhHldr3leYC4E31Mi2gm">
+        <div class="form-group">
+          <label class="form-label">Trạng thái mới</label>
+          <select name="status" class="form-input">
+            
+            <option value="NEW" >New</option>
+            
+            <option value="ASSIGNED" >Assigned</option>
+            
+            <option value="IN_PROGRESS" selected>In Progress</option>
+            
+            <option value="FIXED" >Fixed</option>
+            
+            <option value="CLOSED" >Closed</option>
+            
+            <option value="RE_OPENED" >Re-opened</option>
+            
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Người xử lý</label>
+          <select name="assign_to" class="form-input">
+            <option value="">-- Chọn người xử lý --</option>
+            
+            <option value="1" >
+              Duy Vo (Project Lead)
+            </option>
+            
+            <option value="2" >
+              Linh Tran (QA Engineer)
+            </option>
+            
+            <option value="3" selected>
+              Minh Nguyen (Backend Developer)
+            </option>
+            
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Giải pháp / Ghi chú</label>
+          <textarea name="root_cause" class="form-input" style="height:90px;">The submit handler is blocked by a stale overlay layer on the auth card.</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Lưu thay đổi</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:.9rem;">Thông tin bổ sung</h3>
+      <div class="info-rows">
+        <div class="info-row"><span class="info-key">Người báo cáo</span><span>Linh Tran</span></div>
+        <div class="info-row"><span class="info-key">Người xử lý</span><span>Minh Nguyen</span></div>
+        <div class="info-row"><span class="info-key">Độ ưu tiên</span><span class="fw-600">High (A)</span></div>
+        <div class="info-row"><span class="info-key">Loại bug</span><span>UI Bug</span></div>
+        <div class="info-row"><span class="info-key">Dự án</span><span>Bugiz Web Portal</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+  </main>
+
+</div>
+
+
+
+
+</body>
+</html>

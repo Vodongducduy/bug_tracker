@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard — Bug Tracker</title>
+  <title>Báo cáo hệ thống — Bug Tracker</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -34,7 +34,7 @@
 
     <nav class="sidebar-nav">
       <a href="/bug_tracker/"
-         class="nav-item active">
+         class="nav-item ">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
           <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
@@ -43,7 +43,7 @@
       </a>
 
       <a href="/bug_tracker/reports/"
-         class="nav-item ">
+         class="nav-item active">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
           <line x1="6" y1="20" x2="6" y2="14"/>
@@ -103,50 +103,107 @@
     <div class="page-body">
       
       
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
-  <h1>Overview</h1>
+<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.75rem;flex-wrap:wrap;gap:1rem;">
+  <div>
+    <h1>Báo cáo hệ thống</h1>
+    <p class="text-muted" style="margin-top:.25rem;">Dữ liệu được cập nhật thời gian thực từ Bug Tracker</p>
+  </div>
+  <button class="btn btn-ghost" onclick="window.print()">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    In báo cáo
+  </button>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab(this,'tab-proj')">Thống kê dự án</button>
+  <button class="tab-btn" onclick="switchTab(this,'tab-bug')">Phân bổ Bug</button>
 </div>
 
-<div class="stats-grid">
-  <div class="stat-card">
-    <div class="stat-value">18</div>
-    <div class="stat-label">Total Bugs</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">4</div>
-    <div class="stat-label">New</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">6</div>
-    <div class="stat-label">In Progress</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">8</div>
-    <div class="stat-label">Resolved</div>
-  </div>
-</div>
-
-<h2 style="margin-bottom:1rem;">Projects</h2>
-
-<div class="project-grid">
-  
-  <a href="/bug_tracker/bugs/project/1/" class="project-card">
-    <div class="project-card-header">
-      <span class="project-card-name">Bugiz Web Portal</span>
-      <span class="badge badge-active">Active</span>
+<div id="tab-proj" class="tab-content active">
+  <div class="card">
+    <h3 style="margin-bottom:1.1rem;">Tình hình dự án</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Tên dự án</th><th>Trạng thái</th>
+            <th>Tổng Bug</th><th>Bug mới</th><th>Đã giải quyết</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <td class="fw-600" style="color:var(--primary)">Bugiz Web Portal</td>
+            <td><span class="badge badge-active">ACTIVE</span></td>
+            <td>12</td>
+            <td style="color:var(--danger)">4</td>
+            <td style="color:var(--success)">6</td>
+          </tr>
+          
+          <tr>
+            <td class="fw-600" style="color:var(--primary)">Internal Admin Console</td>
+            <td><span class="badge badge-closed">CLOSED</span></td>
+            <td>6</td>
+            <td style="color:var(--danger)">0</td>
+            <td style="color:var(--success)">6</td>
+          </tr>
+          
+        </tbody>
+      </table>
     </div>
-    <p class="project-card-desc">Main customer-facing web app where the team tracks login, checkout, and reporting issues.</p>
-  </a>
-  
-  <a href="/bug_tracker/bugs/project/2/" class="project-card">
-    <div class="project-card-header">
-      <span class="project-card-name">Internal Admin Console</span>
-      <span class="badge badge-closed">Closed</span>
-    </div>
-    <p class="project-card-desc">Operations workspace for support and account management tasks.</p>
-  </a>
-  
+  </div>
 </div>
+
+<div id="tab-bug" class="tab-content">
+  <div class="card">
+    <h3 style="margin-bottom:1.1rem;">Phân bổ theo trạng thái</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Trạng thái</th><th>Số lượng</th></tr></thead>
+        <tbody>
+          
+          <tr>
+            <td><span class="badge badge-new">NEW</span></td>
+            <td style="font-size:1.15rem;font-weight:700;">4</td>
+          </tr>
+          
+          <tr>
+            <td><span class="badge badge-in_progress">IN_PROGRESS</span></td>
+            <td style="font-size:1.15rem;font-weight:700;">6</td>
+          </tr>
+          
+          <tr>
+            <td><span class="badge badge-fixed">FIXED</span></td>
+            <td style="font-size:1.15rem;font-weight:700;">5</td>
+          </tr>
+          
+          <tr>
+            <td><span class="badge badge-closed">CLOSED</span></td>
+            <td style="font-size:1.15rem;font-weight:700;">3</td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="separator" style="margin-top:2.5rem;"></div>
+<div class="text-muted text-sm" style="padding:.75rem 0;line-height:1.8;">
+  <strong>Ngày xuất:</strong> 31/05/2026 01:04 &nbsp;·&nbsp;
+  <strong>Người lập:</strong> duyadmin &nbsp;·&nbsp;
+  <strong>Hệ thống:</strong> BugTracker.hub v1.0
+</div>
+
+
+<script>
+function switchTab(btn, id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+</script>
+
 
     </div>
   </main>
@@ -155,6 +212,15 @@
 
 
 
+
+<script>
+function switchTab(btn, id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+</script>
 
 </body>
 </html>

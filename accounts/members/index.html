@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard — Bug Tracker</title>
+  <title>Thành viên theo dự án — Bug Tracker</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -34,7 +34,7 @@
 
     <nav class="sidebar-nav">
       <a href="/bug_tracker/"
-         class="nav-item active">
+         class="nav-item ">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
           <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
@@ -52,7 +52,7 @@
       </a>
 
       <a href="/bug_tracker/accounts/members/"
-         class="nav-item ">
+         class="nav-item active">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
           <circle cx="9" cy="7" r="4"/>
@@ -103,50 +103,116 @@
     <div class="page-body">
       
       
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
-  <h1>Overview</h1>
-</div>
+<h1 style="margin-bottom:.3rem;">Thành viên theo dự án</h1>
+<p class="text-muted" style="margin-bottom:1.75rem;">Nhấn vào dự án để xem danh sách thành viên chi tiết</p>
 
-<div class="stats-grid">
-  <div class="stat-card">
-    <div class="stat-value">18</div>
-    <div class="stat-label">Total Bugs</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">4</div>
-    <div class="stat-label">New</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">6</div>
-    <div class="stat-label">In Progress</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">8</div>
-    <div class="stat-label">Resolved</div>
-  </div>
-</div>
 
-<h2 style="margin-bottom:1rem;">Projects</h2>
-
-<div class="project-grid">
-  
-  <a href="/bug_tracker/bugs/project/1/" class="project-card">
-    <div class="project-card-header">
-      <span class="project-card-name">Bugiz Web Portal</span>
-      <span class="badge badge-active">Active</span>
+<div class="accordion-item">
+  <div class="accordion-header" onclick="toggleAccordion(this)">
+    <div class="accordion-left">
+      <div class="accordion-icon">1</div>
+      <div>
+        <div class="accordion-title">Bugiz Web Portal</div>
+        <div class="accordion-sub">3 thành viên</div>
+      </div>
     </div>
-    <p class="project-card-desc">Main customer-facing web app where the team tracks login, checkout, and reporting issues.</p>
-  </a>
-  
-  <a href="/bug_tracker/bugs/project/2/" class="project-card">
-    <div class="project-card-header">
-      <span class="project-card-name">Internal Admin Console</span>
-      <span class="badge badge-closed">Closed</span>
+    <svg class="accordion-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="accordion-body">
+    <div class="table-wrap" style="margin-top:.75rem;">
+      <table>
+        <thead>
+          <tr><th>Thành viên</th><th>Email</th><th>Vai trò</th></tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <td>
+              <div class="user-row">
+                <div class="avatar">D</div>
+                <span class="fw-600">duyadmin</span>
+              </div>
+            </td>
+            <td class="text-muted">duy@example.com</td>
+            <td><span class="badge badge-role">Project Lead</span></td>
+          </tr>
+          
+          <tr>
+            <td>
+              <div class="user-row">
+                <div class="avatar">L</div>
+                <span class="fw-600">linhqa</span>
+              </div>
+            </td>
+            <td class="text-muted">linh@example.com</td>
+            <td><span class="badge badge-role">QA Engineer</span></td>
+          </tr>
+          
+          <tr>
+            <td>
+              <div class="user-row">
+                <div class="avatar">M</div>
+                <span class="fw-600">minhdev</span>
+              </div>
+            </td>
+            <td class="text-muted">minh@example.com</td>
+            <td><span class="badge badge-role">Backend Developer</span></td>
+          </tr>
+          
+        </tbody>
+      </table>
     </div>
-    <p class="project-card-desc">Operations workspace for support and account management tasks.</p>
-  </a>
-  
+  </div>
 </div>
+
+<div class="accordion-item">
+  <div class="accordion-header" onclick="toggleAccordion(this)">
+    <div class="accordion-left">
+      <div class="accordion-icon">2</div>
+      <div>
+        <div class="accordion-title">Internal Admin Console</div>
+        <div class="accordion-sub">1 thành viên</div>
+      </div>
+    </div>
+    <svg class="accordion-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="accordion-body">
+    <div class="table-wrap" style="margin-top:.75rem;">
+      <table>
+        <thead>
+          <tr><th>Thành viên</th><th>Email</th><th>Vai trò</th></tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <td>
+              <div class="user-row">
+                <div class="avatar">A</div>
+                <span class="fw-600">anhops</span>
+              </div>
+            </td>
+            <td class="text-muted">anh@example.com</td>
+            <td><span class="badge badge-role">Support</span></td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+function toggleAccordion(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.accordion-chevron');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chevron.classList.toggle('open', !isOpen);
+}
+</script>
+
 
     </div>
   </main>
@@ -155,6 +221,16 @@
 
 
 
+
+<script>
+function toggleAccordion(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.accordion-chevron');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chevron.classList.toggle('open', !isOpen);
+}
+</script>
 
 </body>
 </html>

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard — Bug Tracker</title>
+  <title>Báo lỗi mới — Bugiz Web Portal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -103,49 +103,55 @@
     <div class="page-body">
       
       
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
-  <h1>Overview</h1>
-</div>
+<ul class="breadcrumb">
+  <li><a href="/bug_tracker/">Dự án</a></li>
+  <li>/</li>
+  <li><a href="/bug_tracker/bugs/project/1/">Bugiz Web Portal</a></li>
+  <li>/</li>
+  <li>Báo lỗi mới</li>
+</ul>
 
-<div class="stats-grid">
-  <div class="stat-card">
-    <div class="stat-value">18</div>
-    <div class="stat-label">Total Bugs</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">4</div>
-    <div class="stat-label">New</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">6</div>
-    <div class="stat-label">In Progress</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">8</div>
-    <div class="stat-label">Resolved</div>
-  </div>
-</div>
+<h1 style="margin-bottom:1.5rem;">Báo cáo lỗi mới</h1>
 
-<h2 style="margin-bottom:1rem;">Projects</h2>
-
-<div class="project-grid">
-  
-  <a href="/bug_tracker/bugs/project/1/" class="project-card">
-    <div class="project-card-header">
-      <span class="project-card-name">Bugiz Web Portal</span>
-      <span class="badge badge-active">Active</span>
+<div class="card" style="max-width:820px;">
+  <form method="POST">
+    <input type="hidden" name="csrfmiddlewaretoken" value="c5BduQMQPgfYC60VF67RSe8PjbHyEmKIWvLTJHPuKzP0eDOkBySIdnODbnWqAL2J">
+    <div class="form-group">
+      <label class="form-label">Tiêu đề lỗi *</label>
+      <input type="text" name="title" class="form-input" placeholder="VD: Lỗi đăng nhập trên mobile" required>
     </div>
-    <p class="project-card-desc">Main customer-facing web app where the team tracks login, checkout, and reporting issues.</p>
-  </a>
-  
-  <a href="/bug_tracker/bugs/project/2/" class="project-card">
-    <div class="project-card-header">
-      <span class="project-card-name">Internal Admin Console</span>
-      <span class="badge badge-closed">Closed</span>
+
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label">Loại lỗi</label>
+        <select name="type" class="form-input">
+          <option value="Functional">Functional Bug</option>
+          <option value="System">System Bug</option>
+          <option value="UI">UI Bug</option>
+          <option value="Performance">Performance Bug</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Độ ưu tiên</label>
+        <select name="priority" class="form-input">
+          <option value="S">🔴 Critical (S)</option>
+          <option value="A">🟡 High (A)</option>
+          <option value="B">⚪ Medium (B)</option>
+        </select>
+      </div>
     </div>
-    <p class="project-card-desc">Operations workspace for support and account management tasks.</p>
-  </a>
-  
+
+    <div class="form-group">
+      <label class="form-label">Mô tả chi tiết & Bước tái hiện *</label>
+      <textarea name="description" class="form-input" style="height:180px;" placeholder="1. Mở ứng dụng...&#10;2. Thực hiện hành động X...&#10;3. Kết quả thực tế: ...&#10;4. Kết quả mong đợi: ..." required></textarea>
+    </div>
+
+    <div class="separator"></div>
+    <div style="display:flex;gap:.65rem;justify-content:flex-end;">
+      <a href="/bug_tracker/bugs/project/1/" class="btn btn-ghost">Huỷ bỏ</a>
+      <button type="submit" class="btn btn-primary">Gửi báo cáo</button>
+    </div>
+  </form>
 </div>
 
     </div>

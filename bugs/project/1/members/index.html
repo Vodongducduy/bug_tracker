@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard — Bug Tracker</title>
+  <title>Quản lý thành viên — Bugiz Web Portal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -103,49 +103,126 @@
     <div class="page-body">
       
       
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
-  <h1>Overview</h1>
-</div>
-
-<div class="stats-grid">
-  <div class="stat-card">
-    <div class="stat-value">18</div>
-    <div class="stat-label">Total Bugs</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">4</div>
-    <div class="stat-label">New</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">6</div>
-    <div class="stat-label">In Progress</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">8</div>
-    <div class="stat-label">Resolved</div>
-  </div>
-</div>
-
-<h2 style="margin-bottom:1rem;">Projects</h2>
-
-<div class="project-grid">
-  
-  <a href="/bug_tracker/bugs/project/1/" class="project-card">
-    <div class="project-card-header">
-      <span class="project-card-name">Bugiz Web Portal</span>
-      <span class="badge badge-active">Active</span>
+<ul class="breadcrumb">
+  <li><a href="/bug_tracker/">Dự án</a></li>
+  <li>/</li>
+  <li><a href="/bug_tracker/bugs/project/1/">Bugiz Web Portal</a></li>
+  <li>/</li>
+  <li>Thành viên</li>
+</ul>
+<h1 style="margin-bottom:.3rem;">Quản lý thành viên</h1>
+<p class="text-muted" style="margin-bottom:1.75rem;">Dự án: <strong style="color:var(--text-main)">Bugiz Web Portal</strong></p>
+<div class="two-col">
+  <!-- Members list -->
+  <div class="card">
+    <h3 style="margin-bottom:1.1rem;">Danh sách thành viên</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Thành viên</th><th>Email</th><th>Vai trò</th><th>Ngày thêm</th><th></th></tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <td>
+              <div class="user-row">
+                <div class="avatar">D</div>
+                <div class="user-row-info">
+                  <span class="user-row-name">Duy Vo</span>
+                  <span class="user-row-sub">@duyadmin</span>
+                </div>
+              </div>
+            </td>
+            <td class="text-muted">duy@example.com</td>
+            <td><span class="badge badge-role">Project Lead</span></td>
+            <td class="text-muted text-sm">20/05/2026</td>
+            <td>
+              <a href="/bug_tracker/bugs/project/1/members/remove/1/"
+                 class="btn btn-danger btn-sm"
+                 onclick="return confirm('Xoá thành viên này khỏi dự án?');">Xoá</a>
+            </td>
+          </tr>
+          
+          <tr>
+            <td>
+              <div class="user-row">
+                <div class="avatar">L</div>
+                <div class="user-row-info">
+                  <span class="user-row-name">Linh Tran</span>
+                  <span class="user-row-sub">@linhqa</span>
+                </div>
+              </div>
+            </td>
+            <td class="text-muted">linh@example.com</td>
+            <td><span class="badge badge-role">QA Engineer</span></td>
+            <td class="text-muted text-sm">21/05/2026</td>
+            <td>
+              <a href="/bug_tracker/bugs/project/1/members/remove/2/"
+                 class="btn btn-danger btn-sm"
+                 onclick="return confirm('Xoá thành viên này khỏi dự án?');">Xoá</a>
+            </td>
+          </tr>
+          
+          <tr>
+            <td>
+              <div class="user-row">
+                <div class="avatar">M</div>
+                <div class="user-row-info">
+                  <span class="user-row-name">Minh Nguyen</span>
+                  <span class="user-row-sub">@minhdev</span>
+                </div>
+              </div>
+            </td>
+            <td class="text-muted">minh@example.com</td>
+            <td><span class="badge badge-role">Backend Developer</span></td>
+            <td class="text-muted text-sm">21/05/2026</td>
+            <td>
+              <a href="/bug_tracker/bugs/project/1/members/remove/3/"
+                 class="btn btn-danger btn-sm"
+                 onclick="return confirm('Xoá thành viên này khỏi dự án?');">Xoá</a>
+            </td>
+          </tr>
+          
+        </tbody>
+      </table>
     </div>
-    <p class="project-card-desc">Main customer-facing web app where the team tracks login, checkout, and reporting issues.</p>
-  </a>
-  
-  <a href="/bug_tracker/bugs/project/2/" class="project-card">
-    <div class="project-card-header">
-      <span class="project-card-name">Internal Admin Console</span>
-      <span class="badge badge-closed">Closed</span>
-    </div>
-    <p class="project-card-desc">Operations workspace for support and account management tasks.</p>
-  </a>
-  
+  </div>
+
+  <!-- Add member form -->
+  <div class="card">
+    <h3 style="margin-bottom:1.1rem;">Thêm thành viên</h3>
+    <form method="POST">
+      <input type="hidden" name="csrfmiddlewaretoken" value="LD13FGSwv1oc3frj9Zt0gLCqVAsrWZUOM2TlS1nj2uIf9FcoQ4XL26iXbmZeNoUF">
+      <div class="form-group">
+        <label class="form-label">Người dùng</label>
+        <select name="user_id" required class="form-input">
+          <option value="">-- Chọn người dùng --</option>
+          
+          <option value="2">Linh Tran (@linhqa)</option>
+          
+          <option value="3">Minh Nguyen (@minhdev)</option>
+          
+        </select>
+        
+      </div>
+      <div class="form-group">
+        <label class="form-label">Vai trò dự án</label>
+        <select name="role_id" required class="form-input">
+          <option value="">-- Chọn vai trò --</option>
+          
+          <option value="1">Project Lead</option>
+          
+          <option value="2">QA Engineer</option>
+          
+          <option value="3">Backend Developer</option>
+          
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block" >
+        Thêm vào dự án
+      </button>
+    </form>
+  </div>
 </div>
 
     </div>

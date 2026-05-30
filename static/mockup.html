@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Bugiz — UI Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Tokens ── */
+:root{
+  --sidebar-bg:#1b3910;
+  --sidebar-w:210px;
+  --s-text:rgba(255,255,255,.65);
+  --s-text-h:rgba(255,255,255,.9);
+  --s-hover:rgba(255,255,255,.06);
+  --s-active-bg:rgba(255,255,255,.09);
+  --s-active-bdr:#5a9e3a;
+  --bg:#f2f2f2;
+  --card:#fff;
+  --border:#e2e2e2;
+  --green:#3a6b1e;
+  --green-h:#2d5518;
+  --green-l:#edf5e8;
+  --t1:#1c1c1c;
+  --t2:#555;
+  --t3:#888;
+  --danger:#ef4444;
+  --warning:#f59e0b;
+  --success:#22c55e;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{font-size:14px;}
+body{background:var(--bg);color:var(--t1);font-family:'Inter',-apple-system,sans-serif;line-height:1.6;min-height:100vh;}
+a{color:var(--green);text-decoration:none;}
+
+/* ── Screen switcher bar ── */
+#sw{
+  position:fixed;top:0;left:0;right:0;height:36px;z-index:9999;
+  background:#111;display:flex;align-items:center;padding:0 1rem;gap:.35rem;
+  border-bottom:1px solid #333;
+}
+#sw span{color:#666;font-size:.72rem;margin-right:.35rem;font-family:monospace;}
+.sw-btn{
+  padding:.2rem .7rem;border-radius:3px;font-size:.72rem;font-weight:500;
+  background:#222;color:#aaa;border:1px solid #333;cursor:pointer;
+  font-family:monospace;transition:all .12s;
+}
+.sw-btn:hover{background:#333;color:#fff;}
+.sw-btn.active{background:var(--green);color:#fff;border-color:var(--green);}
+
+/* ── Screen wrapper ── */
+.screen{display:none;padding-top:36px;min-height:100vh;}
+.screen.active{display:block;}
+
+/* ════════════════════════════
+   APP LAYOUT (with sidebar)
+════════════════════════════ */
+.app{display:flex;min-height:calc(100vh - 36px);}
+
+/* ── Sidebar ── */
+.sidebar{
+  width:var(--sidebar-w);background:var(--sidebar-bg);
+  display:flex;flex-direction:column;
+  position:fixed;top:36px;left:0;bottom:0;z-index:200;
+}
+.sidebar-logo{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.95rem .9rem .9rem;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  text-decoration:none !important;
+}
+.sidebar-logo-icon{width:24px;height:24px;flex-shrink:0;color:#5bbfa0;}
+.sidebar-logo-text{font-size:1rem;font-weight:700;color:#fff;letter-spacing:-.02em;}
+.sidebar-nav{flex:1;padding:.6rem .6rem .3rem;overflow-y:auto;}
+.nav-item{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.48rem .72rem;border-radius:3px;
+  color:var(--s-text);font-size:.83rem;font-weight:400;
+  text-decoration:none !important;transition:all .13s;
+  margin-bottom:.05rem;
+}
+.nav-item svg{width:15px;height:15px;flex-shrink:0;}
+.nav-item:hover{background:var(--s-hover);color:var(--s-text-h);}
+.nav-item.active{background:var(--s-active-bg);color:#fff;box-shadow:inset 3px 0 0 var(--s-active-bdr);}
+.sidebar-add-btn{
+  margin:.35rem .6rem .55rem;
+  display:flex;align-items:center;justify-content:center;gap:.45rem;
+  padding:.55rem .9rem;border-radius:4px;
+  background:var(--green);color:#fff;font-size:.82rem;font-weight:500;
+  text-decoration:none !important;border:none;cursor:pointer;
+}
+.sidebar-add-btn:hover{background:var(--green-h);}
+.sidebar-add-btn svg{width:15px;height:15px;}
+.sidebar-footer{padding:.55rem .6rem .75rem;border-top:1px solid rgba(255,255,255,.08);}
+.sidebar-user{display:flex;align-items:center;gap:.5rem;padding:.35rem .6rem;margin-bottom:.18rem;}
+.sidebar-avatar{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--green);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.68rem;font-weight:700;flex-shrink:0;
+}
+.sidebar-username{font-size:.8rem;font-weight:600;color:rgba(255,255,255,.82);}
+.sidebar-logout{
+  display:flex;align-items:center;gap:.55rem;padding:.42rem .72rem;border-radius:3px;
+  color:var(--s-text);font-size:.8rem;text-decoration:none !important;
+}
+.sidebar-logout svg{width:14px;height:14px;}
+.sidebar-logout:hover{color:#f87171;background:rgba(239,68,68,.1);}
+
+/* ── Main ── */
+.main{flex:1;margin-left:var(--sidebar-w);min-height:calc(100vh - 36px);}
+.page{padding:1.75rem 2rem;}
+
+/* ── Cards ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:1.25rem;}
+
+/* ── Buttons ── */
+.btn{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.46rem 1rem;border-radius:4px;font-size:.82rem;font-weight:500;
+  cursor:pointer;border:1px solid transparent;
+  text-decoration:none !important;line-height:1;white-space:nowrap;font-family:inherit;
+}
+.btn-primary{background:var(--green);color:#fff;border-color:var(--green);}
+.btn-primary:hover{background:var(--green-h);}
+.btn-ghost{background:#fff;color:var(--t2);border-color:var(--border);}
+.btn-ghost:hover{background:#f7f7f7;color:var(--t1);}
+.btn-sm{padding:.26rem .6rem;font-size:.75rem;}
+
+/* ── Forms ── */
+.form-group{margin-bottom:.95rem;}
+.form-label{display:block;font-size:.78rem;font-weight:600;color:var(--t1);margin-bottom:.32rem;}
+.form-input{
+  width:100%;background:#fff;border:1px solid #ccc;
+  padding:.5rem .8rem;border-radius:3px;
+  color:var(--t1);font-size:.85rem;font-family:inherit;line-height:1.5;
+}
+.form-input:focus{outline:none;border-color:var(--green);}
+.form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;}
+.separator{height:1px;background:var(--border);margin:1rem 0;}
+
+/* ── Table ── */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+thead th{
+  text-align:left;padding:.58rem 1rem;
+  font-size:.75rem;font-weight:600;color:var(--t2);
+  border-bottom:1px solid var(--border);background:#fafafa;
+  white-space:nowrap;
+}
+tbody tr{border-bottom:1px solid var(--border);}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#fafafa;}
+tbody tr.clickable{cursor:pointer;}
+td{padding:.75rem 1rem;font-size:.83rem;vertical-align:middle;color:var(--t1);}
+
+/* ── Badges ── */
+.badge{
+  display:inline-flex;align-items:center;
+  padding:.17rem .58rem;border-radius:99px;
+  font-size:.72rem;font-weight:600;white-space:nowrap;
+}
+.badge-new{background:#eff6ff;color:#1d4ed8;}
+.badge-assigned{background:#f5f3ff;color:#6d28d9;}
+.badge-in_progress{background:#fff7ed;color:#c2410c;}
+.badge-fixed{background:#f0fdf4;color:#166534;}
+.badge-closed{background:#f1f5f9;color:#64748b;}
+.badge-re_opened{background:#fffbeb;color:#92400e;}
+.badge-active{background:#f0fdf4;color:#166534;}
+.badge-priority-s{background:#fef2f2;color:#dc2626;}
+.badge-priority-a{background:#fffbeb;color:#d97706;}
+.badge-priority-b{background:#f1f5f9;color:#475569;}
+
+/* ── Priority dots ── */
+.pri{display:inline-flex;align-items:center;gap:.35rem;font-size:.8rem;font-weight:600;}
+.pri-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.pri-s{color:#dc2626;}.pri-s .pri-dot{background:#ef4444;}
+.pri-a{color:#d97706;}.pri-a .pri-dot{background:#f59e0b;}
+.pri-b{color:#888;}.pri-b .pri-dot{background:#aaa;}
+
+/* ── Stat cards ── */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem;margin-bottom:1.75rem;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:1rem 1.2rem;}
+.stat-value{font-size:1.85rem;font-weight:700;line-height:1.1;color:var(--t1);}
+.stat-label{font-size:.76rem;font-weight:500;color:var(--t3);margin-top:.3rem;}
+
+/* ── Project cards ── */
+.project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.85rem;}
+.project-card{
+  background:var(--card);border:1px solid var(--border);border-radius:4px;
+  padding:1rem 1.2rem;display:block;color:inherit;
+  text-decoration:none !important;transition:border-color .13s;
+}
+.project-card:hover{border-color:#aaa;}
+.project-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.45rem;}
+.project-card-name{font-size:.92rem;font-weight:600;}
+.project-card-desc{font-size:.8rem;color:var(--t3);line-height:1.55;}
+.project-card-footer{margin-top:.8rem;padding-top:.7rem;border-top:1px solid var(--border);font-size:.75rem;color:var(--t3);}
+
+/* ── Filter bar ── */
+.filter-bar{
+  display:flex;gap:.6rem;align-items:flex-end;flex-wrap:wrap;
+  padding:.8rem 1rem;background:#fafafa;border-radius:4px;
+  border:1px solid var(--border);margin-bottom:1rem;
+}
+.filter-group{display:flex;flex-direction:column;gap:.22rem;}
+.filter-group label{font-size:.73rem;font-weight:600;color:var(--t2);}
+
+/* ── Tabs ── */
+.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:1.25rem;}
+.tab-btn{
+  padding:.48rem .88rem;font-size:.82rem;font-weight:600;
+  color:var(--t3);background:none;border:none;
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+  cursor:pointer;font-family:inherit;
+}
+.tab-btn.active{color:var(--green);border-bottom-color:var(--green);}
+
+/* ── Avatar ── */
+.avatar{
+  width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:.68rem;font-weight:700;flex-shrink:0;
+}
+.user-row{display:flex;align-items:center;gap:.6rem;}
+
+/* ── Timeline ── */
+.tl-item{display:flex;gap:.85rem;position:relative;padding-bottom:1.1rem;}
+.tl-item:not(:last-child)::before{content:'';position:absolute;left:5px;top:13px;width:1px;bottom:0;background:var(--border);}
+.tl-dot{width:12px;height:12px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:3px;}
+.tl-action{font-size:.82rem;font-weight:600;color:var(--t1);}
+.tl-action span{font-weight:400;color:var(--t3);}
+.tl-time{font-size:.7rem;color:var(--t3);margin-top:.1rem;}
+
+/* ── Two col ── */
+.two-col{display:grid;grid-template-columns:2fr 1fr;gap:1.1rem;align-items:start;}
+.info-row{display:flex;justify-content:space-between;padding:.48rem 0;border-bottom:1px solid var(--border);font-size:.82rem;}
+.info-row:last-child{border-bottom:none;}
+.info-key{color:var(--t3);}
+
+/* ── Breadcrumb ── */
+.breadcrumb{list-style:none;display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--t3);margin-bottom:.85rem;}
+.breadcrumb a{color:var(--t2);}
+
+/* ── Alerts ── */
+.alert{padding:.58rem 1rem;border-radius:4px;font-size:.82rem;margin-bottom:1rem;border-left:3px solid transparent;}
+.alert-success{background:#f0fdf4;border-color:#22c55e;color:#166534;}
+
+/* ── Solution block ── */
+.solution-block{background:#f0fdf4;border-left:3px solid var(--success);border-radius:0 4px 4px 0;padding:.85rem 1rem;margin-top:1rem;}
+
+/* ── Typography ── */
+h1{font-size:1.38rem;font-weight:700;letter-spacing:-.01em;}
+h2{font-size:1.08rem;font-weight:700;}
+h3{font-size:.94rem;font-weight:600;}
+.text-muted{color:var(--t3);}
+.text-sm{font-size:.76rem;}
+.fw-600{font-weight:600;}
+.empty-state{text-align:center;padding:2.5rem 1.5rem;color:var(--t3);font-size:.83rem;}
+
+/* ════════════════════════════
+   AUTH SCREEN
+════════════════════════════ */
+.auth-wrap{min-height:calc(100vh - 36px);display:flex;align-items:center;justify-content:center;padding:2rem;background:#f0f0f0;}
+.auth-card{width:100%;max-width:370px;background:#fff;border:1px solid #d5d5d5;border-radius:4px;padding:2rem 2rem 1.75rem;}
+.auth-logo{display:flex;align-items:center;gap:.6rem;margin-bottom:1.75rem;}
+.auth-logo-mark{width:34px;height:34px;border-radius:4px;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.auth-logo-name{font-size:1.25rem;font-weight:700;letter-spacing:-.02em;color:var(--t1);}
+.auth-footer{text-align:center;margin-top:1.1rem;font-size:.8rem;color:var(--t3);}
+.auth-footer a{color:var(--green);font-weight:500;}
+</style>
+</head>
+<body>
+
+<!-- Screen switcher -->
+<div id="sw">
+  <span>Bugiz /</span>
+  <button class="sw-btn active" onclick="show('login',this)">Login</button>
+  <button class="sw-btn" onclick="show('dashboard',this)">Dashboard</button>
+  <button class="sw-btn" onclick="show('project',this)">Project Detail</button>
+  <button class="sw-btn" onclick="show('bug',this)">Bug Detail</button>
+  <button class="sw-btn" onclick="show('reports',this)">Reports</button>
+  <button class="sw-btn" onclick="show('create',this)">Create Bug</button>
+</div>
+
+<!-- ════════ LOGIN ════════ -->
+<div class="screen active" id="screen-login">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="auth-logo-mark">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3a6b1e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 2l1.88 1.88"/><path d="M14.12 3.88L16 2"/>
+            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/>
+            <path d="M12 20v-9"/>
+            <path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/>
+            <path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+          </svg>
+        </div>
+        <div class="auth-logo-name">bugiz</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input class="form-input" type="text" placeholder="Enter username">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" placeholder="Enter password">
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:.4rem;">Sign In</button>
+      <div class="auth-footer">Don't have an account? <a href="#">Sign up</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ DASHBOARD ════════ -->
+<div class="screen" id="screen-dashboard">
+  <div class="app">
+    <aside class="sidebar">
+      <a href="#" class="sidebar-logo">
+        <svg class="sidebar-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 2l1.88 1.88"/><path d="M14.12 3.88L16 2"/>
+          <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+          <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/>
+          <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+          <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+          <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+          <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+        </svg>
+        <span class="sidebar-logo-text">bugiz</span>
+      </a>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          Overview
+        </a>
+        <a href="#" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Reports
+        </a>
+        <a href="#" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Members
+        </a>
+        <a href="#" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings
+        </a>
+      </nav>
+      <a href="#" class="sidebar-add-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        Add Project
+      </a>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="sidebar-avatar">A</div>
+          <span class="sidebar-username">admin</span>
+        </div>
+        <a href="#" class="sidebar-logout">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          logout
+        </a>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="page">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+          <h1>Overview</h1>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-value">24</div><div class="stat-label">Total Bugs</div></div>
+          <div class="stat-card"><div class="stat-value">8</div><div class="stat-label">New</div></div>
+          <div class="stat-card"><div class="stat-value">5</div><div class="stat-label">In Progress</div></div>
+          <div class="stat-card"><div class="stat-value">11</div><div class="stat-label">Resolved</div></div>
+        </div>
+        <h2 style="margin-bottom:1rem;">Projects</h2>
+        <div class="project-grid">
+          <a href="#" class="project-card">
+            <div class="project-card-header">
+              <span class="project-card-name">Website Bán Hàng</span>
+              <span class="badge badge-active">Active</span>
+            </div>
+            <p class="project-card-desc">Hệ thống thương mại điện tử cho thị trường trong nước, tích hợp thanh toán và quản lý kho.</p>
+            <div class="project-card-footer">8 bugs open</div>
+          </a>
+          <a href="#" class="project-card">
+            <div class="project-card-header">
+              <span class="project-card-name">Mobile App v2</span>
+              <span class="badge badge-active">Active</span>
+            </div>
+            <p class="project-card-desc">Ứng dụng di động iOS/Android cho khách hàng, quản lý đơn hàng và theo dõi giao hàng.</p>
+            <div class="project-card-footer">3 bugs open</div>
+          </a>
+          <a href="#" class="project-card">
+            <div class="project-card-header">
+              <span class="project-card-name">Admin Dashboard</span>
+              <span class="badge badge-closed">Closed</span>
+            </div>
+            <p class="project-card-desc">Bảng điều khiển nội bộ cho team vận hành, báo cáo doanh thu và quản lý nhân viên.</p>
+            <div class="project-card-footer">0 bugs open</div>
+          </a>
+          <a href="#" class="project-card">
+            <div class="project-card-header">
+              <span class="project-card-name">API Gateway</span>
+              <span class="badge badge-active">Active</span>
+            </div>
+            <p class="project-card-desc">Cổng API trung tâm cho các microservices, xử lý xác thực và rate limiting.</p>
+            <div class="project-card-footer">13 bugs open</div>
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ════════ PROJECT DETAIL ════════ -->
+<div class="screen" id="screen-project">
+  <div class="app">
+    <aside class="sidebar">
+      <a href="#" class="sidebar-logo">
+        <svg class="sidebar-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 2l1.88 1.88"/><path d="M14.12 3.88L16 2"/>
+          <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+          <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/>
+          <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+          <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+          <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+          <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+        </svg>
+        <span class="sidebar-logo-text">bugiz</span>
+      </a>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          Overview
+        </a>
+        <a href="#" class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Reports
+        </a>
+        <a href="#" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Members
+        </a>
+        <a href="#" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings
+        </a>
+      </nav>
+      <a href="#" class="sidebar-add-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        Add Project
+      </a>
+      <div class="sidebar-footer">
+        <div class="sidebar-user"><div class="sidebar-avatar">A</div><span class="sidebar-username">admin</span></div>
+        <a href="#" class="sidebar-logout">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          logout
+        </a>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="page">
+        <ul class="breadcrumb"><li><a href="#">Overview</a></li><li>/</li><li>Website Bán Hàng</li></ul>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;gap:1rem;">
+          <div>
+            <h1>Website Bán Hàng</h1>
+            <p class="text-muted" style="margin-top:.2rem;">Hệ thống thương mại điện tử tích hợp thanh toán và quản lý kho.</p>
+          </div>
+          <div style="display:flex;gap:.5rem;flex-shrink:0;">
+            <a href="#" class="btn btn-ghost">Manage Members</a>
+            <a href="#" class="btn btn-primary">+ New Bug</a>
+          </div>
+        </div>
+        <div class="card">
+          <form class="filter-bar">
+            <div class="filter-group" style="flex:1;min-width:200px;"><label>Search</label><input class="form-input" placeholder="ID or title..." style="width:100%;"></div>
+            <div class="filter-group"><label>Status</label>
+              <select class="form-input" style="width:145px;"><option>All</option><option>New</option><option>In Progress</option><option>Fixed</option><option>Closed</option></select>
+            </div>
+            <div class="filter-group"><label>Priority</label>
+              <select class="form-input" style="width:130px;"><option>All</option><option>Critical (S)</option><option>High (A)</option><option>Medium (B)</option></select>
+            </div>
+            <div style="display:flex;gap:.4rem;align-self:flex-end;">
+              <button class="btn btn-primary">Filter</button>
+              <a href="#" class="btn btn-ghost">Reset</a>
+            </div>
+          </form>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:70px;">ID</th><th>Title</th><th>Priority</th><th>Status</th><th>Assignee</th><th>Updated</th></tr></thead>
+              <tbody>
+                <tr class="clickable">
+                  <td class="text-muted text-sm">#42</td>
+                  <td class="fw-600">Lỗi không thể thêm sản phẩm vào giỏ hàng trên Safari</td>
+                  <td><span class="pri pri-s"><span class="pri-dot"></span>Critical</span></td>
+                  <td><span class="badge badge-in_progress">In Progress</span></td>
+                  <td><div class="user-row"><div class="avatar">N</div>Nguyen Van A</div></td>
+                  <td class="text-muted text-sm">29/05/2026 14:30</td>
+                </tr>
+                <tr class="clickable">
+                  <td class="text-muted text-sm">#41</td>
+                  <td class="fw-600">Trang thanh toán bị trắng khi dùng VPN</td>
+                  <td><span class="pri pri-a"><span class="pri-dot"></span>High</span></td>
+                  <td><span class="badge badge-new">New</span></td>
+                  <td><span class="text-muted" style="font-style:italic;">Unassigned</span></td>
+                  <td class="text-muted text-sm">28/05/2026 09:15</td>
+                </tr>
+                <tr class="clickable">
+                  <td class="text-muted text-sm">#40</td>
+                  <td class="fw-600">Hình ảnh sản phẩm load chậm trên mobile 4G</td>
+                  <td><span class="pri pri-a"><span class="pri-dot"></span>High</span></td>
+                  <td><span class="badge badge-assigned">Assigned</span></td>
+                  <td><div class="user-row"><div class="avatar">T</div>Tran Thi B</div></td>
+                  <td class="text-muted text-sm">27/05/2026 16:42</td>
+                </tr>
+                <tr class="clickable">
+                  <td class="text-muted text-sm">#39</td>
+                  <td class="fw-600">Filter sản phẩm không hoạt động đúng khi kết hợp nhiều bộ lọc</td>
+                  <td><span class="pri pri-b"><span class="pri-dot"></span>Medium</span></td>
+                  <td><span class="badge badge-fixed">Fixed</span></td>
+                  <td><div class="user-row"><div class="avatar">L</div>Le Van C</div></td>
+                  <td class="text-muted text-sm">26/05/2026 11:00</td>
+                </tr>
+                <tr class="clickable">
+                  <td class="text-muted text-sm">#38</td>
+                  <td class="fw-600">Nút "Mua ngay" không phản hồi trên Android 12</td>
+                  <td><span class="pri pri-s"><span class="pri-dot"></span>Critical</span></td>
+                  <td><span class="badge badge-re_opened">Re-opened</span></td>
+                  <td><div class="user-row"><div class="avatar">N</div>Nguyen Van A</div></td>
+                  <td class="text-muted text-sm">25/05/2026 08:55</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ════════ BUG DETAIL ════════ -->
+<div class="screen" id="screen-bug">
+  <div class="app">
+    <aside class="sidebar">
+      <a href="#" class="sidebar-logo">
+        <svg class="sidebar-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 2l1.88 1.88"/><path d="M14.12 3.88L16 2"/>
+          <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+          <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/>
+          <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+          <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+          <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+          <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+        </svg>
+        <span class="sidebar-logo-text">bugiz</span>
+      </a>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Overview</a>
+        <a href="#" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Reports</a>
+        <a href="#" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Members</a>
+        <a href="#" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>Settings</a>
+      </nav>
+      <a href="#" class="sidebar-add-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Add Project</a>
+      <div class="sidebar-footer">
+        <div class="sidebar-user"><div class="sidebar-avatar">A</div><span class="sidebar-username">admin</span></div>
+        <a href="#" class="sidebar-logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>logout</a>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="page">
+        <ul class="breadcrumb"><li><a href="#">Overview</a></li><li>/</li><li><a href="#">Website Bán Hàng</a></li><li>/</li><li>#42</li></ul>
+        <div class="two-col">
+          <div style="display:flex;flex-direction:column;gap:1.1rem;">
+            <div class="card">
+              <h1 style="font-size:1.2rem;margin-bottom:.55rem;">Lỗi không thể thêm sản phẩm vào giỏ hàng trên Safari</h1>
+              <div style="display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1.25rem;">
+                <span class="badge badge-in_progress">In Progress</span>
+                <span class="badge badge-priority-s">Critical (S)</span>
+                <span class="badge" style="background:#f1f5f9;color:#475569;">Functional</span>
+              </div>
+              <p class="form-label" style="margin-bottom:.4rem;">Description</p>
+              <div style="font-size:.88rem;line-height:1.75;color:var(--t2);">
+                Khi người dùng click nút "Thêm vào giỏ" trên trình duyệt Safari (macOS &amp; iOS), sản phẩm không được thêm vào giỏ hàng.<br><br>
+                <strong>Bước tái hiện:</strong><br>
+                1. Mở Safari, truy cập trang sản phẩm bất kỳ<br>
+                2. Click "Thêm vào giỏ hàng"<br>
+                3. Không có phản hồi, giỏ hàng vẫn rỗng<br><br>
+                <strong>Kết quả mong đợi:</strong> Sản phẩm được thêm, badge số lượng tăng lên.
+              </div>
+              <div class="solution-block">
+                <h4>Root Cause</h4>
+                <p style="font-size:.85rem;">Safari block cookie third-party — session cart token không được lưu. Cần chuyển sang localStorage fallback.</p>
+              </div>
+            </div>
+            <div class="card">
+              <h3 style="margin-bottom:1rem;">Activity Log</h3>
+              <div>
+                <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-action">Nguyen Van A <span>updated status</span></div><div style="font-size:.75rem;color:var(--t3);">ASSIGNED → IN_PROGRESS</div><div class="tl-time">29/05/2026 14:30</div></div></div>
+                <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-action">admin <span>assigned to</span></div><div style="font-size:.75rem;color:var(--t3);">Nguyen Van A</div><div class="tl-time">28/05/2026 10:15</div></div></div>
+                <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-action">Tran Thi B <span>created this bug</span></div><div class="tl-time">27/05/2026 09:00</div></div></div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:1.1rem;">
+            <div class="card">
+              <h3 style="margin-bottom:1rem;">Update Status</h3>
+              <div class="form-group"><label class="form-label">New status</label>
+                <select class="form-input"><option>New</option><option>Assigned</option><option selected>In Progress</option><option>Fixed</option><option>Closed</option></select>
+              </div>
+              <div class="form-group"><label class="form-label">Assignee</label>
+                <select class="form-input"><option>Nguyen Van A (Dev)</option><option>Tran Thi B (QA)</option></select>
+              </div>
+              <div class="form-group"><label class="form-label">Notes / Root Cause</label>
+                <textarea class="form-input" style="height:80px;">Safari block cookie third-party — session cart token không được lưu.</textarea>
+              </div>
+              <button class="btn btn-primary" style="width:100%;justify-content:center;">Save Changes</button>
+            </div>
+            <div class="card">
+              <h3 style="margin-bottom:.85rem;">Info</h3>
+              <div class="info-row"><span class="info-key">Reporter</span><span>Tran Thi B</span></div>
+              <div class="info-row"><span class="info-key">Assignee</span><span class="fw-600">Nguyen Van A</span></div>
+              <div class="info-row"><span class="info-key">Priority</span><span class="fw-600">Critical (S)</span></div>
+              <div class="info-row"><span class="info-key">Type</span><span>Functional</span></div>
+              <div class="info-row"><span class="info-key">Project</span><span>Website Bán Hàng</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ════════ REPORTS ════════ -->
+<div class="screen" id="screen-reports">
+  <div class="app">
+    <aside class="sidebar">
+      <a href="#" class="sidebar-logo">
+        <svg class="sidebar-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 2l1.88 1.88"/><path d="M14.12 3.88L16 2"/>
+          <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+          <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/>
+          <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+        </svg>
+        <span class="sidebar-logo-text">bugiz</span>
+      </a>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Overview</a>
+        <a href="#" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Reports</a>
+        <a href="#" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Members</a>
+        <a href="#" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>Settings</a>
+      </nav>
+      <a href="#" class="sidebar-add-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Add Project</a>
+      <div class="sidebar-footer">
+        <div class="sidebar-user"><div class="sidebar-avatar">A</div><span class="sidebar-username">admin</span></div>
+        <a href="#" class="sidebar-logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>logout</a>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="page">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;">
+          <h1>Reports</h1>
+          <button class="btn btn-ghost">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Print
+          </button>
+        </div>
+        <div class="tabs">
+          <button class="tab-btn active">Project Stats</button>
+          <button class="tab-btn">Bug Distribution</button>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:1rem;">Project Overview</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Project</th><th>Status</th><th>Total Bugs</th><th>New</th><th>Resolved</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td class="fw-600" style="color:var(--green);">Website Bán Hàng</td>
+                  <td><span class="badge badge-active">Active</span></td>
+                  <td>8</td>
+                  <td style="color:var(--danger);">3</td>
+                  <td style="color:var(--success);">4</td>
+                </tr>
+                <tr>
+                  <td class="fw-600" style="color:var(--green);">Mobile App v2</td>
+                  <td><span class="badge badge-active">Active</span></td>
+                  <td>5</td>
+                  <td style="color:var(--danger);">2</td>
+                  <td style="color:var(--success);">3</td>
+                </tr>
+                <tr>
+                  <td class="fw-600" style="color:var(--green);">Admin Dashboard</td>
+                  <td><span class="badge badge-closed">Closed</span></td>
+                  <td>11</td>
+                  <td style="color:var(--danger);">0</td>
+                  <td style="color:var(--success);">11</td>
+                </tr>
+                <tr>
+                  <td class="fw-600" style="color:var(--green);">API Gateway</td>
+                  <td><span class="badge badge-active">Active</span></td>
+                  <td>13</td>
+                  <td style="color:var(--danger);">3</td>
+                  <td style="color:var(--success);">7</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ════════ CREATE BUG ════════ -->
+<div class="screen" id="screen-create">
+  <div class="app">
+    <aside class="sidebar">
+      <a href="#" class="sidebar-logo">
+        <svg class="sidebar-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 2l1.88 1.88"/><path d="M14.12 3.88L16 2"/>
+          <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+          <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/>
+          <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+        </svg>
+        <span class="sidebar-logo-text">bugiz</span>
+      </a>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Overview</a>
+        <a href="#" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Reports</a>
+        <a href="#" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Members</a>
+        <a href="#" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>Settings</a>
+      </nav>
+      <a href="#" class="sidebar-add-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Add Project</a>
+      <div class="sidebar-footer">
+        <div class="sidebar-user"><div class="sidebar-avatar">A</div><span class="sidebar-username">admin</span></div>
+        <a href="#" class="sidebar-logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>logout</a>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="page">
+        <ul class="breadcrumb"><li><a href="#">Overview</a></li><li>/</li><li><a href="#">Website Bán Hàng</a></li><li>/</li><li>New Bug</li></ul>
+        <h1 style="margin-bottom:1.5rem;">Report New Bug</h1>
+        <div class="card" style="max-width:800px;">
+          <div class="form-group">
+            <label class="form-label">Bug Title *</label>
+            <input class="form-input" type="text" placeholder="e.g. Cannot add product to cart on Safari">
+          </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Type</label>
+              <select class="form-input"><option>Functional Bug</option><option>System Bug</option><option>UI Bug</option><option>Performance Bug</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Priority</label>
+              <select class="form-input"><option>Critical (S)</option><option>High (A)</option><option>Medium (B)</option></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description & Steps to Reproduce *</label>
+            <textarea class="form-input" style="height:160px;" placeholder="1. Open the app...&#10;2. Perform action X...&#10;3. Actual result: ...&#10;4. Expected result: ..."></textarea>
+          </div>
+          <div class="separator"></div>
+          <div style="display:flex;gap:.6rem;justify-content:flex-end;">
+            <a href="#" class="btn btn-ghost">Cancel</a>
+            <button class="btn btn-primary">Submit Bug</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.sw-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

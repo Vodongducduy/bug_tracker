@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard — Bug Tracker</title>
+  <title>Thêm tài khoản — Bug Tracker</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -34,7 +34,7 @@
 
     <nav class="sidebar-nav">
       <a href="/bug_tracker/"
-         class="nav-item active">
+         class="nav-item ">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
           <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
@@ -63,7 +63,7 @@
 
       
       <a href="/bug_tracker/accounts/"
-         class="nav-item ">
+         class="nav-item active">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="3"/>
           <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
@@ -103,49 +103,67 @@
     <div class="page-body">
       
       
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
-  <h1>Overview</h1>
-</div>
+<ul class="breadcrumb">
+  <li><a href="/bug_tracker/accounts/">Quản lý tài khoản</a></li>
+  <li>/</li>
+  <li>Thêm mới</li>
+</ul>
 
-<div class="stats-grid">
-  <div class="stat-card">
-    <div class="stat-value">18</div>
-    <div class="stat-label">Total Bugs</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">4</div>
-    <div class="stat-label">New</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">6</div>
-    <div class="stat-label">In Progress</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">8</div>
-    <div class="stat-label">Resolved</div>
-  </div>
-</div>
+<h1 style="margin-bottom:1.5rem;">Thêm tài khoản mới</h1>
 
-<h2 style="margin-bottom:1rem;">Projects</h2>
+<div class="card" style="max-width:640px;">
+  <form method="POST">
+    <input type="hidden" name="csrfmiddlewaretoken" value="7EB89uBVlt26Wb7tsNefxxvJy0c1PiUksHSocdWhxhuBhdVmSgv68Comg4eYcYU5">
 
-<div class="project-grid">
-  
-  <a href="/bug_tracker/bugs/project/1/" class="project-card">
-    <div class="project-card-header">
-      <span class="project-card-name">Bugiz Web Portal</span>
-      <span class="badge badge-active">Active</span>
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label">Tên đăng nhập</label>
+        <input type="text" name="username" class="form-input" placeholder="Tên đăng nhập" required id="id_username">
+        
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-input" placeholder="Email" maxlength="320" required id="id_email">
+        
+      </div>
     </div>
-    <p class="project-card-desc">Main customer-facing web app where the team tracks login, checkout, and reporting issues.</p>
-  </a>
-  
-  <a href="/bug_tracker/bugs/project/2/" class="project-card">
-    <div class="project-card-header">
-      <span class="project-card-name">Internal Admin Console</span>
-      <span class="badge badge-closed">Closed</span>
+
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label">Họ</label>
+        <input type="text" name="last_name" class="form-input" placeholder="Họ (Không bắt buộc)" id="id_last_name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tên</label>
+        <input type="text" name="first_name" class="form-input" placeholder="Tên (Không bắt buộc)" id="id_first_name">
+      </div>
     </div>
-    <p class="project-card-desc">Operations workspace for support and account management tasks.</p>
-  </a>
-  
+
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label">Mật khẩu</label>
+        <input type="password" name="password" class="form-input" placeholder="Mật khẩu" required id="id_password">
+        
+      </div>
+      <div class="form-group">
+        <label class="form-label">Xác nhận mật khẩu</label>
+        <input type="password" name="password_confirm" class="form-input" placeholder="Nhập lại Mật khẩu" required id="id_password_confirm">
+        
+      </div>
+    </div>
+
+    <div class="separator"></div>
+
+    <label class="form-checkbox" style="margin-bottom:1.25rem;">
+      <input type="checkbox" name="is_superuser" id="is_superuser">
+      Quyền quản trị viên (Superuser)
+    </label>
+
+    <div style="display:flex;gap:.65rem;">
+      <button type="submit" class="btn btn-primary" style="flex:1;">Tạo tài khoản</button>
+      <a href="/bug_tracker/accounts/" class="btn btn-ghost" style="flex:1;justify-content:center;">Huỷ</a>
+    </div>
+  </form>
 </div>
 
     </div>

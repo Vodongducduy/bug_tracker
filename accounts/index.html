@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard — Bug Tracker</title>
+  <title>Quản lý tài khoản — Bug Tracker</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -34,7 +34,7 @@
 
     <nav class="sidebar-nav">
       <a href="/bug_tracker/"
-         class="nav-item active">
+         class="nav-item ">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
           <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
@@ -63,7 +63,7 @@
 
       
       <a href="/bug_tracker/accounts/"
-         class="nav-item ">
+         class="nav-item active">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="3"/>
           <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
@@ -103,49 +103,148 @@
     <div class="page-body">
       
       
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
-  <h1>Overview</h1>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.75rem;">
+  <h1>Quản lý tài khoản</h1>
+  <a href="/bug_tracker/accounts/create/" class="btn btn-primary">+ Thêm tài khoản</a>
 </div>
 
-<div class="stats-grid">
-  <div class="stat-card">
-    <div class="stat-value">18</div>
-    <div class="stat-label">Total Bugs</div>
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Thành viên</th><th>Email</th>
+          <th>Vai trò</th><th>Trạng thái</th>
+          <th>Ngày tạo</th><th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td>
+            <div class="user-row">
+              <div class="avatar">D</div>
+              <div class="user-row-info">
+                <span class="user-row-name">Duy Vo</span>
+                <span class="user-row-sub">@duyadmin</span>
+              </div>
+            </div>
+          </td>
+          <td class="text-muted">duy@example.com</td>
+          <td>
+            
+            <span class="badge badge-super">Superuser</span>
+            
+          </td>
+          <td>
+            
+            <span class="badge badge-active">Hoạt động</span>
+            
+          </td>
+          <td class="text-muted text-sm">20/05/2026</td>
+          <td>
+            
+            <span class="text-muted text-sm" style="font-style:italic;">Bạn</span>
+            
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            <div class="user-row">
+              <div class="avatar">L</div>
+              <div class="user-row-info">
+                <span class="user-row-name">Linh Tran</span>
+                <span class="user-row-sub">@linhqa</span>
+              </div>
+            </div>
+          </td>
+          <td class="text-muted">linh@example.com</td>
+          <td>
+            
+            <span class="badge badge-role">User</span>
+            
+          </td>
+          <td>
+            
+            <span class="badge badge-active">Hoạt động</span>
+            
+          </td>
+          <td class="text-muted text-sm">22/05/2026</td>
+          <td>
+            
+            <a href="/bug_tracker/accounts/toggle/2/" class="btn btn-ghost btn-sm">
+              Vô hiệu hoá
+            </a>
+            
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            <div class="user-row">
+              <div class="avatar">M</div>
+              <div class="user-row-info">
+                <span class="user-row-name">Minh Nguyen</span>
+                <span class="user-row-sub">@minhdev</span>
+              </div>
+            </div>
+          </td>
+          <td class="text-muted">minh@example.com</td>
+          <td>
+            
+            <span class="badge badge-role">User</span>
+            
+          </td>
+          <td>
+            
+            <span class="badge badge-active">Hoạt động</span>
+            
+          </td>
+          <td class="text-muted text-sm">24/05/2026</td>
+          <td>
+            
+            <a href="/bug_tracker/accounts/toggle/3/" class="btn btn-ghost btn-sm">
+              Vô hiệu hoá
+            </a>
+            
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            <div class="user-row">
+              <div class="avatar">A</div>
+              <div class="user-row-info">
+                <span class="user-row-name">Anh Pham</span>
+                <span class="user-row-sub">@anhops</span>
+              </div>
+            </div>
+          </td>
+          <td class="text-muted">anh@example.com</td>
+          <td>
+            
+            <span class="badge badge-role">User</span>
+            
+          </td>
+          <td>
+            
+            <span class="badge badge-inactive">Vô hiệu hoá</span>
+            
+          </td>
+          <td class="text-muted text-sm">26/05/2026</td>
+          <td>
+            
+            <a href="/bug_tracker/accounts/toggle/4/" class="btn btn-ghost btn-sm">
+              Kích hoạt
+            </a>
+            
+          </td>
+        </tr>
+        
+      </tbody>
+    </table>
   </div>
-  <div class="stat-card">
-    <div class="stat-value">4</div>
-    <div class="stat-label">New</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">6</div>
-    <div class="stat-label">In Progress</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value">8</div>
-    <div class="stat-label">Resolved</div>
-  </div>
-</div>
-
-<h2 style="margin-bottom:1rem;">Projects</h2>
-
-<div class="project-grid">
-  
-  <a href="/bug_tracker/bugs/project/1/" class="project-card">
-    <div class="project-card-header">
-      <span class="project-card-name">Bugiz Web Portal</span>
-      <span class="badge badge-active">Active</span>
-    </div>
-    <p class="project-card-desc">Main customer-facing web app where the team tracks login, checkout, and reporting issues.</p>
-  </a>
-  
-  <a href="/bug_tracker/bugs/project/2/" class="project-card">
-    <div class="project-card-header">
-      <span class="project-card-name">Internal Admin Console</span>
-      <span class="badge badge-closed">Closed</span>
-    </div>
-    <p class="project-card-desc">Operations workspace for support and account management tasks.</p>
-  </a>
-  
 </div>
 
     </div>
