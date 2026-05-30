@@ -20,7 +20,9 @@ venv/
 CLAUDE.md
 
 # Testing
-test/
+.tmp-site/
+.tmp-test-output/
+static-export.sqlite3
 
 # Dev server logs
 server.log

@@ -53,9 +53,17 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 
 # Database Selection
+STATIC_EXPORT = os.environ.get('STATIC_EXPORT', '0') == '1'
 DB_ENGINE_TYPE = os.environ.get('DB_ENGINE', 'mysql').lower()
 
-if DB_ENGINE_TYPE == 'mssql':
+if STATIC_EXPORT:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'static-export.sqlite3',
+        }
+    }
+elif DB_ENGINE_TYPE == 'mssql':
     DATABASES = {
         'default': {
             'ENGINE': 'core.mssql_backend',
