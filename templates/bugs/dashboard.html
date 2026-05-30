@@ -1,51 +1,48 @@
 {% extends 'base.html' %}
-
-{% block title %}Dashboard - Bug Tracker{% endblock %}
+{% block title %}Dashboard — Bug Tracker{% endblock %}
 
 {% block content %}
-<div class="header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-    <h1>Bảng điều khiển</h1>
-    {% if request.logged_user.is_superuser %}
-    <a href="{% url 'create_project' %}" class="btn btn-primary">+ Dự án mới</a>
-    {% endif %}
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.75rem;">
+  <h1>Bảng điều khiển</h1>
+  {% if request.logged_user.is_superuser %}
+  <a href="{% url 'create_project' %}" class="btn btn-primary">+ Dự án mới</a>
+  {% endif %}
 </div>
 
-<div class="summary-cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
-    <div class="glass-card" style="text-align: center; border-left: 4px solid var(--primary);">
-        <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.5rem;">Tổng số Bug</h4>
-        <p style="font-size: 2rem; font-weight: 700;">{{ bug_summary.TOTAL }}</p>
-    </div>
-    <div class="glass-card" style="text-align: center; border-left: 4px solid var(--danger);">
-        <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.5rem;">Mới</h4>
-        <p style="font-size: 2rem; font-weight: 700; color: var(--danger);">{{ bug_summary.NEW }}</p>
-    </div>
-    <div class="glass-card" style="text-align: center; border-left: 4px solid #fbbf24;">
-        <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.5rem;">Đang xử lý</h4>
-        <p style="font-size: 2rem; font-weight: 700; color: #fbbf24;">{{ bug_summary.IN_PROGRESS }}</p>
-    </div>
-    <div class="glass-card" style="text-align: center; border-left: 4px solid var(--success);">
-        <h4 style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.5rem;">Đã sửa / Đóng</h4>
-        <p style="font-size: 2rem; font-weight: 700; color: var(--success);">{{ bug_summary.FIXED|add:bug_summary.CLOSED }}</p>
-    </div>
+<div class="stats-grid">
+  <div class="stat-card stat-primary">
+    <div class="stat-label">Tổng số Bug</div>
+    <div class="stat-value">{{ bug_summary.TOTAL }}</div>
+  </div>
+  <div class="stat-card stat-danger">
+    <div class="stat-label">Mới</div>
+    <div class="stat-value">{{ bug_summary.NEW }}</div>
+  </div>
+  <div class="stat-card stat-warning">
+    <div class="stat-label">Đang xử lý</div>
+    <div class="stat-value">{{ bug_summary.IN_PROGRESS }}</div>
+  </div>
+  <div class="stat-card stat-success">
+    <div class="stat-label">Đã sửa / Đóng</div>
+    <div class="stat-value">{{ bug_summary.FIXED|add:bug_summary.CLOSED }}</div>
+  </div>
 </div>
 
-<h2 style="margin-bottom: 1.5rem;">Dự án của tôi</h2>
+<h2 style="margin-bottom:1.1rem;">Dự án của tôi</h2>
 
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
-    {% for project in projects %}
-    <a href="{% url 'project_detail' project.id %}" style="text-decoration: none; color: inherit;">
-        <div class="glass-card" style="transition: 0.3s; cursor: pointer;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                <h3 style="margin-bottom: 0.5rem; color: var(--primary);">{{ project.name }}</h3>
-                <span class="badge" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">{{ project.get_status_display }}</span>
-            </div>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">{{ project.description|truncatewords:20 }}</p>
-        </div>
-    </a>
-    {% empty %}
-    <div class="glass-card" style="grid-column: 1/-1; text-align: center; padding: 4rem;">
-        <p>Bạn chưa tham gia dự án nào.</p>
+<div class="project-grid">
+  {% for project in projects %}
+  <a href="{% url 'project_detail' project.id %}" class="project-card">
+    <div class="project-card-header">
+      <span class="project-card-name">{{ project.name }}</span>
+      <span class="badge badge-{{ project.status|lower }}">{{ project.get_status_display }}</span>
     </div>
-    {% endfor %}
+    <p class="project-card-desc">{{ project.description|truncatewords:20 }}</p>
+  </a>
+  {% empty %}
+  <div class="card" style="grid-column:1/-1;">
+    <div class="empty-state">Bạn chưa tham gia dự án nào.</div>
+  </div>
+  {% endfor %}
 </div>
 {% endblock %}

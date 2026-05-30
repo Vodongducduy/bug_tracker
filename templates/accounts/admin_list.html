@@ -1,64 +1,65 @@
 {% extends 'base.html' %}
-
-{% block title %}Quản lý tài khoản - Bug Tracker{% endblock %}
+{% block title %}Quản lý tài khoản — Bug Tracker{% endblock %}
 
 {% block content %}
-<div class="header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-    <h1>Quản lý tài khoản</h1>
-    <a href="{% url 'admin_create_account' %}" class="btn btn-primary">+ Thêm tài khoản</a>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.75rem;">
+  <h1>Quản lý tài khoản</h1>
+  <a href="{% url 'admin_create_account' %}" class="btn btn-primary">+ Thêm tài khoản</a>
 </div>
 
-<div class="glass-card">
+<div class="card">
+  <div class="table-wrap">
     <table>
-        <thead>
-            <tr>
-                <th>Username</th>
-                <th>Họ tên</th>
-                <th>Email</th>
-                <th>Vai trò</th>
-                <th>Trạng thái</th>
-                <th>Ngày tham gia</th>
-                <th>Thao tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in users %}
-            <tr>
-                <td>{{ user.username }}</td>
-                <td>{{ user.get_full_name }}</td>
-                <td>{{ user.email }}</td>
-                <td>
-                    {% if user.is_superuser %}
-                    <span class="badge" style="background: rgba(139, 92, 246, 0.1); color: #a78bfa;">Superuser</span>
-                    {% else %}
-                    <span class="badge" style="background: rgba(255, 255, 255, 0.05); color: var(--text-muted);">User</span>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if user.is_active %}
-                    <span class="badge badge-fixed">Đang hoạt động</span>
-                    {% else %}
-                    <span class="badge badge-new" style="background: rgba(107, 114, 128, 0.1); color: #9ca3af;">Vô hiệu hóa</span>
-                    {% endif %}
-                </td>
-                <td>{{ user.date_joined|date:"d/m/Y" }}</td>
-                <td>
-                    {% if user.id != request.logged_user.id %}
-                    <a href="{% url 'admin_toggle_status' user.id %}" class="btn" 
-                       style="background: rgba(255,255,255,0.05); color: var(--text-main); text-decoration: none; padding: 0.4rem 0.8rem; font-size: 0.8rem;">
-                        {% if user.is_active %}Vô hiệu hóa{% else %}Kích hoạt{% endif %}
-                    </a>
-                    {% else %}
-                    <span style="color: var(--text-muted); font-size: 0.8rem; font-style: italic;">Đang đăng nhập</span>
-                    {% endif %}
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="7" style="text-align: center; padding: 4rem; color: var(--text-muted);">Không có tài khoản nào.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+      <thead>
+        <tr>
+          <th>Thành viên</th><th>Email</th>
+          <th>Vai trò</th><th>Trạng thái</th>
+          <th>Ngày tạo</th><th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>
+            <div class="user-row">
+              <div class="avatar">{{ user.username|slice:":1"|upper }}</div>
+              <div class="user-row-info">
+                <span class="user-row-name">{{ user.get_full_name }}</span>
+                <span class="user-row-sub">@{{ user.username }}</span>
+              </div>
+            </div>
+          </td>
+          <td class="text-muted">{{ user.email }}</td>
+          <td>
+            {% if user.is_superuser %}
+            <span class="badge badge-super">Superuser</span>
+            {% else %}
+            <span class="badge badge-role">User</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if user.is_active %}
+            <span class="badge badge-active">Hoạt động</span>
+            {% else %}
+            <span class="badge badge-inactive">Vô hiệu hoá</span>
+            {% endif %}
+          </td>
+          <td class="text-muted text-sm">{{ user.date_joined|date:"d/m/Y" }}</td>
+          <td>
+            {% if user.id != request.logged_user.id %}
+            <a href="{% url 'admin_toggle_status' user.id %}" class="btn btn-ghost btn-sm">
+              {% if user.is_active %}Vô hiệu hoá{% else %}Kích hoạt{% endif %}
+            </a>
+            {% else %}
+            <span class="text-muted text-sm" style="font-style:italic;">Bạn</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6"><div class="empty-state">Không có tài khoản nào.</div></td></tr>
+        {% endfor %}
+      </tbody>
     </table>
+  </div>
 </div>
 {% endblock %}

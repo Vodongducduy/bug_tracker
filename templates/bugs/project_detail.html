@@ -1,124 +1,119 @@
 {% extends 'base.html' %}
-
-{% block title %}{{ project.name }} - Bug Tracker{% endblock %}
+{% block title %}{{ project.name }} — Bug Tracker{% endblock %}
 
 {% block content %}
-<ul class="breadcrumb"
-    style="list-style: none; display: flex; gap: 0.5rem; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-    <li><a href="{% url 'dashboard' %}" style="color: inherit; text-decoration: none;">Dự án</a></li>
-    <li>/</li>
-    <li style="color: var(--text-main);">{{ project.name }}</li>
+<ul class="breadcrumb">
+  <li><a href="{% url 'dashboard' %}">Dự án</a></li>
+  <li>/</li>
+  <li>{{ project.name }}</li>
 </ul>
 
-<div class="header"
-    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
-    <div>
-        <h1>{{ project.name }}</h1>
-        <p style="color: var(--text-muted);">{{ project.description }}</p>
-    </div>
-    <div style="display: flex; gap: 1rem;">
-        {% if request.logged_user.is_superuser %}
-        <a href="{% url 'manage_members' project.id %}" class="btn" style="background: rgba(255,255,255,0.1); color: var(--text-main); text-decoration: none; padding: 0.8rem 1.2rem; border-radius: 8px;">Quản lý thành viên</a>
-        {% endif %}
-        {% if user_role == 'tester' or request.logged_user.is_superuser %}
-        <a href="{% url 'create_bug' project.id %}" class="btn btn-primary">Báo lỗi mới</a>
-        {% endif %}
-    </div>
+<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.75rem;gap:1rem;">
+  <div>
+    <h1>{{ project.name }}</h1>
+    <p class="text-muted" style="margin-top:.25rem;">{{ project.description }}</p>
+  </div>
+  <div style="display:flex;gap:.6rem;flex-shrink:0;">
+    {% if request.logged_user.is_superuser %}
+    <a href="{% url 'manage_members' project.id %}" class="btn btn-ghost">Quản lý thành viên</a>
+    {% endif %}
+    {% if user_role or request.logged_user.is_superuser %}
+    <a href="{% url 'create_bug' project.id %}" class="btn btn-primary">+ Báo lỗi mới</a>
+    {% endif %}
+  </div>
 </div>
 
-<div class="glass-card">
-    <form method="GET" style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: flex-end;">
-        <div style="flex-grow: 1; min-width: 250px;">
-            <label style="display: block; font-size: 0.8rem; margin-bottom: 0.3rem; color: var(--text-muted);">Tìm kiếm</label>
-            <input type="text" name="q" value="{{ filters.q|default:'' }}" placeholder="ID hoặc tiêu đề..." class="form-input" style="margin-bottom: 0;">
-        </div>
-        
-        <div>
-            <label style="display: block; font-size: 0.8rem; margin-bottom: 0.3rem; color: var(--text-muted);">Trạng thái</label>
-            <select name="status" class="form-input" style="width: 150px; margin-bottom: 0;">
-                <option value="">Tất cả trạng thái</option>
-                <option value="NEW" {% if filters.status == 'NEW' %}selected{% endif %}>Mới</option>
-                <option value="ASSIGNED" {% if filters.status == 'ASSIGNED' %}selected{% endif %}>Đã gán</option>
-                <option value="IN_PROGRESS" {% if filters.status == 'IN_PROGRESS' %}selected{% endif %}>Đang xử lý</option>
-                <option value="FIXED" {% if filters.status == 'FIXED' %}selected{% endif %}>Đã sửa</option>
-                <option value="CLOSED" {% if filters.status == 'CLOSED' %}selected{% endif %}>Đã đóng</option>
-                <option value="RE_OPENED" {% if filters.status == 'RE_OPENED' %}selected{% endif %}>Mở lại</option>
-            </select>
-        </div>
+<div class="card">
+  <form method="GET" class="filter-bar">
+    <div class="filter-group" style="flex:1;min-width:220px;">
+      <label>Tìm kiếm</label>
+      <input type="text" name="q" value="{{ filters.q|default:'' }}" placeholder="ID hoặc tiêu đề..." class="form-input">
+    </div>
+    <div class="filter-group">
+      <label>Trạng thái</label>
+      <select name="status" class="form-input" style="width:155px;">
+        <option value="">Tất cả</option>
+        <option value="NEW" {% if filters.status == 'NEW' %}selected{% endif %}>Mới</option>
+        <option value="ASSIGNED" {% if filters.status == 'ASSIGNED' %}selected{% endif %}>Đã gán</option>
+        <option value="IN_PROGRESS" {% if filters.status == 'IN_PROGRESS' %}selected{% endif %}>Đang xử lý</option>
+        <option value="FIXED" {% if filters.status == 'FIXED' %}selected{% endif %}>Đã sửa</option>
+        <option value="CLOSED" {% if filters.status == 'CLOSED' %}selected{% endif %}>Đã đóng</option>
+        <option value="RE_OPENED" {% if filters.status == 'RE_OPENED' %}selected{% endif %}>Mở lại</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Ưu tiên</label>
+      <select name="priority" class="form-input" style="width:135px;">
+        <option value="">Tất cả</option>
+        <option value="S" {% if filters.priority == 'S' %}selected{% endif %}>Critical (S)</option>
+        <option value="A" {% if filters.priority == 'A' %}selected{% endif %}>High (A)</option>
+        <option value="B" {% if filters.priority == 'B' %}selected{% endif %}>Medium (B)</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Loại</label>
+      <select name="type" class="form-input" style="width:135px;">
+        <option value="">Tất cả</option>
+        <option value="Functional" {% if filters.type == 'Functional' %}selected{% endif %}>Functional</option>
+        <option value="System" {% if filters.type == 'System' %}selected{% endif %}>System</option>
+        <option value="UI" {% if filters.type == 'UI' %}selected{% endif %}>UI</option>
+        <option value="Performance" {% if filters.type == 'Performance' %}selected{% endif %}>Performance</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:.5rem;align-self:flex-end;">
+      <button type="submit" class="btn btn-primary">Lọc</button>
+      <a href="{% url 'project_detail' project.id %}" class="btn btn-ghost">Đặt lại</a>
+    </div>
+  </form>
 
-        <div>
-            <label style="display: block; font-size: 0.8rem; margin-bottom: 0.3rem; color: var(--text-muted);">Độ ưu tiên</label>
-            <select name="priority" class="form-input" style="width: 130px; margin-bottom: 0;">
-                <option value="">Tất cả</option>
-                <option value="S" {% if filters.priority == 'S' %}selected{% endif %}>Critical (S)</option>
-                <option value="A" {% if filters.priority == 'A' %}selected{% endif %}>High (A)</option>
-                <option value="B" {% if filters.priority == 'B' %}selected{% endif %}>Medium (B)</option>
-            </select>
-        </div>
-
-        <div>
-            <label style="display: block; font-size: 0.8rem; margin-bottom: 0.3rem; color: var(--text-muted);">Loại</label>
-            <select name="type" class="form-input" style="width: 130px; margin-bottom: 0;">
-                <option value="">Tất cả loại</option>
-                <option value="Functional" {% if filters.type == 'Functional' %}selected{% endif %}>Functional</option>
-                <option value="System" {% if filters.type == 'System' %}selected{% endif %}>System</option>
-                <option value="UI" {% if filters.type == 'UI' %}selected{% endif %}>UI</option>
-                <option value="Performance" {% if filters.type == 'Performance' %}selected{% endif %}>Performance</option>
-            </select>
-        </div>
-
-        <div style="display: flex; gap: 0.5rem;">
-            <button type="submit" class="btn btn-primary" style="padding: 0.8rem 1.5rem;">Lọc</button>
-            <a href="{% url 'project_detail' project.id %}" class="btn" style="background: rgba(255,255,255,0.05); color: var(--text-main); text-decoration: none; padding: 0.8rem 1.5rem; border-radius: 8px;">Đặt lại</a>
-        </div>
-    </form>
-
+  <div class="table-wrap">
     <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Tiêu đề</th>
-                <th>Độ ưu tiên</th>
-                <th>Trạng thái</th>
-                <th>Người xử lý</th>
-                <th>Cập nhật</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for bug in bugs %}
-            <tr onclick="window.location='{% url 'bug_detail' bug.id %}';" style="cursor: pointer; transition: 0.2s;"
-                onmouseover="this.style.background='rgba(255,255,255,0.03)';"
-                onmouseout="this.style.background='transparent';">
-                <td>#{{ bug.id }}</td>
-                <td style="font-weight: 600;">{{ bug.title }}</td>
-                <td>
-                    {% if bug.priority == 'S' %}
-                    <span style="color: var(--danger);">{{ bug.get_priority_display }}</span>
-                    {% elif bug.priority == 'A' %}
-                    <span style="color: #fbbf24;">{{ bug.get_priority_display }}</span>
-                    {% else %}
-                    <span style="color: var(--text-muted);">{{ bug.get_priority_display }}</span>
-                    {% endif %}
-                </td>
-                <td>
-                    <span class="badge badge-{{ bug.status|lower }}">{{ bug.get_status_display }}</span>
-                </td>
-                <td>
-                    {% if bug.assign_to %}
-                    {{ bug.assign_to.get_full_name }}
-                    {% else %}
-                    <span style="color: var(--text-muted); font-style: italic;">Chưa gán</span>
-                    {% endif %}
-                </td>
-                <td style="color: var(--text-muted);">{{ bug.updated_at|date:"d/m/Y H:i" }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6" style="text-align: center; padding: 4rem; color: var(--text-muted);">Không có lỗi nào
-                    được ghi nhận.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+      <thead>
+        <tr>
+          <th style="width:70px;">ID</th>
+          <th>Tiêu đề</th>
+          <th>Ưu tiên</th>
+          <th>Trạng thái</th>
+          <th>Người xử lý</th>
+          <th>Cập nhật</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for bug in bugs %}
+        <tr class="clickable" onclick="window.location='{% url 'bug_detail' bug.id %}';">
+          <td class="text-muted text-sm">#{{ bug.id }}</td>
+          <td class="fw-600">{{ bug.title }}</td>
+          <td>
+            {% if bug.priority == 'S' %}
+            <span class="pri pri-s"><span class="pri-dot"></span>{{ bug.get_priority_display }}</span>
+            {% elif bug.priority == 'A' %}
+            <span class="pri pri-a"><span class="pri-dot"></span>{{ bug.get_priority_display }}</span>
+            {% else %}
+            <span class="pri pri-b"><span class="pri-dot"></span>{{ bug.get_priority_display }}</span>
+            {% endif %}
+          </td>
+          <td><span class="badge badge-{{ bug.status|lower }}">{{ bug.get_status_display }}</span></td>
+          <td>
+            {% if bug.assign_to %}
+            <div class="user-row">
+              <div class="avatar">{{ bug.assign_to.get_full_name|slice:":1" }}</div>
+              {{ bug.assign_to.get_full_name }}
+            </div>
+            {% else %}
+            <span class="text-muted" style="font-style:italic;">Chưa gán</span>
+            {% endif %}
+          </td>
+          <td class="text-muted text-sm">{{ bug.updated_at|date:"d/m/Y H:i" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6">
+            <div class="empty-state">Không có lỗi nào được ghi nhận.</div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
+  </div>
 </div>
 {% endblock %}

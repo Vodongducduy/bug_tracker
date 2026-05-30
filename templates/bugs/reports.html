@@ -1,107 +1,87 @@
 {% extends 'base.html' %}
-
-{% block title %}Báo cáo hệ thống - Bug Tracker{% endblock %}
+{% block title %}Báo cáo hệ thống — Bug Tracker{% endblock %}
 
 {% block content %}
-<div class="header" style="margin-bottom: 2rem;">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.75rem;flex-wrap:wrap;gap:1rem;">
+  <div>
     <h1>Báo cáo hệ thống</h1>
-    <p style="color: var(--text-muted);">Dữ liệu được cập nhật thời gian thực từ hệ thống Bug Tracker</p>
+    <p class="text-muted" style="margin-top:.25rem;">Dữ liệu được cập nhật thời gian thực từ Bug Tracker</p>
+  </div>
+  <button class="btn btn-ghost" onclick="window.print()">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    In báo cáo
+  </button>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab(this,'tab-proj')">Thống kê dự án</button>
+  <button class="tab-btn" onclick="switchTab(this,'tab-bug')">Phân bổ Bug</button>
 </div>
 
-<!-- Tabs Navigation -->
-<div class="tabs"
-    style="display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem;">
-    <button class="tab-btn active" onclick="openTab(event, 'project-summary')"
-        style="background: none; border: none; color: var(--text-main); cursor: pointer; padding: 0.5rem 1rem; font-weight: 600; transition: 0.3s; border-radius: 8px;">Thống
-        kê dự án</button>
-    <button class="tab-btn" onclick="openTab(event, 'bug-stats')"
-        style="background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 0.5rem 1rem; font-weight: 600; transition: 0.3s; border-radius: 8px;">Phân
-        bổ Bug</button>
-</div>
-
-<!-- Tab 1: Project Summary -->
-<div id="project-summary" class="tab-content active">
-    <div class="glass-card">
-        <h3 style="margin-bottom: 1.5rem;">Tình hình dự án</h3>
-        <table style="width: 100%; border-collapse: collapse;">
-            <thead>
-                <tr style="text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                    <th style="padding: 1rem;">Tên dự án</th>
-                    <th style="padding: 1rem;">Trạng thái</th>
-                    <th style="padding: 1rem;">Tổng Bug</th>
-                    <th style="padding: 1rem;">Bug mới</th>
-                    <th style="padding: 1rem;">Đã giải quyết</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in project_summary %}
-                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                    <td style="padding: 1rem; font-weight: 600; color: var(--primary);">{{ row.name }}</td>
-                    <td style="padding: 1rem;"><span class="badge">{{ row.status }}</span></td>
-                    <td style="padding: 1rem;">{{ row.total_bugs }}</td>
-                    <td style="padding: 1rem; color: var(--danger);">{{ row.new_bugs }}</td>
-                    <td style="padding: 1rem; color: var(--success);">{{ row.resolved_bugs }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="6" style="padding: 2rem; text-align: center;">Chưa có dữ liệu dự án.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<div id="tab-proj" class="tab-content active">
+  <div class="card">
+    <h3 style="margin-bottom:1.1rem;">Tình hình dự án</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Tên dự án</th><th>Trạng thái</th>
+            <th>Tổng Bug</th><th>Bug mới</th><th>Đã giải quyết</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in project_summary %}
+          <tr>
+            <td class="fw-600" style="color:var(--primary)">{{ row.name }}</td>
+            <td><span class="badge badge-{{ row.status|lower }}">{{ row.status }}</span></td>
+            <td>{{ row.total_bugs }}</td>
+            <td style="color:var(--danger)">{{ row.new_bugs }}</td>
+            <td style="color:var(--success)">{{ row.resolved_bugs }}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="5"><div class="empty-state">Chưa có dữ liệu dự án.</div></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
+  </div>
 </div>
 
-<!-- Tab 2: Bug Stats -->
-<div id="bug-stats" class="tab-content" style="display: none;">
-    <div class="glass-card">
-        <h3 style="margin-bottom: 1.5rem;">Phân bổ theo trạng thái</h3>
-        <table style="width: 100%; border-collapse: collapse;">
-            <thead>
-                <tr style="text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                    <th style="padding: 1rem;">Trạng thái</th>
-                    <th style="padding: 1rem;">Số lượng</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in bug_stats %}
-                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                    <td style="padding: 1rem;"><span class="badge">{{ row.status }}</span></td>
-                    <td style="padding: 1rem; font-size: 1.2rem; font-weight: 700;">{{ row.count }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="2" style="padding: 2rem; text-align: center;">Chưa có dữ liệu thống kê.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<div id="tab-bug" class="tab-content">
+  <div class="card">
+    <h3 style="margin-bottom:1.1rem;">Phân bổ theo trạng thái</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Trạng thái</th><th>Số lượng</th></tr></thead>
+        <tbody>
+          {% for row in bug_stats %}
+          <tr>
+            <td><span class="badge badge-{{ row.status|lower }}">{{ row.status }}</span></td>
+            <td style="font-size:1.15rem;font-weight:700;">{{ row.count }}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="2"><div class="empty-state">Chưa có dữ liệu thống kê.</div></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
+  </div>
 </div>
 
+<div class="separator" style="margin-top:2.5rem;"></div>
+<div class="text-muted text-sm" style="padding:.75rem 0;line-height:1.8;">
+  <strong>Ngày xuất:</strong> {% now "d/m/Y H:i" %} &nbsp;·&nbsp;
+  <strong>Người lập:</strong> {{ request.logged_user.username }} &nbsp;·&nbsp;
+  <strong>Hệ thống:</strong> BugTracker.hub v1.0
+</div>
+
+{% block extra_js %}
 <script>
-    function openTab(evt, tabName) {
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tab-content");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("tab-btn");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].classList.remove("active");
-            tablinks[i].style.color = "var(--text-muted)";
-        }
-        document.getElementById(tabName).style.display = "block";
-        evt.currentTarget.classList.add("active");
-        evt.currentTarget.style.color = "var(--text-main)";
-    }
+function switchTab(btn, id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
 </script>
-
-<style>
-    .tab-btn.active {
-        background: rgba(var(--primary-rgb), 0.1) !important;
-        color: var(--primary) !important;
-        border-bottom: 2px solid var(--primary) !important;
-    }
-</style>
+{% endblock %}
 {% endblock %}

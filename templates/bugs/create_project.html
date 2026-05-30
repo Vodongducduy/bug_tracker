@@ -1,37 +1,34 @@
 {% extends 'base.html' %}
-
-{% block title %}Tạo Dự Án Mới - Bug Tracker{% endblock %}
+{% block title %}Tạo dự án mới — Bug Tracker{% endblock %}
 
 {% block content %}
-<div style="max-width: 600px; margin: 2rem auto;">
-    <div class="header" style="margin-bottom: 2rem;">
-        <h1>Tạo dự án mới</h1>
-        <p style="color: var(--text-muted);">Khởi tạo không gian làm việc cho đội ngũ của bạn.</p>
+<ul class="breadcrumb">
+  <li><a href="{% url 'dashboard' %}">Dự án</a></li>
+  <li>/</li>
+  <li>Tạo mới</li>
+</ul>
+
+<h1 style="margin-bottom:.3rem;">Tạo dự án mới</h1>
+<p class="text-muted" style="margin-bottom:1.5rem;">Khởi tạo không gian làm việc cho đội ngũ của bạn.</p>
+
+<div class="card" style="max-width:640px;">
+  <form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+      <label class="form-label" for="name">Tên dự án *</label>
+      <input type="text" id="name" name="name" required class="form-input"
+             placeholder="VD: Website Bán Hàng, App Quản Lý...">
     </div>
-
-    <div class="glass-card">
-        <form method="POST">
-            {% csrf_token %}
-            
-            <div style="margin-bottom: 1.5rem;">
-                <label for="name" style="display: block; margin-bottom: 0.5rem; color: var(--text);">Tên dự án</label>
-                <input type="text" id="name" name="name" required 
-                       style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: var(--text);" 
-                       placeholder="VD: Website Bán Hàng, App Quản Lý...">
-            </div>
-
-            <div style="margin-bottom: 1.5rem;">
-                <label for="description" style="display: block; margin-bottom: 0.5rem; color: var(--text);">Mô tả</label>
-                <textarea id="description" name="description" rows="4" 
-                          style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: var(--text);" 
-                          placeholder="Mục tiêu của dự án là gì?"></textarea>
-            </div>
-
-            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
-                <a href="{% url 'dashboard' %}" class="btn" style="background: rgba(255,255,255,0.1); color: var(--text); padding: 0.8rem 1.5rem; text-decoration: none; border-radius: 8px;">Hủy</a>
-                <button type="submit" class="btn btn-primary" style="padding: 0.8rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; background: var(--primary); color: white; font-weight: 500;">Tạo dự án</button>
-            </div>
-        </form>
+    <div class="form-group">
+      <label class="form-label" for="description">Mô tả</label>
+      <textarea id="description" name="description" class="form-input" style="height:110px;"
+                placeholder="Mục tiêu và phạm vi của dự án..."></textarea>
     </div>
+    <div class="separator"></div>
+    <div style="display:flex;gap:.65rem;justify-content:flex-end;">
+      <a href="{% url 'dashboard' %}" class="btn btn-ghost">Huỷ</a>
+      <button type="submit" class="btn btn-primary">Tạo dự án</button>
+    </div>
+  </form>
 </div>
 {% endblock %}
