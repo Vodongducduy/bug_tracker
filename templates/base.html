@@ -7,7 +7,7 @@
   <title>{% block title %}Bug Tracker{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
   {% block extra_css %}{% endblock %}
 </head>
@@ -19,21 +19,27 @@
   <!-- ── Sidebar ── -->
   <aside class="sidebar">
     <a href="{% url 'dashboard' %}" class="sidebar-logo">
-      <div class="sidebar-logo-mark">🐛</div>
-      <span class="sidebar-logo-text">BugTracker</span>
-      <span class="sidebar-logo-badge">v2</span>
+      <svg class="sidebar-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 2l1.88 1.88"/><path d="M14.12 3.88L16 2"/>
+        <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+        <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/>
+        <path d="M12 20v-9"/>
+        <path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/>
+        <path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+        <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+        <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+      </svg>
+      <span class="sidebar-logo-text">bugiz</span>
     </a>
 
     <nav class="sidebar-nav">
-      <div class="nav-section">MAIN</div>
-
       <a href="{% url 'dashboard' %}"
          class="nav-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
           <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
         </svg>
-        Dự án
+        Overview
       </a>
 
       <a href="{% url 'reports' %}"
@@ -42,7 +48,7 @@
           <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
           <line x1="6" y1="20" x2="6" y2="14"/>
         </svg>
-        Báo cáo
+        Reports
       </a>
 
       <a href="{% url 'member_list' %}"
@@ -52,7 +58,7 @@
           <circle cx="9" cy="7" r="4"/>
           <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
         </svg>
-        Thành viên
+        Members
       </a>
 
       {% if request.logged_user.is_superuser %}
@@ -62,10 +68,20 @@
           <circle cx="12" cy="12" r="3"/>
           <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
         </svg>
-        Quản lý tài khoản
+        Settings
       </a>
       {% endif %}
     </nav>
+
+    {% if request.logged_user.is_superuser %}
+    <a href="{% url 'create_project' %}" class="sidebar-add-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+      </svg>
+      Add Project
+    </a>
+    {% endif %}
 
     <div class="sidebar-footer">
       <div class="sidebar-user">
@@ -77,7 +93,7 @@
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
           <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
         </svg>
-        Đăng xuất
+        logout
       </a>
     </div>
   </aside>
@@ -102,7 +118,7 @@
     <div class="alert {{ message.tags }}" style="position:fixed;top:1rem;left:50%;transform:translateX(-50%);z-index:9999;min-width:300px;text-align:center;">{{ message }}</div>
   {% endfor %}
 {% endif %}
-{% block content %}{% endblock %}
+{% block auth_content %}{% endblock %}
 {% endif %}
 
 {% block extra_js %}{% endblock %}

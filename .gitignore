@@ -21,3 +21,7 @@ CLAUDE.md
 
 # Testing
 test/
+
+# Dev server logs
+server.log
+server.err

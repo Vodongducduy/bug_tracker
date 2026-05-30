@@ -2,41 +2,30 @@
 {% block title %}Dashboard — Bug Tracker{% endblock %}
 
 {% block content %}
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.75rem;">
-  <h1>Bảng điều khiển</h1>
-  {% if request.logged_user.is_superuser %}
-  <a href="{% url 'create_project' %}" class="btn btn-primary">+ Dự án mới</a>
-  {% endif %}
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+  <h1>Overview</h1>
 </div>
 
 <div class="stats-grid">
-  <div class="stat-card stat-primary">
-    <span class="stat-icon">📊</span>
-    <div class="stat-label">Tổng số Bug</div>
+  <div class="stat-card">
     <div class="stat-value">{{ bug_summary.TOTAL }}</div>
-    <div class="stat-sub">Toàn hệ thống</div>
+    <div class="stat-label">Total Bugs</div>
   </div>
-  <div class="stat-card stat-danger">
-    <span class="stat-icon">🆕</span>
-    <div class="stat-label">Mới</div>
+  <div class="stat-card">
     <div class="stat-value">{{ bug_summary.NEW }}</div>
-    <div class="stat-sub">Cần phân công</div>
+    <div class="stat-label">New</div>
   </div>
-  <div class="stat-card stat-warning">
-    <span class="stat-icon">⚡</span>
-    <div class="stat-label">Đang xử lý</div>
+  <div class="stat-card">
     <div class="stat-value">{{ bug_summary.IN_PROGRESS }}</div>
-    <div class="stat-sub">Đang tiến hành</div>
+    <div class="stat-label">In Progress</div>
   </div>
-  <div class="stat-card stat-success">
-    <span class="stat-icon">✅</span>
-    <div class="stat-label">Đã sửa / Đóng</div>
+  <div class="stat-card">
     <div class="stat-value">{{ bug_summary.FIXED|add:bug_summary.CLOSED }}</div>
-    <div class="stat-sub">Hoàn thành</div>
+    <div class="stat-label">Resolved</div>
   </div>
 </div>
 
-<h2 style="margin-bottom:1.1rem;">Dự án của tôi</h2>
+<h2 style="margin-bottom:1rem;">Projects</h2>
 
 <div class="project-grid">
   {% for project in projects %}
@@ -49,7 +38,7 @@
   </a>
   {% empty %}
   <div class="card" style="grid-column:1/-1;">
-    <div class="empty-state">Bạn chưa tham gia dự án nào.</div>
+    <div class="empty-state">You are not a member of any project yet.</div>
   </div>
   {% endfor %}
 </div>

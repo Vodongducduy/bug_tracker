@@ -17,10 +17,10 @@
       <h1 style="font-size:1.25rem;margin-bottom:.6rem;">{{ bug.title }}</h1>
       <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.4rem;">
         <span class="badge badge-{{ bug.status|lower }}">{{ bug.get_status_display }}</span>
-        <span class="badge" style="background:rgba(255,255,255,.06);color:var(--text-muted);">{{ bug.get_type_display }}</span>
-        {% if bug.priority == 'S' %}<span class="badge" style="background:var(--danger-dim);color:var(--danger);">Critical (S)</span>
-        {% elif bug.priority == 'A' %}<span class="badge" style="background:var(--warning-dim);color:var(--warning);">High (A)</span>
-        {% else %}<span class="badge" style="background:rgba(255,255,255,.05);color:var(--text-muted);">Medium (B)</span>{% endif %}
+        <span class="badge badge-type">{{ bug.get_type_display }}</span>
+        {% if bug.priority == 'S' %}<span class="badge badge-priority-s">Critical (S)</span>
+        {% elif bug.priority == 'A' %}<span class="badge badge-priority-a">High (A)</span>
+        {% else %}<span class="badge badge-priority-b">Medium (B)</span>{% endif %}
       </div>
 
       <p class="form-label" style="margin-bottom:.5rem;">Mô tả chi tiết</p>
