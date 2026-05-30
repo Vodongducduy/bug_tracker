@@ -3,945 +3,784 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>BugTracker — Premium UI</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Bugiz — UI Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* ── Tokens ── */
 :root{
-  --bg:#080d18;
-  --surface:rgba(255,255,255,.035);
-  --surface-hover:rgba(255,255,255,.06);
-  --border:rgba(255,255,255,.08);
-  --border-bright:rgba(255,255,255,.14);
-  --p1:#6366f1;--p2:#8b5cf6;--p3:#a855f7;
-  --grad:linear-gradient(135deg,#6366f1,#a855f7);
-  --grad2:linear-gradient(135deg,#06b6d4,#6366f1);
-  --grad3:linear-gradient(135deg,#f59e0b,#ef4444);
-  --success:#10b981;--danger:#ef4444;--warning:#f59e0b;--accent:#06b6d4;
-  --t1:#f1f5f9;--t2:#94a3b8;--t3:#475569;
-  --sidebar-w:240px;
-  --glow:0 0 20px rgba(99,102,241,.25);
+  --sidebar-bg:#1b3910;
+  --sidebar-w:210px;
+  --s-text:rgba(255,255,255,.65);
+  --s-text-h:rgba(255,255,255,.9);
+  --s-hover:rgba(255,255,255,.06);
+  --s-active-bg:rgba(255,255,255,.09);
+  --s-active-bdr:#5a9e3a;
+  --bg:#f2f2f2;
+  --card:#fff;
+  --border:#e2e2e2;
+  --green:#3a6b1e;
+  --green-h:#2d5518;
+  --green-l:#edf5e8;
+  --t1:#1c1c1c;
+  --t2:#555;
+  --t3:#888;
+  --danger:#ef4444;
+  --warning:#f59e0b;
+  --success:#22c55e;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{font-size:14px;}
-body{background:var(--bg);color:var(--t1);font-family:'Inter',-apple-system,sans-serif;line-height:1.6;min-height:100vh;overflow-x:hidden;}
+body{background:var(--bg);color:var(--t1);font-family:'Inter',-apple-system,sans-serif;line-height:1.6;min-height:100vh;}
+a{color:var(--green);text-decoration:none;}
 
-/* ── Ambient background ── */
-body::before{
-  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 80% 60% at 20% -10%,rgba(99,102,241,.12) 0%,transparent 60%),
-    radial-gradient(ellipse 60% 50% at 80% 100%,rgba(168,85,247,.08) 0%,transparent 55%),
-    radial-gradient(ellipse 40% 40% at 60% 40%,rgba(6,182,212,.04) 0%,transparent 50%);
-}
-
-/* ── Screen switcher ── */
+/* ── Screen switcher bar ── */
 #sw{
-  position:fixed;top:0;left:0;right:0;height:38px;z-index:9999;
-  background:rgba(8,13,24,.92);backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
-  display:flex;align-items:center;gap:.3rem;padding:0 .75rem;overflow-x:auto;
+  position:fixed;top:0;left:0;right:0;height:36px;z-index:9999;
+  background:#111;display:flex;align-items:center;padding:0 1rem;gap:.35rem;
+  border-bottom:1px solid #333;
 }
-#sw::-webkit-scrollbar{height:0;}
-.sw-lbl{color:var(--t3);font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-right:.35rem;flex-shrink:0;}
-.swb{padding:.22rem .65rem;border-radius:5px;border:1px solid transparent;background:transparent;color:var(--t3);cursor:pointer;font-size:.68rem;font-family:inherit;white-space:nowrap;transition:.15s;flex-shrink:0;}
-.swb:hover{border-color:var(--border-bright);color:var(--t2);}
-.swb.on{background:rgba(99,102,241,.15);border-color:rgba(99,102,241,.4);color:#a5b4fc;font-weight:600;}
+#sw span{color:#666;font-size:.72rem;margin-right:.35rem;font-family:monospace;}
+.sw-btn{
+  padding:.2rem .7rem;border-radius:3px;font-size:.72rem;font-weight:500;
+  background:#222;color:#aaa;border:1px solid #333;cursor:pointer;
+  font-family:monospace;transition:all .12s;
+}
+.sw-btn:hover{background:#333;color:#fff;}
+.sw-btn.active{background:var(--green);color:#fff;border-color:var(--green);}
 
-/* ── Layout ── */
-.layout{display:flex;min-height:100vh;position:relative;z-index:1;}
-.screen{display:none;width:100%;}.screen.on{display:block;}
-.app-screen{padding-top:38px;}
-.auth-screen{padding-top:38px;}
-.main{flex:1;margin-left:var(--sidebar-w);}
-.pg{padding:2rem 2.25rem;}
+/* ── Screen wrapper ── */
+.screen{display:none;padding-top:36px;min-height:100vh;}
+.screen.active{display:block;}
+
+/* ════════════════════════════
+   APP LAYOUT (with sidebar)
+════════════════════════════ */
+.app{display:flex;min-height:calc(100vh - 36px);}
 
 /* ── Sidebar ── */
 .sidebar{
-  width:var(--sidebar-w);
-  background:rgba(10,15,28,.8);
-  backdrop-filter:blur(24px);
-  border-right:1px solid var(--border);
+  width:var(--sidebar-w);background:var(--sidebar-bg);
   display:flex;flex-direction:column;
-  position:fixed;top:38px;left:0;bottom:0;z-index:100;
+  position:fixed;top:36px;left:0;bottom:0;z-index:200;
 }
-.sb-logo{
-  display:flex;align-items:center;gap:.7rem;
-  padding:1.1rem 1.25rem;border-bottom:1px solid var(--border);
-}
-.sb-logo-mark{
-  width:32px;height:32px;border-radius:9px;
-  background:var(--grad);
-  display:flex;align-items:center;justify-content:center;
-  font-size:.72rem;font-weight:800;color:#fff;
-  box-shadow:0 4px 12px rgba(99,102,241,.4);
-  flex-shrink:0;
-}
-.sb-logo-name{font-size:1rem;font-weight:700;color:var(--t1);letter-spacing:-.02em;}
-.sb-logo-badge{font-size:.58rem;font-weight:600;color:#818cf8;background:rgba(99,102,241,.15);padding:.1rem .4rem;border-radius:4px;margin-left:.2rem;}
-
-.sb-nav{flex:1;padding:.75rem .7rem;overflow-y:auto;}
-.sb-section{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);padding:.85rem .55rem .35rem;}
-.nb{
-  display:flex;align-items:center;gap:.75rem;
-  padding:.55rem .7rem;border-radius:8px;
-  color:var(--t3);font-size:.82rem;font-weight:500;
-  cursor:pointer;border:none;background:none;width:100%;
-  font-family:inherit;text-align:left;transition:.15s;margin-bottom:.1rem;
-}
-.nb svg{width:16px;height:16px;flex-shrink:0;}
-.nb:hover{background:var(--surface-hover);color:var(--t2);}
-.nb.on{
-  background:rgba(99,102,241,.12);color:#a5b4fc;font-weight:600;
-  box-shadow:inset 2px 0 0 var(--p1);
-}
-.nb .badge-count{margin-left:auto;background:rgba(239,68,68,.15);color:#f87171;font-size:.62rem;font-weight:700;padding:.1rem .45rem;border-radius:99px;}
-
-.sb-foot{padding:.75rem .7rem;border-top:1px solid var(--border);}
-.sb-user{
-  display:flex;align-items:center;gap:.65rem;
-  padding:.5rem .6rem;border-radius:8px;cursor:pointer;
-  transition:.15s;margin-bottom:.15rem;
-}
-.sb-user:hover{background:var(--surface-hover);}
-.sb-av{
-  width:30px;height:30px;border-radius:50%;
-  background:var(--grad);
-  display:flex;align-items:center;justify-content:center;
-  font-size:.72rem;font-weight:700;color:#fff;
-  box-shadow:0 2px 8px rgba(99,102,241,.3);flex-shrink:0;
-}
-.sb-uname{font-size:.8rem;font-weight:600;color:var(--t1);flex:1;}
-.sb-role{font-size:.68rem;color:var(--t3);}
-.sb-logout{
+.sidebar-logo{
   display:flex;align-items:center;gap:.6rem;
-  padding:.45rem .7rem;border-radius:8px;
-  color:var(--t3);font-size:.8rem;cursor:pointer;
-  border:none;background:none;font-family:inherit;width:100%;
-  transition:.15s;
+  padding:.95rem .9rem .9rem;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  text-decoration:none !important;
 }
-.sb-logout:hover{color:#f87171;background:rgba(239,68,68,.08);}
-.sb-logout svg{width:14px;height:14px;}
+.sidebar-logo-icon{width:24px;height:24px;flex-shrink:0;color:#5bbfa0;}
+.sidebar-logo-text{font-size:1rem;font-weight:700;color:#fff;letter-spacing:-.02em;}
+.sidebar-nav{flex:1;padding:.6rem .6rem .3rem;overflow-y:auto;}
+.nav-item{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.48rem .72rem;border-radius:3px;
+  color:var(--s-text);font-size:.83rem;font-weight:400;
+  text-decoration:none !important;transition:all .13s;
+  margin-bottom:.05rem;
+}
+.nav-item svg{width:15px;height:15px;flex-shrink:0;}
+.nav-item:hover{background:var(--s-hover);color:var(--s-text-h);}
+.nav-item.active{background:var(--s-active-bg);color:#fff;box-shadow:inset 3px 0 0 var(--s-active-bdr);}
+.sidebar-add-btn{
+  margin:.35rem .6rem .55rem;
+  display:flex;align-items:center;justify-content:center;gap:.45rem;
+  padding:.55rem .9rem;border-radius:4px;
+  background:var(--green);color:#fff;font-size:.82rem;font-weight:500;
+  text-decoration:none !important;border:none;cursor:pointer;
+}
+.sidebar-add-btn:hover{background:var(--green-h);}
+.sidebar-add-btn svg{width:15px;height:15px;}
+.sidebar-footer{padding:.55rem .6rem .75rem;border-top:1px solid rgba(255,255,255,.08);}
+.sidebar-user{display:flex;align-items:center;gap:.5rem;padding:.35rem .6rem;margin-bottom:.18rem;}
+.sidebar-avatar{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--green);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.68rem;font-weight:700;flex-shrink:0;
+}
+.sidebar-username{font-size:.8rem;font-weight:600;color:rgba(255,255,255,.82);}
+.sidebar-logout{
+  display:flex;align-items:center;gap:.55rem;padding:.42rem .72rem;border-radius:3px;
+  color:var(--s-text);font-size:.8rem;text-decoration:none !important;
+}
+.sidebar-logout svg{width:14px;height:14px;}
+.sidebar-logout:hover{color:#f87171;background:rgba(239,68,68,.1);}
 
-/* ── Breadcrumb ── */
-.bc{list-style:none;display:flex;align-items:center;gap:.4rem;font-size:.76rem;color:var(--t3);margin-bottom:.85rem;}
-.bc a{color:inherit;cursor:pointer;transition:.15s;}.bc a:hover{color:var(--t2);}
-.bc li:last-child{color:var(--t2);}
-.bc-sep{color:var(--t3);}
+/* ── Main ── */
+.main{flex:1;margin-left:var(--sidebar-w);min-height:calc(100vh - 36px);}
+.page{padding:1.75rem 2rem;}
 
-/* ── Page header ── */
-.ph{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.75rem;gap:1rem;flex-wrap:wrap;}
-.ph h1{font-size:1.5rem;font-weight:700;letter-spacing:-.03em;color:var(--t1);}
-.ph p{font-size:.83rem;color:var(--t3);margin-top:.25rem;}
-.ph-actions{display:flex;align-items:center;gap:.65rem;flex-shrink:0;}
+/* ── Cards ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:1.25rem;}
 
 /* ── Buttons ── */
 .btn{
   display:inline-flex;align-items:center;gap:.4rem;
-  padding:.52rem 1.1rem;border-radius:8px;
-  font-size:.8rem;font-weight:600;cursor:pointer;
-  border:1px solid transparent;transition:.18s;
-  text-decoration:none;line-height:1;white-space:nowrap;font-family:inherit;
+  padding:.46rem 1rem;border-radius:4px;font-size:.82rem;font-weight:500;
+  cursor:pointer;border:1px solid transparent;
+  text-decoration:none !important;line-height:1;white-space:nowrap;font-family:inherit;
 }
-.btn-primary{
-  background:var(--grad);color:#fff;border:none;
-  box-shadow:0 4px 14px rgba(99,102,241,.35);
-}
-.btn-primary:hover{box-shadow:0 6px 20px rgba(99,102,241,.5);transform:translateY(-1px);}
-.btn-ghost{background:var(--surface);color:var(--t2);border-color:var(--border);}
-.btn-ghost:hover{background:var(--surface-hover);border-color:var(--border-bright);color:var(--t1);}
-.btn-danger{background:rgba(239,68,68,.1);color:#f87171;border-color:rgba(239,68,68,.2);}
-.btn-danger:hover{background:rgba(239,68,68,.18);}
-.btn-sm{padding:.3rem .7rem;font-size:.72rem;}
-.btn-block{width:100%;justify-content:center;padding-top:.65rem;padding-bottom:.65rem;}
+.btn-primary{background:var(--green);color:#fff;border-color:var(--green);}
+.btn-primary:hover{background:var(--green-h);}
+.btn-ghost{background:#fff;color:var(--t2);border-color:var(--border);}
+.btn-ghost:hover{background:#f7f7f7;color:var(--t1);}
+.btn-sm{padding:.26rem .6rem;font-size:.75rem;}
 
-/* ── Cards ── */
-.card{
-  background:rgba(15,22,38,.6);
-  backdrop-filter:blur(16px);
-  border:1px solid var(--border);
-  border-radius:16px;padding:1.5rem;
-  position:relative;overflow:hidden;
+/* ── Forms ── */
+.form-group{margin-bottom:.95rem;}
+.form-label{display:block;font-size:.78rem;font-weight:600;color:var(--t1);margin-bottom:.32rem;}
+.form-input{
+  width:100%;background:#fff;border:1px solid #ccc;
+  padding:.5rem .8rem;border-radius:3px;
+  color:var(--t1);font-size:.85rem;font-family:inherit;line-height:1.5;
 }
-.card::before{
-  content:'';position:absolute;inset:0;border-radius:16px;
-  background:linear-gradient(135deg,rgba(255,255,255,.03) 0%,transparent 60%);
-  pointer-events:none;
-}
+.form-input:focus{outline:none;border-color:var(--green);}
+.form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;}
+.separator{height:1px;background:var(--border);margin:1rem 0;}
 
-/* ── Stat cards ── */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem;margin-bottom:2rem;}
-.stat-card{
-  background:rgba(15,22,38,.7);border:1px solid var(--border);
-  border-radius:16px;padding:1.25rem 1.4rem;
-  position:relative;overflow:hidden;cursor:default;
-  transition:.2s;
+/* ── Table ── */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+thead th{
+  text-align:left;padding:.58rem 1rem;
+  font-size:.75rem;font-weight:600;color:var(--t2);
+  border-bottom:1px solid var(--border);background:#fafafa;
+  white-space:nowrap;
 }
-.stat-card:hover{border-color:var(--border-bright);transform:translateY(-2px);}
-.stat-card::after{
-  content:'';position:absolute;top:-40px;right:-40px;
-  width:100px;height:100px;border-radius:50%;
-  background:radial-gradient(circle,var(--_glow,.2) 0%,transparent 70%);
-  pointer-events:none;
-}
-.stat-icon{
-  width:36px;height:36px;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1rem;margin-bottom:.9rem;
-}
-.stat-label{font-size:.65rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--t3);margin-bottom:.35rem;}
-.stat-value{font-size:2rem;font-weight:800;line-height:1;letter-spacing:-.03em;}
-.stat-sub{font-size:.7rem;color:var(--t3);margin-top:.3rem;}
-.sc-total .stat-icon{background:rgba(99,102,241,.15);}
-.sc-total .stat-value{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.sc-total{--_glow:rgba(99,102,241,.15);}
-.sc-new .stat-icon{background:rgba(239,68,68,.12);}
-.sc-new .stat-value{color:#f87171;}
-.sc-new{--_glow:rgba(239,68,68,.1);}
-.sc-prog .stat-icon{background:rgba(245,158,11,.12);}
-.sc-prog .stat-value{color:#fbbf24;}
-.sc-prog{--_glow:rgba(245,158,11,.1);}
-.sc-done .stat-icon{background:rgba(16,185,129,.12);}
-.sc-done .stat-value{color:#34d399;}
-.sc-done{--_glow:rgba(16,185,129,.1);}
-
-/* ── Project cards ── */
-.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1rem;}
-.proj-card{
-  background:rgba(15,22,38,.6);backdrop-filter:blur(16px);
-  border:1px solid var(--border);border-radius:16px;
-  padding:1.4rem;cursor:pointer;transition:.22s;
-  position:relative;overflow:hidden;
-}
-.proj-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:var(--grad);opacity:0;transition:.22s;
-}
-.proj-card:hover{border-color:rgba(99,102,241,.3);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.3);}
-.proj-card:hover::before{opacity:1;}
-.proj-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem;}
-.proj-name{font-size:.95rem;font-weight:700;color:var(--t1);letter-spacing:-.01em;}
-.proj-desc{font-size:.8rem;color:var(--t3);line-height:1.6;}
-.proj-footer{display:flex;align-items:center;gap:.5rem;margin-top:1rem;padding-top:.85rem;border-top:1px solid var(--border);}
-.proj-member-stack{display:flex;}
-.proj-member-stack .av{width:22px;height:22px;font-size:.6rem;border:2px solid var(--bg);margin-left:-6px;}
-.proj-member-stack .av:first-child{margin-left:0;}
-.proj-bug-count{margin-left:auto;font-size:.72rem;color:var(--t3);}
+tbody tr{border-bottom:1px solid var(--border);}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#fafafa;}
+tbody tr.clickable{cursor:pointer;}
+td{padding:.75rem 1rem;font-size:.83rem;vertical-align:middle;color:var(--t1);}
 
 /* ── Badges ── */
 .badge{
-  display:inline-flex;align-items:center;gap:.3rem;
-  padding:.22rem .65rem;border-radius:99px;
-  font-size:.65rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
-  white-space:nowrap;
+  display:inline-flex;align-items:center;
+  padding:.17rem .58rem;border-radius:99px;
+  font-size:.72rem;font-weight:600;white-space:nowrap;
 }
-.b-new{background:rgba(6,182,212,.12);color:#67e8f9;border:1px solid rgba(6,182,212,.2);}
-.b-asgn{background:rgba(99,102,241,.12);color:#a5b4fc;border:1px solid rgba(99,102,241,.2);}
-.b-prog{background:rgba(168,85,247,.12);color:#d8b4fe;border:1px solid rgba(168,85,247,.2);}
-.b-fixed{background:rgba(16,185,129,.12);color:#6ee7b7;border:1px solid rgba(16,185,129,.2);}
-.b-closed{background:rgba(100,116,139,.1);color:#94a3b8;border:1px solid rgba(100,116,139,.15);}
-.b-reopen{background:rgba(245,158,11,.12);color:#fcd34d;border:1px solid rgba(245,158,11,.2);}
-.b-active{background:rgba(16,185,129,.12);color:#6ee7b7;border:1px solid rgba(16,185,129,.2);}
-.b-inactive{background:rgba(100,116,139,.1);color:#94a3b8;border:1px solid rgba(100,116,139,.15);}
-.b-role{background:rgba(99,102,241,.1);color:#a5b4fc;border:1px solid rgba(99,102,241,.18);}
-.b-super{background:rgba(168,85,247,.12);color:#d8b4fe;border:1px solid rgba(168,85,247,.2);}
+.badge-new{background:#eff6ff;color:#1d4ed8;}
+.badge-assigned{background:#f5f3ff;color:#6d28d9;}
+.badge-in_progress{background:#fff7ed;color:#c2410c;}
+.badge-fixed{background:#f0fdf4;color:#166534;}
+.badge-closed{background:#f1f5f9;color:#64748b;}
+.badge-re_opened{background:#fffbeb;color:#92400e;}
+.badge-active{background:#f0fdf4;color:#166534;}
+.badge-priority-s{background:#fef2f2;color:#dc2626;}
+.badge-priority-a{background:#fffbeb;color:#d97706;}
+.badge-priority-b{background:#f1f5f9;color:#475569;}
 
-/* ── Priority ── */
-.pri{display:inline-flex;align-items:center;gap:.4rem;font-size:.78rem;font-weight:600;}
-.p-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.ps .p-dot{background:#f87171;box-shadow:0 0 6px rgba(248,113,113,.5);}
-.ps{color:#fca5a5;}
-.pa .p-dot{background:#fbbf24;box-shadow:0 0 6px rgba(251,191,36,.4);}
-.pa{color:#fde68a;}
-.pb .p-dot{background:var(--t3);}
-.pb{color:var(--t3);}
+/* ── Priority dots ── */
+.pri{display:inline-flex;align-items:center;gap:.35rem;font-size:.8rem;font-weight:600;}
+.pri-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.pri-s{color:#dc2626;}.pri-s .pri-dot{background:#ef4444;}
+.pri-a{color:#d97706;}.pri-a .pri-dot{background:#f59e0b;}
+.pri-b{color:#888;}.pri-b .pri-dot{background:#aaa;}
 
-/* ── Forms ── */
-.fg{margin-bottom:1.1rem;}
-.fl{display:block;font-size:.67rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:.4rem;}
-.fi{
-  width:100%;
-  background:rgba(255,255,255,.04);
-  border:1px solid var(--border);
-  padding:.65rem 1rem;border-radius:8px;
-  color:var(--t1);font-size:.85rem;font-family:inherit;
-  transition:.18s;line-height:1.5;
+/* ── Stat cards ── */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem;margin-bottom:1.75rem;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:1rem 1.2rem;}
+.stat-value{font-size:1.85rem;font-weight:700;line-height:1.1;color:var(--t1);}
+.stat-label{font-size:.76rem;font-weight:500;color:var(--t3);margin-top:.3rem;}
+
+/* ── Project cards ── */
+.project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.85rem;}
+.project-card{
+  background:var(--card);border:1px solid var(--border);border-radius:4px;
+  padding:1rem 1.2rem;display:block;color:inherit;
+  text-decoration:none !important;transition:border-color .13s;
 }
-.fi:focus{outline:none;border-color:rgba(99,102,241,.5);box-shadow:0 0 0 3px rgba(99,102,241,.12);background:rgba(255,255,255,.06);}
-.fi::placeholder{color:var(--t3);}
-select.fi{cursor:pointer;}
-select.fi option{background:#0f1620;}
-textarea.fi{resize:vertical;}
-.f2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
-.fck{display:flex;align-items:center;gap:.6rem;font-size:.85rem;cursor:pointer;}
-.fck input{width:15px;height:15px;accent-color:var(--p1);}
-.fsep{height:1px;background:var(--border);margin:1.25rem 0;}
-
-/* ── Tables ── */
-.tw{overflow-x:auto;border-radius:12px;}
-table{width:100%;border-collapse:collapse;}
-thead th{
-  text-align:left;padding:.7rem 1rem;
-  font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--t3);border-bottom:1px solid var(--border);white-space:nowrap;
-}
-tbody tr{border-bottom:1px solid rgba(255,255,255,.04);transition:.12s;}
-tbody tr:last-child{border-bottom:none;}
-tbody tr:hover{background:rgba(255,255,255,.025);}
-tbody tr.cl{cursor:pointer;}
-td{padding:.85rem 1rem;font-size:.82rem;vertical-align:middle;}
-
-/* ── Avatar ── */
-.av{
-  width:30px;height:30px;border-radius:50%;
-  background:var(--grad);
-  display:inline-flex;align-items:center;justify-content:center;
-  font-size:.7rem;font-weight:700;color:#fff;flex-shrink:0;
-  box-shadow:0 2px 8px rgba(99,102,241,.25);
-}
-.av-cyan{background:linear-gradient(135deg,#06b6d4,#0891b2);}
-.av-amber{background:linear-gradient(135deg,#f59e0b,#d97706);}
-.av-rose{background:linear-gradient(135deg,#f43f5e,#be123c);}
-.av-emerald{background:linear-gradient(135deg,#10b981,#059669);}
-.ur{display:flex;align-items:center;gap:.65rem;}
-.ur-name{font-weight:600;font-size:.82rem;color:var(--t1);}
-.ur-sub{font-size:.7rem;color:var(--t3);}
+.project-card:hover{border-color:#aaa;}
+.project-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.45rem;}
+.project-card-name{font-size:.92rem;font-weight:600;}
+.project-card-desc{font-size:.8rem;color:var(--t3);line-height:1.55;}
+.project-card-footer{margin-top:.8rem;padding-top:.7rem;border-top:1px solid var(--border);font-size:.75rem;color:var(--t3);}
 
 /* ── Filter bar ── */
-.fb{
-  display:flex;gap:.65rem;align-items:flex-end;flex-wrap:wrap;
-  padding:1rem;
-  background:rgba(255,255,255,.025);
-  border-radius:12px;border:1px solid var(--border);
-  margin-bottom:1.1rem;
+.filter-bar{
+  display:flex;gap:.6rem;align-items:flex-end;flex-wrap:wrap;
+  padding:.8rem 1rem;background:#fafafa;border-radius:4px;
+  border:1px solid var(--border);margin-bottom:1rem;
 }
-.fg2{display:flex;flex-direction:column;gap:.3rem;}
-.fg2 label{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);}
+.filter-group{display:flex;flex-direction:column;gap:.22rem;}
+.filter-group label{font-size:.73rem;font-weight:600;color:var(--t2);}
 
 /* ── Tabs ── */
-.tabs{display:flex;gap:.1rem;border-bottom:1px solid var(--border);margin-bottom:1.4rem;}
-.tbb{
-  padding:.55rem .95rem;font-size:.8rem;font-weight:600;
+.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:1.25rem;}
+.tab-btn{
+  padding:.48rem .88rem;font-size:.82rem;font-weight:600;
   color:var(--t3);background:none;border:none;
   border-bottom:2px solid transparent;margin-bottom:-1px;
-  cursor:pointer;transition:.18s;font-family:inherit;
+  cursor:pointer;font-family:inherit;
 }
-.tbb:hover{color:var(--t2);}
-.tbb.on{color:#a5b4fc;border-bottom-color:var(--p1);}
-.tbc{display:none;}.tbc.on{display:block;}
+.tab-btn.active{color:var(--green);border-bottom-color:var(--green);}
+
+/* ── Avatar ── */
+.avatar{
+  width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:.68rem;font-weight:700;flex-shrink:0;
+}
+.user-row{display:flex;align-items:center;gap:.6rem;}
 
 /* ── Timeline ── */
-.tl{display:flex;flex-direction:column;}
-.tli{display:flex;gap:.9rem;position:relative;padding-bottom:1.3rem;}
-.tli:not(:last-child)::before{content:'';position:absolute;left:5px;top:14px;width:2px;bottom:0;background:rgba(255,255,255,.06);}
-.tl-dot{
-  width:12px;height:12px;border-radius:50%;
-  background:var(--grad);
-  box-shadow:0 0 8px rgba(99,102,241,.4),0 0 0 3px rgba(99,102,241,.12);
-  flex-shrink:0;margin-top:2px;
-}
-.tl-act{font-size:.82rem;font-weight:600;color:var(--t1);}
-.tl-act span{font-weight:400;color:var(--t3);}
-.tl-ch{font-size:.75rem;color:var(--t3);margin-top:.15rem;}
-.tl-t{font-size:.68rem;color:rgba(71,85,105,.8);margin-top:.15rem;}
+.tl-item{display:flex;gap:.85rem;position:relative;padding-bottom:1.1rem;}
+.tl-item:not(:last-child)::before{content:'';position:absolute;left:5px;top:13px;width:1px;bottom:0;background:var(--border);}
+.tl-dot{width:12px;height:12px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:3px;}
+.tl-action{font-size:.82rem;font-weight:600;color:var(--t1);}
+.tl-action span{font-weight:400;color:var(--t3);}
+.tl-time{font-size:.7rem;color:var(--t3);margin-top:.1rem;}
 
-/* ── Info rows ── */
-.ir{display:flex;justify-content:space-between;align-items:center;padding:.55rem 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.82rem;}
-.ir:last-child{border-bottom:none;}
-.ik{color:var(--t3);}
+/* ── Two col ── */
+.two-col{display:grid;grid-template-columns:2fr 1fr;gap:1.1rem;align-items:start;}
+.info-row{display:flex;justify-content:space-between;padding:.48rem 0;border-bottom:1px solid var(--border);font-size:.82rem;}
+.info-row:last-child{border-bottom:none;}
+.info-key{color:var(--t3);}
+
+/* ── Breadcrumb ── */
+.breadcrumb{list-style:none;display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--t3);margin-bottom:.85rem;}
+.breadcrumb a{color:var(--t2);}
+
+/* ── Alerts ── */
+.alert{padding:.58rem 1rem;border-radius:4px;font-size:.82rem;margin-bottom:1rem;border-left:3px solid transparent;}
+.alert-success{background:#f0fdf4;border-color:#22c55e;color:#166534;}
 
 /* ── Solution block ── */
-.sol{background:rgba(16,185,129,.06);border-left:3px solid var(--success);border-radius:0 8px 8px 0;padding:1rem 1.1rem;margin-top:1.1rem;}
-.sol h4{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#34d399;margin-bottom:.4rem;}
+.solution-block{background:#f0fdf4;border-left:3px solid var(--success);border-radius:0 4px 4px 0;padding:.85rem 1rem;margin-top:1rem;}
 
-/* ── Accordion ── */
-.acc-item{background:rgba(15,22,38,.6);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:.75rem;transition:.2s;}
-.acc-item:hover{border-color:var(--border-bright);}
-.acc-hdr{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.25rem;cursor:pointer;transition:.14s;}
-.acc-hdr:hover{background:rgba(255,255,255,.02);}
-.acc-l{display:flex;align-items:center;gap:.9rem;}
-.acc-ic{width:36px;height:36px;border-radius:10px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;color:#fff;box-shadow:0 3px 10px rgba(99,102,241,.3);}
-.acc-title{font-weight:600;font-size:.9rem;color:var(--t1);}
-.acc-sub{font-size:.73rem;color:var(--t3);margin-top:.05rem;}
-.acc-chev{color:var(--t3);transition:transform .2s;}
-.acc-chev.open{transform:rotate(180deg);color:#a5b4fc;}
-.acc-body{border-top:1px solid var(--border);padding:0 1.25rem 1.25rem;display:none;}
-.acc-body.open{display:block;}
+/* ── Typography ── */
+h1{font-size:1.38rem;font-weight:700;letter-spacing:-.01em;}
+h2{font-size:1.08rem;font-weight:700;}
+h3{font-size:.94rem;font-weight:600;}
+.text-muted{color:var(--t3);}
+.text-sm{font-size:.76rem;}
+.fw-600{font-weight:600;}
+.empty-state{text-align:center;padding:2.5rem 1.5rem;color:var(--t3);font-size:.83rem;}
 
-/* ── Auth ── */
-.auth-wrap{
-  min-height:calc(100vh - 38px);display:flex;align-items:center;justify-content:center;padding:2rem;
-}
-.auth-card{
-  width:100%;max-width:420px;
-  background:rgba(12,18,32,.8);backdrop-filter:blur(24px);
-  border:1px solid var(--border);border-radius:24px;
-  padding:2.5rem;box-shadow:0 24px 60px rgba(0,0,0,.5);
-  position:relative;overflow:hidden;
-}
-.auth-card::before{
-  content:'';position:absolute;top:-80px;right:-80px;
-  width:200px;height:200px;border-radius:50%;
-  background:radial-gradient(circle,rgba(99,102,241,.15),transparent 70%);
-  pointer-events:none;
-}
-.auth-logo{text-align:center;margin-bottom:2rem;}
-.auth-mark{
-  width:52px;height:52px;border-radius:14px;
-  background:var(--grad);
-  display:inline-flex;align-items:center;justify-content:center;
-  font-size:1.2rem;font-weight:800;color:#fff;
-  box-shadow:0 8px 24px rgba(99,102,241,.4);
-  margin-bottom:.85rem;
-}
-.auth-name{font-size:1.4rem;font-weight:800;letter-spacing:-.03em;}
-.auth-sub{font-size:.78rem;color:var(--t3);margin-top:.25rem;}
-.auth-ft{text-align:center;margin-top:1.3rem;font-size:.78rem;color:var(--t3);}
-.auth-ft a{color:#a5b4fc;font-weight:600;cursor:pointer;}
-
-/* ── Gradient text ── */
-.gtext{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-
-/* ── Empty state ── */
-.empty{text-align:center;padding:3rem 1.5rem;color:var(--t3);font-size:.82rem;}
-
-/* ── Separator ── */
-.sep{height:1px;background:var(--border);margin:1.25rem 0;}
-
-/* ── Utils ── */
-.tm{color:var(--t3);}.ts{font-size:.75rem;}.fw6{font-weight:600;}.fw7{font-weight:700;}
-.mt1{margin-top:.85rem;}
-h1{font-size:1.45rem;font-weight:800;letter-spacing:-.03em;}
-h2{font-size:1.15rem;font-weight:700;}
-h3{font-size:.9rem;font-weight:700;}
+/* ════════════════════════════
+   AUTH SCREEN
+════════════════════════════ */
+.auth-wrap{min-height:calc(100vh - 36px);display:flex;align-items:center;justify-content:center;padding:2rem;background:#f0f0f0;}
+.auth-card{width:100%;max-width:370px;background:#fff;border:1px solid #d5d5d5;border-radius:4px;padding:2rem 2rem 1.75rem;}
+.auth-logo{display:flex;align-items:center;gap:.6rem;margin-bottom:1.75rem;}
+.auth-logo-mark{width:34px;height:34px;border-radius:4px;background:var(--green-l);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.auth-logo-name{font-size:1.25rem;font-weight:700;letter-spacing:-.02em;color:var(--t1);}
+.auth-footer{text-align:center;margin-top:1.1rem;font-size:.8rem;color:var(--t3);}
+.auth-footer a{color:var(--green);font-weight:500;}
 </style>
 </head>
 <body>
 
-<!-- Prototype switcher -->
-<nav id="sw">
-  <span class="sw-lbl">Screens</span>
-  <button class="swb on"  onclick="go('login')">01 Login</button>
-  <button class="swb"     onclick="go('register')">02 Register</button>
-  <button class="swb"     onclick="go('dashboard')">03 Dashboard</button>
-  <button class="swb"     onclick="go('proj')">04 Project Detail</button>
-  <button class="swb"     onclick="go('bug')">05 Bug Detail</button>
-  <button class="swb"     onclick="go('cbug')">06 Create Bug</button>
-  <button class="swb"     onclick="go('cproj')">07 Create Project</button>
-  <button class="swb"     onclick="go('reports')">08 Reports</button>
-  <button class="swb"     onclick="go('members')">09 Manage Members</button>
-  <button class="swb"     onclick="go('admin')">10 Admin List</button>
-  <button class="swb"     onclick="go('acreate')">11 Admin Create</button>
-  <button class="swb"     onclick="go('mlist')">12 Member List</button>
-  <button class="swb"     onclick="go('e403')">13 Error 403</button>
-</nav>
-
-<!-- Sidebar template -->
-<template id="t-sb">
-<aside class="sidebar">
-  <div class="sb-logo">
-    <div class="sb-logo-mark">BT</div>
-    <span class="sb-logo-name">BugTracker</span>
-    <span class="sb-logo-badge">v2</span>
-  </div>
-  <nav class="sb-nav">
-    <div class="sb-section">Workspace</div>
-    <button class="nb" data-id="dashboard" onclick="go('dashboard')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-      Dự án
-    </button>
-    <button class="nb" data-id="reports" onclick="go('reports')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-      Báo cáo
-    </button>
-    <button class="nb" data-id="mlist" onclick="go('mlist')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      Thành viên
-    </button>
-    <div class="sb-section">Admin</div>
-    <button class="nb" data-id="admin" onclick="go('admin')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      Quản lý tài khoản
-    </button>
-  </nav>
-  <div class="sb-foot">
-    <div class="sb-user">
-      <div class="sb-av">A</div>
-      <div><div class="sb-uname">admin</div><div class="sb-role">Superuser</div></div>
-    </div>
-    <button class="sb-logout" onclick="go('login')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-      Đăng xuất
-    </button>
-  </div>
-</aside>
-</template>
-
-<!-- ══════════════ 01 LOGIN ══════════════ -->
-<div id="login" class="screen on auth-screen">
-<div class="auth-wrap">
-  <div class="auth-card">
-    <div class="auth-logo">
-      <div class="auth-mark">🐛</div>
-      <div class="auth-name"><span class="gtext">BugTracker</span></div>
-      <div class="auth-sub">Quản lý lỗi chuyên nghiệp</div>
-    </div>
-    <div class="fg"><label class="fl">Tên đăng nhập</label><input class="fi" placeholder="username" value="admin"></div>
-    <div class="fg"><label class="fl">Mật khẩu</label><input class="fi" type="password" placeholder="••••••••" value="pass"></div>
-    <button class="btn btn-primary btn-block" style="margin-top:.75rem;" onclick="go('dashboard')">Đăng nhập</button>
-    <div class="auth-ft">Chưa có tài khoản? <a onclick="go('register')">Đăng ký ngay</a></div>
-  </div>
-</div>
+<!-- Screen switcher -->
+<div id="sw">
+  <span>Bugiz /</span>
+  <button class="sw-btn active" onclick="show('login',this)">Login</button>
+  <button class="sw-btn" onclick="show('dashboard',this)">Dashboard</button>
+  <button class="sw-btn" onclick="show('project',this)">Project Detail</button>
+  <button class="sw-btn" onclick="show('bug',this)">Bug Detail</button>
+  <button class="sw-btn" onclick="show('reports',this)">Reports</button>
+  <button class="sw-btn" onclick="show('create',this)">Create Bug</button>
 </div>
 
-<!-- ══════════════ 02 REGISTER ══════════════ -->
-<div id="register" class="screen auth-screen">
-<div class="auth-wrap">
-  <div class="auth-card" style="max-width:460px;">
-    <div class="auth-logo">
-      <div class="auth-mark">🐛</div>
-      <div class="auth-name"><span class="gtext">BugTracker</span></div>
-      <div class="auth-sub">Đăng ký tài khoản mới</div>
+<!-- ════════ LOGIN ════════ -->
+<div class="screen active" id="screen-login">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="auth-logo-mark">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3a6b1e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 2l1.88 1.88"/><path d="M14.12 3.88L16 2"/>
+            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/>
+            <path d="M12 20v-9"/>
+            <path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/>
+            <path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+          </svg>
+        </div>
+        <div class="auth-logo-name">bugiz</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input class="form-input" type="text" placeholder="Enter username">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" placeholder="Enter password">
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:.4rem;">Sign In</button>
+      <div class="auth-footer">Don't have an account? <a href="#">Sign up</a></div>
     </div>
-    <div class="f2"><div class="fg"><label class="fl">Họ</label><input class="fi" placeholder="Nguyễn"></div><div class="fg"><label class="fl">Tên</label><input class="fi" placeholder="Văn A"></div></div>
-    <div class="fg"><label class="fl">Tên đăng nhập</label><input class="fi" placeholder="username..."></div>
-    <div class="fg"><label class="fl">Email</label><input class="fi" type="email" placeholder="email@example.com"></div>
-    <div class="f2"><div class="fg"><label class="fl">Mật khẩu</label><input class="fi" type="password" placeholder="••••••••"></div><div class="fg"><label class="fl">Xác nhận</label><input class="fi" type="password" placeholder="••••••••"></div></div>
-    <button class="btn btn-primary btn-block" onclick="go('dashboard')">Tạo tài khoản</button>
-    <div class="auth-ft">Đã có tài khoản? <a onclick="go('login')">Đăng nhập</a></div>
   </div>
 </div>
+
+<!-- ════════ DASHBOARD ════════ -->
+<div class="screen" id="screen-dashboard">
+  <div class="app">
+    <aside class="sidebar">
+      <a href="#" class="sidebar-logo">
+        <svg class="sidebar-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 2l1.88 1.88"/><path d="M14.12 3.88L16 2"/>
+          <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+          <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/>
+          <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+          <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+          <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+          <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+        </svg>
+        <span class="sidebar-logo-text">bugiz</span>
+      </a>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          Overview
+        </a>
+        <a href="#" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Reports
+        </a>
+        <a href="#" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Members
+        </a>
+        <a href="#" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings
+        </a>
+      </nav>
+      <a href="#" class="sidebar-add-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        Add Project
+      </a>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="sidebar-avatar">A</div>
+          <span class="sidebar-username">admin</span>
+        </div>
+        <a href="#" class="sidebar-logout">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          logout
+        </a>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="page">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+          <h1>Overview</h1>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-value">24</div><div class="stat-label">Total Bugs</div></div>
+          <div class="stat-card"><div class="stat-value">8</div><div class="stat-label">New</div></div>
+          <div class="stat-card"><div class="stat-value">5</div><div class="stat-label">In Progress</div></div>
+          <div class="stat-card"><div class="stat-value">11</div><div class="stat-label">Resolved</div></div>
+        </div>
+        <h2 style="margin-bottom:1rem;">Projects</h2>
+        <div class="project-grid">
+          <a href="#" class="project-card">
+            <div class="project-card-header">
+              <span class="project-card-name">Website Bán Hàng</span>
+              <span class="badge badge-active">Active</span>
+            </div>
+            <p class="project-card-desc">Hệ thống thương mại điện tử cho thị trường trong nước, tích hợp thanh toán và quản lý kho.</p>
+            <div class="project-card-footer">8 bugs open</div>
+          </a>
+          <a href="#" class="project-card">
+            <div class="project-card-header">
+              <span class="project-card-name">Mobile App v2</span>
+              <span class="badge badge-active">Active</span>
+            </div>
+            <p class="project-card-desc">Ứng dụng di động iOS/Android cho khách hàng, quản lý đơn hàng và theo dõi giao hàng.</p>
+            <div class="project-card-footer">3 bugs open</div>
+          </a>
+          <a href="#" class="project-card">
+            <div class="project-card-header">
+              <span class="project-card-name">Admin Dashboard</span>
+              <span class="badge badge-closed">Closed</span>
+            </div>
+            <p class="project-card-desc">Bảng điều khiển nội bộ cho team vận hành, báo cáo doanh thu và quản lý nhân viên.</p>
+            <div class="project-card-footer">0 bugs open</div>
+          </a>
+          <a href="#" class="project-card">
+            <div class="project-card-header">
+              <span class="project-card-name">API Gateway</span>
+              <span class="badge badge-active">Active</span>
+            </div>
+            <p class="project-card-desc">Cổng API trung tâm cho các microservices, xử lý xác thực và rate limiting.</p>
+            <div class="project-card-footer">13 bugs open</div>
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
 </div>
 
-<!-- ══════════════ 03 DASHBOARD ══════════════ -->
-<div id="dashboard" class="screen app-screen">
-<div class="layout">
-  <div class="main"><div class="pg">
-    <div class="ph">
-      <div><h1>Bảng điều khiển</h1><p class="tm">Xin chào, <strong style="color:var(--t2)">admin</strong> 👋 Hôm nay có 3 bug mới cần xử lý.</p></div>
-      <div class="ph-actions"><button class="btn btn-primary" onclick="go('cproj')">+ Dự án mới</button></div>
-    </div>
-
-    <div class="stats-grid">
-      <div class="stat-card sc-total">
-        <div class="stat-icon">📊</div>
-        <div class="stat-label">Tổng số Bug</div>
-        <div class="stat-value">62</div>
-        <div class="stat-sub">↑ 8 so với tuần trước</div>
+<!-- ════════ PROJECT DETAIL ════════ -->
+<div class="screen" id="screen-project">
+  <div class="app">
+    <aside class="sidebar">
+      <a href="#" class="sidebar-logo">
+        <svg class="sidebar-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 2l1.88 1.88"/><path d="M14.12 3.88L16 2"/>
+          <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+          <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/>
+          <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+          <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+          <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+          <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+        </svg>
+        <span class="sidebar-logo-text">bugiz</span>
+      </a>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          Overview
+        </a>
+        <a href="#" class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Reports
+        </a>
+        <a href="#" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Members
+        </a>
+        <a href="#" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings
+        </a>
+      </nav>
+      <a href="#" class="sidebar-add-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        Add Project
+      </a>
+      <div class="sidebar-footer">
+        <div class="sidebar-user"><div class="sidebar-avatar">A</div><span class="sidebar-username">admin</span></div>
+        <a href="#" class="sidebar-logout">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          logout
+        </a>
       </div>
-      <div class="stat-card sc-new">
-        <div class="stat-icon">🆕</div>
-        <div class="stat-label">Bug mới</div>
-        <div class="stat-value">16</div>
-        <div class="stat-sub">Cần phân công xử lý</div>
-      </div>
-      <div class="stat-card sc-prog">
-        <div class="stat-icon">⚡</div>
-        <div class="stat-label">Đang xử lý</div>
-        <div class="stat-value">22</div>
-        <div class="stat-sub">5 quá hạn hôm nay</div>
-      </div>
-      <div class="stat-card sc-done">
-        <div class="stat-icon">✅</div>
-        <div class="stat-label">Đã giải quyết</div>
-        <div class="stat-value">24</div>
-        <div class="stat-sub">↑ 12% so với tháng trước</div>
-      </div>
-    </div>
-
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
-      <h2>Dự án của tôi</h2>
-      <span class="tm ts">4 dự án đang hoạt động</span>
-    </div>
-    <div class="proj-grid">
-      <div class="proj-card" onclick="go('proj')">
-        <div class="proj-card-top"><span class="proj-name">BugTracker v2</span><span class="badge b-active">Active</span></div>
-        <p class="proj-desc">Hệ thống theo dõi lỗi nội bộ cho đội phát triển sản phẩm.</p>
-        <div class="proj-footer">
-          <div class="proj-member-stack">
-            <div class="av" style="width:22px;height:22px;font-size:.58rem;">N</div>
-            <div class="av av-cyan" style="width:22px;height:22px;font-size:.58rem;">T</div>
-            <div class="av av-amber" style="width:22px;height:22px;font-size:.58rem;">L</div>
+    </aside>
+    <main class="main">
+      <div class="page">
+        <ul class="breadcrumb"><li><a href="#">Overview</a></li><li>/</li><li>Website Bán Hàng</li></ul>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;gap:1rem;">
+          <div>
+            <h1>Website Bán Hàng</h1>
+            <p class="text-muted" style="margin-top:.2rem;">Hệ thống thương mại điện tử tích hợp thanh toán và quản lý kho.</p>
           </div>
-          <span class="proj-bug-count">24 bugs · 8 mới</span>
-        </div>
-      </div>
-      <div class="proj-card" onclick="go('proj')">
-        <div class="proj-card-top"><span class="proj-name">Mobile App</span><span class="badge b-active">Active</span></div>
-        <p class="proj-desc">Ứng dụng di động cho khách hàng cuối, hỗ trợ iOS & Android.</p>
-        <div class="proj-footer">
-          <div class="proj-member-stack">
-            <div class="av av-rose" style="width:22px;height:22px;font-size:.58rem;">P</div>
-            <div class="av av-emerald" style="width:22px;height:22px;font-size:.58rem;">H</div>
+          <div style="display:flex;gap:.5rem;flex-shrink:0;">
+            <a href="#" class="btn btn-ghost">Manage Members</a>
+            <a href="#" class="btn btn-primary">+ New Bug</a>
           </div>
-          <span class="proj-bug-count">18 bugs · 5 mới</span>
         </div>
-      </div>
-      <div class="proj-card" onclick="go('proj')">
-        <div class="proj-card-top"><span class="proj-name">API Gateway</span><span class="badge b-active">Active</span></div>
-        <p class="proj-desc">Cổng kết nối dịch vụ microservices nội bộ.</p>
-        <div class="proj-footer">
-          <div class="proj-member-stack">
-            <div class="av" style="width:22px;height:22px;font-size:.58rem;">N</div>
-            <div class="av av-amber" style="width:22px;height:22px;font-size:.58rem;">L</div>
+        <div class="card">
+          <form class="filter-bar">
+            <div class="filter-group" style="flex:1;min-width:200px;"><label>Search</label><input class="form-input" placeholder="ID or title..." style="width:100%;"></div>
+            <div class="filter-group"><label>Status</label>
+              <select class="form-input" style="width:145px;"><option>All</option><option>New</option><option>In Progress</option><option>Fixed</option><option>Closed</option></select>
+            </div>
+            <div class="filter-group"><label>Priority</label>
+              <select class="form-input" style="width:130px;"><option>All</option><option>Critical (S)</option><option>High (A)</option><option>Medium (B)</option></select>
+            </div>
+            <div style="display:flex;gap:.4rem;align-self:flex-end;">
+              <button class="btn btn-primary">Filter</button>
+              <a href="#" class="btn btn-ghost">Reset</a>
+            </div>
+          </form>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th style="width:70px;">ID</th><th>Title</th><th>Priority</th><th>Status</th><th>Assignee</th><th>Updated</th></tr></thead>
+              <tbody>
+                <tr class="clickable">
+                  <td class="text-muted text-sm">#42</td>
+                  <td class="fw-600">Lỗi không thể thêm sản phẩm vào giỏ hàng trên Safari</td>
+                  <td><span class="pri pri-s"><span class="pri-dot"></span>Critical</span></td>
+                  <td><span class="badge badge-in_progress">In Progress</span></td>
+                  <td><div class="user-row"><div class="avatar">N</div>Nguyen Van A</div></td>
+                  <td class="text-muted text-sm">29/05/2026 14:30</td>
+                </tr>
+                <tr class="clickable">
+                  <td class="text-muted text-sm">#41</td>
+                  <td class="fw-600">Trang thanh toán bị trắng khi dùng VPN</td>
+                  <td><span class="pri pri-a"><span class="pri-dot"></span>High</span></td>
+                  <td><span class="badge badge-new">New</span></td>
+                  <td><span class="text-muted" style="font-style:italic;">Unassigned</span></td>
+                  <td class="text-muted text-sm">28/05/2026 09:15</td>
+                </tr>
+                <tr class="clickable">
+                  <td class="text-muted text-sm">#40</td>
+                  <td class="fw-600">Hình ảnh sản phẩm load chậm trên mobile 4G</td>
+                  <td><span class="pri pri-a"><span class="pri-dot"></span>High</span></td>
+                  <td><span class="badge badge-assigned">Assigned</span></td>
+                  <td><div class="user-row"><div class="avatar">T</div>Tran Thi B</div></td>
+                  <td class="text-muted text-sm">27/05/2026 16:42</td>
+                </tr>
+                <tr class="clickable">
+                  <td class="text-muted text-sm">#39</td>
+                  <td class="fw-600">Filter sản phẩm không hoạt động đúng khi kết hợp nhiều bộ lọc</td>
+                  <td><span class="pri pri-b"><span class="pri-dot"></span>Medium</span></td>
+                  <td><span class="badge badge-fixed">Fixed</span></td>
+                  <td><div class="user-row"><div class="avatar">L</div>Le Van C</div></td>
+                  <td class="text-muted text-sm">26/05/2026 11:00</td>
+                </tr>
+                <tr class="clickable">
+                  <td class="text-muted text-sm">#38</td>
+                  <td class="fw-600">Nút "Mua ngay" không phản hồi trên Android 12</td>
+                  <td><span class="pri pri-s"><span class="pri-dot"></span>Critical</span></td>
+                  <td><span class="badge badge-re_opened">Re-opened</span></td>
+                  <td><div class="user-row"><div class="avatar">N</div>Nguyen Van A</div></td>
+                  <td class="text-muted text-sm">25/05/2026 08:55</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <span class="proj-bug-count">12 bugs · 3 mới</span>
         </div>
       </div>
-      <div class="proj-card" onclick="go('proj')">
-        <div class="proj-card-top"><span class="proj-name">Admin Dashboard</span><span class="badge b-closed">Closed</span></div>
-        <p class="proj-desc">Bảng quản trị nội bộ cho ban quản lý công ty.</p>
-        <div class="proj-footer">
-          <div class="proj-member-stack">
-            <div class="av av-cyan" style="width:22px;height:22px;font-size:.58rem;">T</div>
+    </main>
+  </div>
+</div>
+
+<!-- ════════ BUG DETAIL ════════ -->
+<div class="screen" id="screen-bug">
+  <div class="app">
+    <aside class="sidebar">
+      <a href="#" class="sidebar-logo">
+        <svg class="sidebar-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 2l1.88 1.88"/><path d="M14.12 3.88L16 2"/>
+          <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+          <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/>
+          <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+          <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+          <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+          <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+        </svg>
+        <span class="sidebar-logo-text">bugiz</span>
+      </a>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Overview</a>
+        <a href="#" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Reports</a>
+        <a href="#" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Members</a>
+        <a href="#" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>Settings</a>
+      </nav>
+      <a href="#" class="sidebar-add-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Add Project</a>
+      <div class="sidebar-footer">
+        <div class="sidebar-user"><div class="sidebar-avatar">A</div><span class="sidebar-username">admin</span></div>
+        <a href="#" class="sidebar-logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>logout</a>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="page">
+        <ul class="breadcrumb"><li><a href="#">Overview</a></li><li>/</li><li><a href="#">Website Bán Hàng</a></li><li>/</li><li>#42</li></ul>
+        <div class="two-col">
+          <div style="display:flex;flex-direction:column;gap:1.1rem;">
+            <div class="card">
+              <h1 style="font-size:1.2rem;margin-bottom:.55rem;">Lỗi không thể thêm sản phẩm vào giỏ hàng trên Safari</h1>
+              <div style="display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1.25rem;">
+                <span class="badge badge-in_progress">In Progress</span>
+                <span class="badge badge-priority-s">Critical (S)</span>
+                <span class="badge" style="background:#f1f5f9;color:#475569;">Functional</span>
+              </div>
+              <p class="form-label" style="margin-bottom:.4rem;">Description</p>
+              <div style="font-size:.88rem;line-height:1.75;color:var(--t2);">
+                Khi người dùng click nút "Thêm vào giỏ" trên trình duyệt Safari (macOS &amp; iOS), sản phẩm không được thêm vào giỏ hàng.<br><br>
+                <strong>Bước tái hiện:</strong><br>
+                1. Mở Safari, truy cập trang sản phẩm bất kỳ<br>
+                2. Click "Thêm vào giỏ hàng"<br>
+                3. Không có phản hồi, giỏ hàng vẫn rỗng<br><br>
+                <strong>Kết quả mong đợi:</strong> Sản phẩm được thêm, badge số lượng tăng lên.
+              </div>
+              <div class="solution-block">
+                <h4>Root Cause</h4>
+                <p style="font-size:.85rem;">Safari block cookie third-party — session cart token không được lưu. Cần chuyển sang localStorage fallback.</p>
+              </div>
+            </div>
+            <div class="card">
+              <h3 style="margin-bottom:1rem;">Activity Log</h3>
+              <div>
+                <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-action">Nguyen Van A <span>updated status</span></div><div style="font-size:.75rem;color:var(--t3);">ASSIGNED → IN_PROGRESS</div><div class="tl-time">29/05/2026 14:30</div></div></div>
+                <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-action">admin <span>assigned to</span></div><div style="font-size:.75rem;color:var(--t3);">Nguyen Van A</div><div class="tl-time">28/05/2026 10:15</div></div></div>
+                <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-action">Tran Thi B <span>created this bug</span></div><div class="tl-time">27/05/2026 09:00</div></div></div>
+              </div>
+            </div>
           </div>
-          <span class="proj-bug-count">8 bugs · đã đóng</span>
+          <div style="display:flex;flex-direction:column;gap:1.1rem;">
+            <div class="card">
+              <h3 style="margin-bottom:1rem;">Update Status</h3>
+              <div class="form-group"><label class="form-label">New status</label>
+                <select class="form-input"><option>New</option><option>Assigned</option><option selected>In Progress</option><option>Fixed</option><option>Closed</option></select>
+              </div>
+              <div class="form-group"><label class="form-label">Assignee</label>
+                <select class="form-input"><option>Nguyen Van A (Dev)</option><option>Tran Thi B (QA)</option></select>
+              </div>
+              <div class="form-group"><label class="form-label">Notes / Root Cause</label>
+                <textarea class="form-input" style="height:80px;">Safari block cookie third-party — session cart token không được lưu.</textarea>
+              </div>
+              <button class="btn btn-primary" style="width:100%;justify-content:center;">Save Changes</button>
+            </div>
+            <div class="card">
+              <h3 style="margin-bottom:.85rem;">Info</h3>
+              <div class="info-row"><span class="info-key">Reporter</span><span>Tran Thi B</span></div>
+              <div class="info-row"><span class="info-key">Assignee</span><span class="fw-600">Nguyen Van A</span></div>
+              <div class="info-row"><span class="info-key">Priority</span><span class="fw-600">Critical (S)</span></div>
+              <div class="info-row"><span class="info-key">Type</span><span>Functional</span></div>
+              <div class="info-row"><span class="info-key">Project</span><span>Website Bán Hàng</span></div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div></div>
-</div>
+    </main>
+  </div>
 </div>
 
-<!-- ══════════════ 04 PROJECT DETAIL ══════════════ -->
-<div id="proj" class="screen app-screen">
-<div class="layout"><div class="main"><div class="pg">
-  <ul class="bc"><li><a onclick="go('dashboard')">Dự án</a></li><li class="bc-sep">/</li><li>BugTracker v2</li></ul>
-  <div class="ph">
-    <div><h1>BugTracker v2</h1><p class="tm">Hệ thống theo dõi lỗi nội bộ — 24 bugs đang mở</p></div>
-    <div class="ph-actions">
-      <button class="btn btn-ghost" onclick="go('members')">Quản lý thành viên</button>
-      <button class="btn btn-primary" onclick="go('cbug')">+ Báo lỗi mới</button>
-    </div>
-  </div>
-  <div class="card">
-    <div class="fb">
-      <div class="fg2" style="flex:1;min-width:200px;"><label>Tìm kiếm</label><input class="fi" placeholder="ID hoặc tiêu đề..."></div>
-      <div class="fg2"><label>Trạng thái</label><select class="fi" style="width:148px;"><option>Tất cả</option><option>Mới</option><option>Đã gán</option><option>Đang xử lý</option><option>Đã sửa</option><option>Đã đóng</option></select></div>
-      <div class="fg2"><label>Ưu tiên</label><select class="fi" style="width:128px;"><option>Tất cả</option><option>Critical (S)</option><option>High (A)</option><option>Medium (B)</option></select></div>
-      <div class="fg2"><label>Loại</label><select class="fi" style="width:128px;"><option>Tất cả</option><option>Functional</option><option>System</option><option>UI</option><option>Performance</option></select></div>
-      <div style="display:flex;gap:.5rem;align-self:flex-end;">
-        <button class="btn btn-primary">Lọc</button>
-        <button class="btn btn-ghost">Đặt lại</button>
+<!-- ════════ REPORTS ════════ -->
+<div class="screen" id="screen-reports">
+  <div class="app">
+    <aside class="sidebar">
+      <a href="#" class="sidebar-logo">
+        <svg class="sidebar-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 2l1.88 1.88"/><path d="M14.12 3.88L16 2"/>
+          <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+          <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/>
+          <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+        </svg>
+        <span class="sidebar-logo-text">bugiz</span>
+      </a>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Overview</a>
+        <a href="#" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Reports</a>
+        <a href="#" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Members</a>
+        <a href="#" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>Settings</a>
+      </nav>
+      <a href="#" class="sidebar-add-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Add Project</a>
+      <div class="sidebar-footer">
+        <div class="sidebar-user"><div class="sidebar-avatar">A</div><span class="sidebar-username">admin</span></div>
+        <a href="#" class="sidebar-logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>logout</a>
       </div>
-    </div>
-    <div class="tw">
-      <table>
-        <thead><tr><th style="width:65px">ID</th><th>Tiêu đề</th><th>Ưu tiên</th><th>Trạng thái</th><th>Người xử lý</th><th>Cập nhật</th></tr></thead>
-        <tbody>
-          <tr class="cl" onclick="go('bug')"><td class="tm ts">#101</td><td class="fw6">Lỗi đăng nhập khi sai mật khẩu nhiều lần</td><td><span class="pri ps"><span class="p-dot"></span>Critical</span></td><td><span class="badge b-new">Mới</span></td><td class="tm ts" style="font-style:italic">Chưa gán</td><td class="tm ts">29/05</td></tr>
-          <tr class="cl" onclick="go('bug')"><td class="tm ts">#102</td><td class="fw6">Button submit không phản hồi trên Safari</td><td><span class="pri pa"><span class="p-dot"></span>High</span></td><td><span class="badge b-prog">Đang xử lý</span></td><td><div class="ur"><div class="av av-cyan" style="width:24px;height:24px;font-size:.6rem">T</div>Trần Thị B</div></td><td class="tm ts">28/05</td></tr>
-          <tr class="cl" onclick="go('bug')"><td class="tm ts">#103</td><td class="fw6">Query chậm trên bảng bug_activity_log</td><td><span class="pri pb"><span class="p-dot"></span>Medium</span></td><td><span class="badge b-fixed">Đã sửa</span></td><td><div class="ur"><div class="av av-amber" style="width:24px;height:24px;font-size:.6rem">L</div>Lê Văn C</div></td><td class="tm ts">27/05</td></tr>
-          <tr class="cl" onclick="go('bug')"><td class="tm ts">#104</td><td class="fw6">UI vỡ layout trên màn 375px</td><td><span class="pri pa"><span class="p-dot"></span>High</span></td><td><span class="badge b-asgn">Đã gán</span></td><td><div class="ur"><div class="av av-rose" style="width:24px;height:24px;font-size:.6rem">P</div>Phạm Văn D</div></td><td class="tm ts">26/05</td></tr>
-          <tr class="cl" onclick="go('bug')"><td class="tm ts">#105</td><td class="fw6">Token hết hạn không redirect về login</td><td><span class="pri ps"><span class="p-dot"></span>Critical</span></td><td><span class="badge b-reopen">Mở lại</span></td><td><div class="ur"><div class="av av-emerald" style="width:24px;height:24px;font-size:.6rem">H</div>Hoàng Thị E</div></td><td class="tm ts">25/05</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div></div></div>
-</div>
-
-<!-- ══════════════ 05 BUG DETAIL ══════════════ -->
-<div id="bug" class="screen app-screen">
-<div class="layout"><div class="main"><div class="pg">
-  <ul class="bc"><li><a onclick="go('dashboard')">Dự án</a></li><li class="bc-sep">/</li><li><a onclick="go('proj')">BugTracker v2</a></li><li class="bc-sep">/</li><li>#101</li></ul>
-  <div style="display:grid;grid-template-columns:1fr 340px;gap:1.25rem;align-items:start;">
-    <div style="display:flex;flex-direction:column;gap:1.1rem;">
-      <div class="card">
-        <h1 style="font-size:1.2rem;margin-bottom:.7rem;">Lỗi đăng nhập khi nhập sai mật khẩu nhiều lần</h1>
-        <div style="display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1.4rem;">
-          <span class="badge b-new">Mới</span>
-          <span class="badge" style="background:rgba(255,255,255,.05);color:var(--t3);border-color:var(--border);">Functional</span>
-          <span class="badge" style="background:rgba(248,113,113,.1);color:#fca5a5;border-color:rgba(248,113,113,.2);">Critical (S)</span>
+    </aside>
+    <main class="main">
+      <div class="page">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;">
+          <h1>Reports</h1>
+          <button class="btn btn-ghost">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Print
+          </button>
         </div>
-        <div class="fl" style="margin-bottom:.5rem;">Mô tả chi tiết</div>
-        <div style="line-height:1.85;font-size:.83rem;color:var(--t2);">
-          Khi người dùng nhập sai mật khẩu hơn 5 lần liên tiếp, hệ thống không khoá tài khoản mà vẫn cho phép tiếp tục thử. Điều này tạo ra lỗ hổng brute-force nghiêm trọng.<br><br>
-          <strong style="color:var(--t1)">Bước tái hiện:</strong><br>
-          1. Mở trang <code style="background:rgba(255,255,255,.07);padding:.1rem .4rem;border-radius:5px;font-size:.8rem;">/login</code><br>
-          2. Nhập đúng username, sai password 6 lần<br>
-          3. Tài khoản không bị khoá, không có cảnh báo nào
+        <div class="tabs">
+          <button class="tab-btn active">Project Stats</button>
+          <button class="tab-btn">Bug Distribution</button>
         </div>
-        <div class="sol"><h4>Giải pháp (Root Cause)</h4><p style="font-size:.82rem;line-height:1.65;">Thêm middleware rate-limit cho /login, khoá tài khoản tạm thời sau 5 lần sai, gửi email cảnh báo.</p></div>
-      </div>
-      <div class="card">
-        <h3 style="margin-bottom:1.1rem;">Lịch sử thay đổi</h3>
-        <div class="tl">
-          <div class="tli"><div class="tl-dot"></div><div><div class="tl-act">Nguyễn Văn A <span>đã tạo bug mới</span></div><div class="tl-t">29/05/2026 09:00</div></div></div>
-          <div class="tli"><div class="tl-dot"></div><div><div class="tl-act">Trần Thị B <span>đã cập nhật trạng thái</span></div><div class="tl-ch">MỚI → ĐÃ GÁN</div><div class="tl-t">29/05/2026 10:30</div></div></div>
-          <div class="tli"><div class="tl-dot"></div><div><div class="tl-act">Lê Văn C <span>đã gán bug</span></div><div class="tl-ch">— → Lê Văn C</div><div class="tl-t">29/05/2026 11:00</div></div></div>
-          <div class="tli"><div class="tl-dot"></div><div><div class="tl-act">Lê Văn C <span>đã cập nhật trạng thái</span></div><div class="tl-ch">ĐÃ GÁN → ĐANG XỬ LÝ</div><div class="tl-t">30/05/2026 08:15</div></div></div>
+        <div class="card">
+          <h3 style="margin-bottom:1rem;">Project Overview</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Project</th><th>Status</th><th>Total Bugs</th><th>New</th><th>Resolved</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td class="fw-600" style="color:var(--green);">Website Bán Hàng</td>
+                  <td><span class="badge badge-active">Active</span></td>
+                  <td>8</td>
+                  <td style="color:var(--danger);">3</td>
+                  <td style="color:var(--success);">4</td>
+                </tr>
+                <tr>
+                  <td class="fw-600" style="color:var(--green);">Mobile App v2</td>
+                  <td><span class="badge badge-active">Active</span></td>
+                  <td>5</td>
+                  <td style="color:var(--danger);">2</td>
+                  <td style="color:var(--success);">3</td>
+                </tr>
+                <tr>
+                  <td class="fw-600" style="color:var(--green);">Admin Dashboard</td>
+                  <td><span class="badge badge-closed">Closed</span></td>
+                  <td>11</td>
+                  <td style="color:var(--danger);">0</td>
+                  <td style="color:var(--success);">11</td>
+                </tr>
+                <tr>
+                  <td class="fw-600" style="color:var(--green);">API Gateway</td>
+                  <td><span class="badge badge-active">Active</span></td>
+                  <td>13</td>
+                  <td style="color:var(--danger);">3</td>
+                  <td style="color:var(--success);">7</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:1rem;">
-      <div class="card">
-        <h3 style="margin-bottom:1rem;">Cập nhật</h3>
-        <div class="fg"><label class="fl">Trạng thái</label><select class="fi"><option>Mới</option><option>Đã gán</option><option selected>Đang xử lý</option><option>Đã sửa</option><option>Đã đóng</option></select></div>
-        <div class="fg"><label class="fl">Người xử lý</label><select class="fi"><option selected>Lê Văn C (Developer)</option><option>Trần Thị B (Tester)</option></select></div>
-        <div class="fg"><label class="fl">Ghi chú / Giải pháp</label><textarea class="fi" style="height:80px;">Thêm rate-limit middleware.</textarea></div>
-        <button class="btn btn-primary btn-block">Lưu thay đổi</button>
+    </main>
+  </div>
+</div>
+
+<!-- ════════ CREATE BUG ════════ -->
+<div class="screen" id="screen-create">
+  <div class="app">
+    <aside class="sidebar">
+      <a href="#" class="sidebar-logo">
+        <svg class="sidebar-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 2l1.88 1.88"/><path d="M14.12 3.88L16 2"/>
+          <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+          <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/>
+          <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+        </svg>
+        <span class="sidebar-logo-text">bugiz</span>
+      </a>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Overview</a>
+        <a href="#" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Reports</a>
+        <a href="#" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Members</a>
+        <a href="#" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>Settings</a>
+      </nav>
+      <a href="#" class="sidebar-add-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Add Project</a>
+      <div class="sidebar-footer">
+        <div class="sidebar-user"><div class="sidebar-avatar">A</div><span class="sidebar-username">admin</span></div>
+        <a href="#" class="sidebar-logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>logout</a>
       </div>
-      <div class="card">
-        <h3 style="margin-bottom:.85rem;">Thông tin</h3>
-        <div class="ir"><span class="ik">Báo cáo bởi</span><span>Nguyễn Văn A</span></div>
-        <div class="ir"><span class="ik">Xử lý bởi</span><span>Lê Văn C</span></div>
-        <div class="ir"><span class="ik">Ưu tiên</span><span style="color:#fca5a5;font-weight:600">Critical (S)</span></div>
-        <div class="ir"><span class="ik">Loại</span><span>Functional</span></div>
-        <div class="ir"><span class="ik">Dự án</span><span>BugTracker v2</span></div>
+    </aside>
+    <main class="main">
+      <div class="page">
+        <ul class="breadcrumb"><li><a href="#">Overview</a></li><li>/</li><li><a href="#">Website Bán Hàng</a></li><li>/</li><li>New Bug</li></ul>
+        <h1 style="margin-bottom:1.5rem;">Report New Bug</h1>
+        <div class="card" style="max-width:800px;">
+          <div class="form-group">
+            <label class="form-label">Bug Title *</label>
+            <input class="form-input" type="text" placeholder="e.g. Cannot add product to cart on Safari">
+          </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Type</label>
+              <select class="form-input"><option>Functional Bug</option><option>System Bug</option><option>UI Bug</option><option>Performance Bug</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Priority</label>
+              <select class="form-input"><option>Critical (S)</option><option>High (A)</option><option>Medium (B)</option></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description & Steps to Reproduce *</label>
+            <textarea class="form-input" style="height:160px;" placeholder="1. Open the app...&#10;2. Perform action X...&#10;3. Actual result: ...&#10;4. Expected result: ..."></textarea>
+          </div>
+          <div class="separator"></div>
+          <div style="display:flex;gap:.6rem;justify-content:flex-end;">
+            <a href="#" class="btn btn-ghost">Cancel</a>
+            <button class="btn btn-primary">Submit Bug</button>
+          </div>
+        </div>
       </div>
-    </div>
+    </main>
   </div>
-</div></div></div>
-</div>
-
-<!-- ══════════════ 06 CREATE BUG ══════════════ -->
-<div id="cbug" class="screen app-screen">
-<div class="layout"><div class="main"><div class="pg">
-  <ul class="bc"><li><a onclick="go('proj')">BugTracker v2</a></li><li class="bc-sep">/</li><li>Báo lỗi mới</li></ul>
-  <h1 style="margin-bottom:1.5rem;">Báo cáo lỗi mới</h1>
-  <div class="card" style="max-width:800px;">
-    <div class="fg"><label class="fl">Tiêu đề lỗi *</label><input class="fi" placeholder="Mô tả ngắn gọn về lỗi..."></div>
-    <div class="f2">
-      <div class="fg"><label class="fl">Loại lỗi</label><select class="fi"><option>Functional Bug</option><option>System Bug</option><option>UI Bug</option><option>Performance Bug</option></select></div>
-      <div class="fg"><label class="fl">Độ ưu tiên</label><select class="fi"><option>🔴 Critical (S)</option><option>🟡 High (A)</option><option>⚪ Medium (B)</option></select></div>
-    </div>
-    <div class="fg"><label class="fl">Mô tả chi tiết & Bước tái hiện *</label><textarea class="fi" style="height:160px;" placeholder="1. Mở ứng dụng...&#10;2. Thực hiện hành động X...&#10;3. Kết quả thực tế: ...&#10;4. Kết quả mong đợi: ..."></textarea></div>
-    <div class="fsep"></div>
-    <div style="display:flex;gap:.65rem;justify-content:flex-end;">
-      <button class="btn btn-ghost" onclick="go('proj')">Huỷ bỏ</button>
-      <button class="btn btn-primary" onclick="go('proj')">Gửi báo cáo</button>
-    </div>
-  </div>
-</div></div></div>
-</div>
-
-<!-- ══════════════ 07 CREATE PROJECT ══════════════ -->
-<div id="cproj" class="screen app-screen">
-<div class="layout"><div class="main"><div class="pg">
-  <ul class="bc"><li><a onclick="go('dashboard')">Dự án</a></li><li class="bc-sep">/</li><li>Tạo mới</li></ul>
-  <h1 style="margin-bottom:.3rem;">Tạo dự án mới</h1>
-  <p class="tm" style="margin-bottom:1.5rem;">Khởi tạo không gian làm việc cho đội ngũ.</p>
-  <div class="card" style="max-width:620px;">
-    <div class="fg"><label class="fl">Tên dự án *</label><input class="fi" placeholder="VD: Website Bán Hàng, App Quản Lý..."></div>
-    <div class="fg"><label class="fl">Mô tả</label><textarea class="fi" style="height:110px;" placeholder="Mục tiêu và phạm vi của dự án..."></textarea></div>
-    <div class="fsep"></div>
-    <div style="display:flex;gap:.65rem;justify-content:flex-end;">
-      <button class="btn btn-ghost" onclick="go('dashboard')">Huỷ</button>
-      <button class="btn btn-primary" onclick="go('dashboard')">Tạo dự án</button>
-    </div>
-  </div>
-</div></div></div>
-</div>
-
-<!-- ══════════════ 08 REPORTS ══════════════ -->
-<div id="reports" class="screen app-screen">
-<div class="layout"><div class="main"><div class="pg">
-  <div class="ph">
-    <div><h1>Báo cáo hệ thống</h1><p class="tm">Dữ liệu cập nhật thời gian thực từ Bug Tracker</p></div>
-    <div class="ph-actions"><button class="btn btn-ghost"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>In báo cáo</button></div>
-  </div>
-  <div class="tabs">
-    <button class="tbb on" onclick="swt(this,'r1')">Thống kê dự án</button>
-    <button class="tbb" onclick="swt(this,'r2')">Phân bổ Bug</button>
-  </div>
-  <div id="r1" class="tbc on">
-    <div class="card">
-      <h3 style="margin-bottom:1rem;">Tình hình dự án</h3>
-      <div class="tw"><table>
-        <thead><tr><th>Tên dự án</th><th>Trạng thái</th><th>Tổng</th><th>Bug mới</th><th>Đã giải quyết</th></tr></thead>
-        <tbody>
-          <tr><td class="fw6" style="color:#a5b4fc">BugTracker v2</td><td><span class="badge b-active">Active</span></td><td>24</td><td style="color:#f87171">8</td><td style="color:#34d399">10</td></tr>
-          <tr><td class="fw6" style="color:#a5b4fc">Mobile App</td><td><span class="badge b-active">Active</span></td><td>18</td><td style="color:#f87171">5</td><td style="color:#34d399">9</td></tr>
-          <tr><td class="fw6" style="color:#a5b4fc">API Gateway</td><td><span class="badge b-active">Active</span></td><td>12</td><td style="color:#f87171">3</td><td style="color:#34d399">6</td></tr>
-          <tr><td class="fw6" style="color:#a5b4fc">Admin Dashboard</td><td><span class="badge b-closed">Closed</span></td><td>8</td><td style="color:#f87171">0</td><td style="color:#34d399">8</td></tr>
-        </tbody>
-      </table></div>
-    </div>
-  </div>
-  <div id="r2" class="tbc">
-    <div class="card">
-      <h3 style="margin-bottom:1rem;">Phân bổ theo trạng thái</h3>
-      <div class="tw"><table>
-        <thead><tr><th>Trạng thái</th><th>Số lượng</th><th>Tỉ lệ</th></tr></thead>
-        <tbody>
-          <tr><td><span class="badge b-new">Mới</span></td><td style="font-size:1.1rem;font-weight:800">16</td><td class="tm">26%</td></tr>
-          <tr><td><span class="badge b-asgn">Đã gán</span></td><td style="font-size:1.1rem;font-weight:800">8</td><td class="tm">13%</td></tr>
-          <tr><td><span class="badge b-prog">Đang xử lý</span></td><td style="font-size:1.1rem;font-weight:800">14</td><td class="tm">22%</td></tr>
-          <tr><td><span class="badge b-fixed">Đã sửa</span></td><td style="font-size:1.1rem;font-weight:800">18</td><td class="tm">29%</td></tr>
-          <tr><td><span class="badge b-closed">Đã đóng</span></td><td style="font-size:1.1rem;font-weight:800">6</td><td class="tm">10%</td></tr>
-        </tbody>
-      </table></div>
-    </div>
-  </div>
-  <div class="sep" style="margin-top:2rem;"></div>
-  <p class="tm ts">Xuất: 30/05/2026 09:00 · Người lập: admin · BugTracker v1.0</p>
-</div></div></div>
-</div>
-
-<!-- ══════════════ 09 MANAGE MEMBERS ══════════════ -->
-<div id="members" class="screen app-screen">
-<div class="layout"><div class="main"><div class="pg">
-  <ul class="bc"><li><a onclick="go('proj')">BugTracker v2</a></li><li class="bc-sep">/</li><li>Thành viên</li></ul>
-  <div class="ph">
-    <div><h1>Quản lý thành viên</h1><p class="tm">Dự án: <strong style="color:var(--t2)">BugTracker v2</strong></p></div>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 300px;gap:1.1rem;align-items:start;">
-    <div class="card">
-      <h3 style="margin-bottom:1rem;">Danh sách thành viên</h3>
-      <div class="tw"><table>
-        <thead><tr><th>Thành viên</th><th>Email</th><th>Vai trò</th><th>Ngày thêm</th><th></th></tr></thead>
-        <tbody>
-          <tr><td><div class="ur"><div class="av" style="width:28px;height:28px;font-size:.65rem">N</div><div><div class="ur-name">Nguyễn Văn A</div><div class="ur-sub">@nguyenvana</div></div></div></td><td class="tm ts">nva@mail.com</td><td><span class="badge b-role">Developer</span></td><td class="tm ts">15/01/25</td><td><button class="btn btn-danger btn-sm">Xoá</button></td></tr>
-          <tr><td><div class="ur"><div class="av av-cyan" style="width:28px;height:28px;font-size:.65rem">T</div><div><div class="ur-name">Trần Thị B</div><div class="ur-sub">@tranthib</div></div></div></td><td class="tm ts">ttb@mail.com</td><td><span class="badge b-role">Tester</span></td><td class="tm ts">20/02/25</td><td><button class="btn btn-danger btn-sm">Xoá</button></td></tr>
-          <tr><td><div class="ur"><div class="av av-amber" style="width:28px;height:28px;font-size:.65rem">L</div><div><div class="ur-name">Lê Văn C</div><div class="ur-sub">@levanc</div></div></div></td><td class="tm ts">lvc@mail.com</td><td><span class="badge b-role">Project Manager</span></td><td class="tm ts">01/03/25</td><td><button class="btn btn-danger btn-sm">Xoá</button></td></tr>
-        </tbody>
-      </table></div>
-    </div>
-    <div class="card">
-      <h3 style="margin-bottom:1rem;">Thêm thành viên</h3>
-      <div class="fg"><label class="fl">Người dùng</label><select class="fi"><option>-- Chọn người dùng --</option><option>Phạm Văn D</option><option>Hoàng Thị E</option></select></div>
-      <div class="fg"><label class="fl">Vai trò</label><select class="fi"><option>-- Chọn vai trò --</option><option>Developer</option><option>Tester</option><option>Project Manager</option></select></div>
-      <button class="btn btn-primary btn-block">Thêm vào dự án</button>
-    </div>
-  </div>
-</div></div></div>
-</div>
-
-<!-- ══════════════ 10 ADMIN LIST ══════════════ -->
-<div id="admin" class="screen app-screen">
-<div class="layout"><div class="main"><div class="pg">
-  <div class="ph">
-    <div><h1>Quản lý tài khoản</h1><p class="tm">6 tài khoản trong hệ thống</p></div>
-    <div class="ph-actions"><button class="btn btn-primary" onclick="go('acreate')">+ Thêm tài khoản</button></div>
-  </div>
-  <div class="card">
-    <div style="display:flex;gap:.65rem;margin-bottom:1.2rem;">
-      <input class="fi" style="max-width:280px;" placeholder="🔍  Tìm tên, username...">
-      <select class="fi" style="max-width:160px;"><option>Tất cả role</option><option>Developer</option><option>Tester</option><option>Superuser</option></select>
-    </div>
-    <div class="tw"><table>
-      <thead><tr><th>Thành viên</th><th>Email</th><th>Role</th><th>Trạng thái</th><th>Ngày tạo</th><th></th></tr></thead>
-      <tbody>
-        <tr><td><div class="ur"><div class="av av-super" style="width:28px;height:28px;font-size:.65rem;background:linear-gradient(135deg,#a855f7,#7c3aed)">A</div><div><div class="ur-name">Admin System</div><div class="ur-sub">@admin</div></div></div></td><td class="tm ts">admin@system.com</td><td><span class="badge b-super">Superuser</span></td><td><span class="badge b-active">Active</span></td><td class="tm ts">01/01/24</td><td><button class="btn btn-ghost btn-sm" onclick="go('acreate')">Sửa</button></td></tr>
-        <tr><td><div class="ur"><div class="av" style="width:28px;height:28px;font-size:.65rem">N</div><div><div class="ur-name">Nguyễn Văn A</div><div class="ur-sub">@nguyenvana</div></div></div></td><td class="tm ts">nva@mail.com</td><td><span class="badge b-role">Developer</span></td><td><span class="badge b-active">Active</span></td><td class="tm ts">15/01/25</td><td><button class="btn btn-ghost btn-sm" onclick="go('acreate')">Sửa</button></td></tr>
-        <tr><td><div class="ur"><div class="av av-amber" style="width:28px;height:28px;font-size:.65rem">P</div><div><div class="ur-name">Phạm Văn D</div><div class="ur-sub">@phamvand</div></div></div></td><td class="tm ts">pvd@mail.com</td><td><span class="badge b-role">Developer</span></td><td><span class="badge b-inactive">Inactive</span></td><td class="tm ts">10/04/25</td><td><button class="btn btn-ghost btn-sm" onclick="go('acreate')">Sửa</button></td></tr>
-      </tbody>
-    </table></div>
-  </div>
-</div></div></div>
-</div>
-
-<!-- ══════════════ 11 ADMIN CREATE ══════════════ -->
-<div id="acreate" class="screen app-screen">
-<div class="layout"><div class="main"><div class="pg">
-  <ul class="bc"><li><a onclick="go('admin')">Quản lý tài khoản</a></li><li class="bc-sep">/</li><li>Thêm mới</li></ul>
-  <h1 style="margin-bottom:1.5rem;">Thêm tài khoản mới</h1>
-  <div class="card" style="max-width:620px;">
-    <div class="f2"><div class="fg"><label class="fl">Tên đăng nhập</label><input class="fi" placeholder="username..."></div><div class="fg"><label class="fl">Email</label><input class="fi" type="email" placeholder="email@..."></div></div>
-    <div class="f2"><div class="fg"><label class="fl">Họ</label><input class="fi" placeholder="Nguyễn"></div><div class="fg"><label class="fl">Tên</label><input class="fi" placeholder="Văn A"></div></div>
-    <div class="f2"><div class="fg"><label class="fl">Mật khẩu</label><input class="fi" type="password" placeholder="••••••••"></div><div class="fg"><label class="fl">Xác nhận</label><input class="fi" type="password" placeholder="••••••••"></div></div>
-    <div class="fsep"></div>
-    <label class="fck" style="margin-bottom:1.25rem;"><input type="checkbox"> Quyền quản trị viên (Superuser)</label>
-    <div style="display:flex;gap:.65rem;">
-      <button class="btn btn-primary" style="flex:1;" onclick="go('admin')">Tạo tài khoản</button>
-      <button class="btn btn-ghost" style="flex:1;justify-content:center;" onclick="go('admin')">Huỷ</button>
-    </div>
-  </div>
-</div></div></div>
-</div>
-
-<!-- ══════════════ 12 MEMBER LIST ══════════════ -->
-<div id="mlist" class="screen app-screen">
-<div class="layout"><div class="main"><div class="pg">
-  <h1 style="margin-bottom:.3rem;">Thành viên theo dự án</h1>
-  <p class="tm" style="margin-bottom:1.75rem;">Nhấn vào dự án để xem danh sách thành viên chi tiết.</p>
-  <div class="acc-item">
-    <div class="acc-hdr" onclick="togAcc(this)">
-      <div class="acc-l"><div class="acc-ic">1</div><div><div class="acc-title">BugTracker v2</div><div class="acc-sub">3 thành viên</div></div></div>
-      <svg class="acc-chev" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-    </div>
-    <div class="acc-body">
-      <div class="tw" style="margin-top:.75rem;"><table><thead><tr><th>Thành viên</th><th>Email</th><th>Vai trò</th></tr></thead><tbody>
-        <tr><td><div class="ur"><div class="av" style="width:26px;height:26px;font-size:.62rem">N</div><span class="fw6">Nguyễn Văn A</span></div></td><td class="tm ts">nva@mail.com</td><td><span class="badge b-role">Developer</span></td></tr>
-        <tr><td><div class="ur"><div class="av av-cyan" style="width:26px;height:26px;font-size:.62rem">T</div><span class="fw6">Trần Thị B</span></div></td><td class="tm ts">ttb@mail.com</td><td><span class="badge b-role">Tester</span></td></tr>
-        <tr><td><div class="ur"><div class="av av-amber" style="width:26px;height:26px;font-size:.62rem">L</div><span class="fw6">Lê Văn C</span></div></td><td class="tm ts">lvc@mail.com</td><td><span class="badge b-role">Project Manager</span></td></tr>
-      </tbody></table></div>
-    </div>
-  </div>
-  <div class="acc-item">
-    <div class="acc-hdr" onclick="togAcc(this)">
-      <div class="acc-l"><div class="acc-ic" style="background:var(--grad2)">2</div><div><div class="acc-title">Mobile App</div><div class="acc-sub">2 thành viên</div></div></div>
-      <svg class="acc-chev" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-    </div>
-    <div class="acc-body">
-      <div class="tw" style="margin-top:.75rem;"><table><thead><tr><th>Thành viên</th><th>Email</th><th>Vai trò</th></tr></thead><tbody>
-        <tr><td><div class="ur"><div class="av av-rose" style="width:26px;height:26px;font-size:.62rem">P</div><span class="fw6">Phạm Văn D</span></div></td><td class="tm ts">pvd@mail.com</td><td><span class="badge b-role">Developer</span></td></tr>
-        <tr><td><div class="ur"><div class="av av-emerald" style="width:26px;height:26px;font-size:.62rem">H</div><span class="fw6">Hoàng Thị E</span></div></td><td class="tm ts">hte@mail.com</td><td><span class="badge b-role">Tester</span></td></tr>
-      </tbody></table></div>
-    </div>
-  </div>
-</div></div></div>
-</div>
-
-<!-- ══════════════ 13 ERROR 403 ══════════════ -->
-<div id="e403" class="screen app-screen">
-<div class="layout"><div class="main"><div class="pg">
-  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;text-align:center;">
-    <div style="font-size:7rem;font-weight:800;line-height:1;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 40px rgba(99,102,241,.3));margin-bottom:.5rem;">403</div>
-    <h2 style="font-size:1.5rem;font-weight:800;margin:.5rem 0;">Truy cập bị từ chối</h2>
-    <p class="tm" style="max-width:360px;line-height:1.75;margin:.75rem 0 2rem;font-size:.85rem;">Bạn không có quyền truy cập vào tài nguyên này hoặc không thuộc dự án này. Liên hệ admin nếu cần hỗ trợ.</p>
-    <button class="btn btn-primary" onclick="go('dashboard')">← Quay lại Dashboard</button>
-  </div>
-</div></div></div>
 </div>
 
 <script>
-const APP=['dashboard','proj','bug','cbug','cproj','reports','members','admin','acreate','mlist','e403'];
-const IDS=['login','register','dashboard','proj','bug','cbug','cproj','reports','members','admin','acreate','mlist','e403'];
-const NAV_MAP={dashboard:'dashboard',proj:'dashboard',bug:'dashboard',cbug:'dashboard',cproj:'dashboard',reports:'reports',members:'dashboard',admin:'admin',acreate:'admin',mlist:'mlist',e403:'dashboard'};
-
-function go(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
-  document.querySelectorAll('.swb').forEach(b=>b.classList.remove('on'));
-  document.getElementById(id).classList.add('on');
-  const i=IDS.indexOf(id);
-  if(i>=0) document.querySelectorAll('.swb')[i].classList.add('on');
-
-  const isApp=APP.includes(id);
-  // Inject sidebar if app screen
-  if(isApp){
-    const layouts=document.querySelectorAll('#'+id+' .layout');
-    layouts.forEach(l=>{
-      if(!l.querySelector('.sidebar')){
-        const clone=document.getElementById('t-sb').content.cloneNode(true);
-        l.insertBefore(clone,l.firstChild);
-      }
-    });
-    // Active nav
-    const activeNav=NAV_MAP[id]||id;
-    document.querySelectorAll('.nb[data-id]').forEach(b=>{
-      b.classList.toggle('on',b.dataset.id===activeNav);
-    });
-  }
-  window.scrollTo(0,0);
+function show(id, btn) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.sw-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  btn.classList.add('active');
 }
-
-function swt(btn,id){
-  const sc=btn.closest('.screen');
-  sc.querySelectorAll('.tbb').forEach(b=>b.classList.remove('on'));
-  sc.querySelectorAll('.tbc').forEach(c=>c.classList.remove('on'));
-  btn.classList.add('on');
-  document.getElementById(id).classList.add('on');
-}
-
-function togAcc(hdr){
-  const body=hdr.nextElementSibling;
-  const chev=hdr.querySelector('.acc-chev');
-  const open=body.classList.toggle('open');
-  chev.classList.toggle('open',open);
-}
-
-go('login');
 </script>
 </body>
 </html>
