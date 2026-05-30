@@ -191,10 +191,18 @@
   </form>
 
   <div class="table-wrap">
-    <table>
+    <table class="bug-list-table">
+      <colgroup>
+        <col class="col-id">
+        <col class="col-title">
+        <col class="col-priority">
+        <col class="col-status">
+        <col class="col-assignee">
+        <col class="col-updated">
+      </colgroup>
       <thead>
         <tr>
-          <th style="width:70px;">ID</th>
+          <th>ID</th>
           <th>Tiêu đề</th>
           <th>Ưu tiên</th>
           <th>Trạng thái</th>
@@ -205,15 +213,15 @@
       <tbody>
         
         <tr class="clickable" onclick="window.location='/bug_tracker/bugs/101/';">
-          <td class="text-muted text-sm">#101</td>
-          <td class="fw-600">Login button does not respond on Safari</td>
-          <td>
+          <td class="text-muted text-sm bug-id-cell">#101</td>
+          <td class="fw-600 bug-title-cell">Login button does not respond on Safari</td>
+          <td class="bug-priority-cell">
             
             <span class="pri pri-a"><span class="pri-dot"></span>High (A)</span>
             
           </td>
-          <td><span class="badge badge-in_progress">In Progress</span></td>
-          <td>
+          <td class="bug-status-cell"><span class="badge badge-in_progress">In Progress</span></td>
+          <td class="bug-assignee-cell">
             
             <div class="user-row">
               <div class="avatar">M</div>
@@ -221,19 +229,19 @@
             </div>
             
           </td>
-          <td class="text-muted text-sm">31/05/2026 08:45</td>
+          <td class="text-muted text-sm bug-updated-cell">31/05/2026 08:45</td>
         </tr>
         
         <tr class="clickable" onclick="window.location='/bug_tracker/bugs/102/';">
-          <td class="text-muted text-sm">#102</td>
-          <td class="fw-600">Export report shows duplicated rows</td>
-          <td>
+          <td class="text-muted text-sm bug-id-cell">#102</td>
+          <td class="fw-600 bug-title-cell">Export report shows duplicated rows</td>
+          <td class="bug-priority-cell">
             
             <span class="pri pri-s"><span class="pri-dot"></span>Critical (S)</span>
             
           </td>
-          <td><span class="badge badge-new">New</span></td>
-          <td>
+          <td class="bug-status-cell"><span class="badge badge-new">New</span></td>
+          <td class="bug-assignee-cell">
             
             <div class="user-row">
               <div class="avatar">L</div>
@@ -241,19 +249,19 @@
             </div>
             
           </td>
-          <td class="text-muted text-sm">31/05/2026 09:05</td>
+          <td class="text-muted text-sm bug-updated-cell">31/05/2026 09:05</td>
         </tr>
         
         <tr class="clickable" onclick="window.location='/bug_tracker/bugs/103/';">
-          <td class="text-muted text-sm">#103</td>
-          <td class="fw-600">Billing webhook latency spike</td>
-          <td>
+          <td class="text-muted text-sm bug-id-cell">#103</td>
+          <td class="fw-600 bug-title-cell">Billing webhook latency spike</td>
+          <td class="bug-priority-cell">
             
             <span class="pri pri-b"><span class="pri-dot"></span>Medium (B)</span>
             
           </td>
-          <td><span class="badge badge-fixed">Fixed</span></td>
-          <td>
+          <td class="bug-status-cell"><span class="badge badge-fixed">Fixed</span></td>
+          <td class="bug-assignee-cell">
             
             <div class="user-row">
               <div class="avatar">M</div>
@@ -261,7 +269,7 @@
             </div>
             
           </td>
-          <td class="text-muted text-sm">30/05/2026 18:30</td>
+          <td class="text-muted text-sm bug-updated-cell">30/05/2026 18:30</td>
         </tr>
         
       </tbody>

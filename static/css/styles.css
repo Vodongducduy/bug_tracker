@@ -257,6 +257,30 @@ tbody tr:hover { background:#fafafa; }
 tbody tr.clickable { cursor:pointer; }
 td { padding:.78rem 1rem; font-size:.83rem; vertical-align:middle; color:var(--t1); }
 
+.bug-list-table { table-layout:fixed; }
+.bug-list-table .col-id { width:72px; }
+.bug-list-table .col-priority { width:140px; }
+.bug-list-table .col-status { width:130px; }
+.bug-list-table .col-assignee { width:170px; }
+.bug-list-table .col-updated { width:120px; }
+.bug-list-table .col-title { width:auto; }
+.bug-list-table th,
+.bug-list-table td { overflow-wrap:anywhere; }
+.bug-list-table th:not(:nth-child(2)),
+.bug-list-table td:not(:nth-child(2)) { white-space:nowrap; }
+.bug-title-cell {
+  min-width:0;
+  white-space:normal !important;
+  line-height:1.45;
+  word-break:break-word;
+}
+.bug-assignee-cell .user-row {
+  display:inline-flex;
+  max-width:100%;
+  white-space:normal;
+}
+.bug-updated-cell { line-height:1.45; }
+
 /* ══════════════ BADGES ══════════════ */
 .badge {
   display:inline-flex; align-items:center;
