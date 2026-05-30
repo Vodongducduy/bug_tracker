@@ -11,20 +11,28 @@
 
 <div class="stats-grid">
   <div class="stat-card stat-primary">
+    <span class="stat-icon">📊</span>
     <div class="stat-label">Tổng số Bug</div>
     <div class="stat-value">{{ bug_summary.TOTAL }}</div>
+    <div class="stat-sub">Toàn hệ thống</div>
   </div>
   <div class="stat-card stat-danger">
+    <span class="stat-icon">🆕</span>
     <div class="stat-label">Mới</div>
     <div class="stat-value">{{ bug_summary.NEW }}</div>
+    <div class="stat-sub">Cần phân công</div>
   </div>
   <div class="stat-card stat-warning">
+    <span class="stat-icon">⚡</span>
     <div class="stat-label">Đang xử lý</div>
     <div class="stat-value">{{ bug_summary.IN_PROGRESS }}</div>
+    <div class="stat-sub">Đang tiến hành</div>
   </div>
   <div class="stat-card stat-success">
+    <span class="stat-icon">✅</span>
     <div class="stat-label">Đã sửa / Đóng</div>
     <div class="stat-value">{{ bug_summary.FIXED|add:bug_summary.CLOSED }}</div>
+    <div class="stat-sub">Hoàn thành</div>
   </div>
 </div>
 

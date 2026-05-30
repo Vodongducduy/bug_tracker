@@ -2,10 +2,10 @@
 {% block title %}403 — Truy cập bị từ chối{% endblock %}
 
 {% block content %}
-<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:72vh;text-align:center;padding:2rem;">
-  <div style="font-size:6.5rem;font-weight:800;line-height:1;background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.5rem;">403</div>
-  <h2 style="font-size:1.4rem;margin:.5rem 0;">Truy cập bị từ chối</h2>
-  <p style="color:var(--text-muted);max-width:380px;line-height:1.7;margin:.75rem 0 2rem;font-size:.9rem;">
+<div class="error-page">
+  <div class="error-code">403</div>
+  <h2 class="error-title">Truy cập bị từ chối</h2>
+  <p class="error-sub">
     Bạn không có quyền truy cập vào tài nguyên này hoặc không thuộc dự án này. Liên hệ quản trị viên nếu cần hỗ trợ.
   </p>
   <a href="{% url 'dashboard' %}" class="btn btn-primary">← Quay lại Dashboard</a>

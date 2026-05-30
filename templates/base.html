@@ -7,7 +7,7 @@
   <title>{% block title %}Bug Tracker{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
   {% block extra_css %}{% endblock %}
 </head>
@@ -19,8 +19,9 @@
   <!-- ── Sidebar ── -->
   <aside class="sidebar">
     <a href="{% url 'dashboard' %}" class="sidebar-logo">
-      <div class="sidebar-logo-mark">BT</div>
+      <div class="sidebar-logo-mark">🐛</div>
       <span class="sidebar-logo-text">BugTracker</span>
+      <span class="sidebar-logo-badge">v2</span>
     </a>
 
     <nav class="sidebar-nav">
