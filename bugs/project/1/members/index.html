@@ -10,8 +10,31 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/bug_tracker/static/css/styles.css">
   
+
+<style>
+  body{padding-top:36px !important;}
+  .preview-switcher{
+    position:fixed;top:0;left:0;right:0;height:36px;z-index:9999;
+    background:#111;display:flex;align-items:center;gap:.35rem;
+    padding:0 .5rem;border-bottom:1px solid #333;overflow-x:auto;
+    font-family:Inter,-apple-system,sans-serif;
+  }
+  .preview-switcher::-webkit-scrollbar{height:6px;}
+  .preview-switcher::-webkit-scrollbar-thumb{background:#333;border-radius:999px;}
+  .preview-link{
+    display:inline-flex;align-items:center;white-space:nowrap;
+    padding:.2rem .7rem;border-radius:3px;font-size:.72rem;font-weight:500;
+    background:#222 !important;color:#aaa !important;border:1px solid #333;
+    text-decoration:none !important;transition:all .12s;
+  }
+  .preview-link:hover{background:#333 !important;color:#fff !important;}
+  .preview-link.active{background:#3a6b1e !important;color:#fff !important;border-color:#3a6b1e;}
+</style>
+
 </head>
 <body>
+<div class="preview-switcher"><a class="preview-link" href="/bug_tracker/all-pages/">Bugiz</a><a class="preview-link" href="/bug_tracker/login/">Login</a><a class="preview-link" href="/bug_tracker/register/">Register</a><a class="preview-link" href="/bug_tracker/">Dashboard</a><a class="preview-link" href="/bug_tracker/accounts/">Accounts</a><a class="preview-link" href="/bug_tracker/accounts/members/">Members</a><a class="preview-link" href="/bug_tracker/reports/">Reports</a><a class="preview-link" href="/bug_tracker/bugs/project/create/">Create Project</a><a class="preview-link" href="/bug_tracker/bugs/project/1/">Project Detail</a><a class="preview-link" href="/bug_tracker/bugs/project/1/create/">Create Bug</a><a class="preview-link active" href="/bug_tracker/bugs/project/1/members/">Manage Members</a><a class="preview-link" href="/bug_tracker/bugs/101/">Bug Detail</a><a class="preview-link" href="/bug_tracker/accounts/create/">Create Account</a><a class="preview-link" href="/bug_tracker/403.html">403</a></div>
+
 
 
 <div class="app-layout">
@@ -192,7 +215,7 @@
   <div class="card">
     <h3 style="margin-bottom:1.1rem;">Thêm thành viên</h3>
     <form method="POST">
-      <input type="hidden" name="csrfmiddlewaretoken" value="LD13FGSwv1oc3frj9Zt0gLCqVAsrWZUOM2TlS1nj2uIf9FcoQ4XL26iXbmZeNoUF">
+      <input type="hidden" name="csrfmiddlewaretoken" value="Sr0DHCnVmldyvjOWvjkjkzWqr7BTeqEWuBOMMthslcgjQs9qq7o0l0iy9BozARWR">
       <div class="form-group">
         <label class="form-label">Người dùng</label>
         <select name="user_id" required class="form-input">
